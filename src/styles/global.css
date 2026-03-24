@@ -398,6 +398,9 @@ body::before {
   .cta-box { flex-direction: column; padding: 40px 32px; }
   .cta-actions { align-items: flex-start; }
   .footer-inner { flex-direction: column; gap: 20px; }
+  .page-hero { padding: calc(var(--nav-h) + 36px) var(--pad) 40px; }
+  .page-hero h1 { font-size: clamp(30px, 8vw, 48px); }
+  .section { padding: 60px var(--pad); }
 }
 
 @media (max-width: 600px) {

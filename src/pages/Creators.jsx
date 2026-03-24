@@ -1,45 +1,42 @@
 import './Creators.css'
 
 const STATS = [
-  { v: '70K+', l: 'Active creators', s: 'Across all platforms' },
-  { v: '60%', l: 'Min. US audience', s: 'Required per creator' },
+  { v: '80K+', l: 'Active creators', s: 'Across all platforms' },
   { v: '100%', l: 'Manual review', s: 'Every submission checked' },
   { v: '$0.09', l: 'Lowest CPM achieved', s: 'ProdByCPKShawn campaign' },
-  { v: '48hrs', l: 'Avg. time to first clip', s: 'From campaign brief' },
+  { v: '16hrs', l: 'Avg. time to first clip', s: 'From campaign brief' },
 ]
 
 const REGIONS = [
-  { name: 'North America', count: '~55,000', pct: 78 },
-  { name: 'Europe', count: '~8,500', pct: 12 },
-  { name: 'UK & Ireland', count: '~4,200', pct: 6 },
-  { name: 'Rest of World', count: '~2,300', pct: 4 },
+  { name: 'North America', count: '~45,000', pct: 56 },
+  { name: 'Europe', count: '~18,500', pct: 23 },
+  { name: 'UK & Ireland', count: '~9,200', pct: 12 },
+  { name: 'Rest of World', count: '~7,300', pct: 9 },
 ]
 
 const NICHES = [
-  { icon: '🎵', name: 'Music & Entertainment', count: '~14,000 creators', pct: 80, examples: 'Songs, producers, artists, playlists, music reactions' },
   { icon: '🛍', name: 'E-Commerce & Products', count: '~18,000 creators', pct: 95, examples: 'Product reviews, unboxings, Amazon finds, hauls, gift guides' },
+  { icon: '🎵', name: 'Music & Entertainment', count: '~14,000 creators', pct: 80, examples: 'Songs, producers, artists, playlists, music reactions' },
   { icon: '💪', name: 'Health, Fitness & Wellness', count: '~12,000 creators', pct: 72, examples: 'Supplements, training gear, nutrition, mental health, biohacking' },
-  { icon: '🎙', name: 'Podcasts & Media', count: '~8,000 creators', pct: 50, examples: 'Clip repurposing, podcast reactions, highlight reels' },
   { icon: '🏆', name: 'Sports & Events', count: '~10,000 creators', pct: 60, examples: 'PPV, sports highlights, event previews, athlete content' },
+  { icon: '🎙', name: 'Podcasts & Media', count: '~8,000 creators', pct: 50, examples: 'Clip repurposing, podcast reactions, highlight reels' },
   { icon: '✈', name: 'Travel & Lifestyle', count: '~6,000 creators', pct: 38, examples: 'Destinations, lifestyle products, travel gear, day-in-the-life' },
 ]
 
 const APPROVED = [
-  '60%+ US audience verified', 'Minimum 500 followers on target platform',
-  'Clear niche alignment with campaign brief', 'No previous brand safety violations',
+  'Minimum 500 followers on target platform',
+  'Clear niche alignment with campaign brief',
+  'No previous brand safety violations',
   'Original content — no reposts or duets of competitors',
+  'Audience quality verified — real engagement, not bot-inflated',
 ]
 
 const REJECTED = [
-  'Generic, low-effort content ("this product is amazing!")', 'Misleading or exaggerated claims',
-  'Wrong audience demographics for the campaign', 'Content that includes competitor brand mentions',
+  'Generic, low-effort content ("this product is amazing!")',
+  'Misleading or exaggerated claims',
+  'Wrong audience demographics for the campaign',
+  'Content that includes competitor brand mentions',
   'Content that looks like an ad — "Sponsored" energy kills performance',
-]
-
-const TIERS = [
-  { label: 'Base', rpm: '$1', desc: 'Standard performance rate. Earns $1 per 1,000 organic views verified.' },
-  { label: 'Growth', rpm: '$1.50', desc: 'Available for established creators with track record of approval.' },
-  { label: 'Elite', rpm: '$2–$3', desc: 'Premium tier for top-performing creators with high engagement and consistent approval rates.' },
 ]
 
 export default function Creators() {
@@ -51,7 +48,7 @@ export default function Creators() {
           <div className="cn-inner">
             <div className="cn-hero-left fade-up">
               <div className="section-eyebrow">Creator Network</div>
-              <h1>70,000+ creators.<br /><em>All vetted.<br />All performance-paid.</em></h1>
+              <h1>80,000+ creators.<br /><em>All verified.<br />All performance-paid.</em></h1>
               <p>Every creator in our network is approved before they post for your brand. They earn when content performs — which means they're motivated to make it good.</p>
               <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ marginTop: '28px', width: 'fit-content' }}>
                 Start a campaign →
@@ -59,7 +56,7 @@ export default function Creators() {
             </div>
             <div className="cn-hero-right fade-up">
               <div className="count-display">
-                <div className="count-val">70,000+</div>
+                <div className="count-val">80,000+</div>
                 <div className="count-lbl">Active creators in network</div>
                 <div className="live-dot"><div className="live-dot-inner" />Growing weekly</div>
               </div>
@@ -133,17 +130,22 @@ export default function Creators() {
         </div>
       </div>
 
-      {/* RPM TIERS */}
+      {/* SOCIAL MEDIA GROWTH */}
       <div className="section" style={{ paddingTop: 0 }}>
-        <div className="section-eyebrow fade-up">Creator Earnings</div>
-        <h2 className="section-h2 fade-up">What creators earn <em>at each RPM.</em></h2>
-        <div className="tiers-grid">
-          {TIERS.map(({ label, rpm, desc }) => (
-            <div key={label} className={'tier-card fade-up' + (label === 'Growth' ? ' featured' : '')}>
-              {label === 'Growth' && <div className="tier-badge">Most Common</div>}
-              <div className="tier-label">{label}</div>
-              <div className="tier-rpm">{rpm} <span>RPM</span></div>
-              <p className="tier-desc">{desc}</p>
+        <div className="section-eyebrow fade-up">Grow Your Profile</div>
+        <h2 className="section-h2 fade-up">Creators grow <em>as your brand grows.</em></h2>
+        <p className="section-lead fade-up">When you run a ClipSmart campaign, your brand gets tagged, featured, and linked across hundreds of creator profiles — sending their audiences directly to your channels.</p>
+        <div className="social-grid">
+          {[
+            { icon: '📈', title: 'Organic follower growth', desc: 'Each creator post drives discovery back to your brand profile. Real followers from real audiences — no paid boosting.' },
+            { icon: '🔗', title: 'Cross-platform amplification', desc: 'Creators post across TikTok, Instagram, and YouTube simultaneously, multiplying your brand touchpoints.' },
+            { icon: '💬', title: 'Authentic brand mentions', desc: 'Hundreds of organic mentions build brand familiarity faster than any ad campaign can — without the "Sponsored" tag.' },
+            { icon: '📊', title: 'Compounding reach', desc: 'Viral clips don\'t disappear. They continue driving views, follows, and traffic long after your campaign ends.' },
+          ].map(({ icon, title, desc }) => (
+            <div key={title} className="social-card fade-up">
+              <div className="social-card-icon">{icon}</div>
+              <h3 className="social-card-t">{title}</h3>
+              <p className="social-card-b">{desc}</p>
             </div>
           ))}
         </div>
@@ -153,14 +155,14 @@ export default function Creators() {
       <div className="cta-section">
         <div className="cta-box fade-up">
           <div>
-            <h2 className="cta-h">A network of 70,000+<br /><em>ready to post for your brand.</em></h2>
+            <h2 className="cta-h">A network of 80,000+<br /><em>ready to post for your brand.</em></h2>
             <p className="cta-p">Book a call and we'll show you the creators in your niche before you commit a penny.</p>
           </div>
           <div className="cta-actions">
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
               Book a free call →
             </a>
-            <span className="cta-note">30-min call · No commitment</span>
+            <span className="cta-note">30-min call · Full refund if we don't deliver</span>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@
 .rc-fill { height: 100%; background: var(--g); border-radius: 2px; }
 
 /* Stat strip */
-.creators-stat-strip { display: grid; grid-template-columns: repeat(5,1fr); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; }
+.creators-stat-strip { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; }
 .cstat { padding: 36px 28px; border-right: 1px solid var(--bd); }
 .cstat:last-child { border-right: none; }
 .cstat-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 36px; font-weight: 800; color: var(--g); margin-bottom: 6px; }
@@ -61,12 +61,20 @@
 .tier-rpm span { font-size: 18px; color: var(--t2); }
 .tier-desc { font-size: 14px; line-height: 1.7; color: var(--t2); }
 
-@media (max-width: 1100px) { .creators-stat-strip { grid-template-columns: repeat(3,1fr); } .cstat { border-bottom: 1px solid var(--bd); } }
+/* Social growth cards */
+.social-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+.social-card { background: var(--s1); border: 1px solid var(--bd); border-radius: 16px; padding: 28px; transition: border-color .2s; }
+.social-card:hover { border-color: var(--g-dark); }
+.social-card-icon { font-size: 28px; margin-bottom: 14px; }
+.social-card-t { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.social-card-b { font-size: 13.5px; line-height: 1.65; color: var(--t2); }
+
+@media (max-width: 1100px) { .creators-stat-strip { grid-template-columns: repeat(2,1fr); } .cstat { border-bottom: 1px solid var(--bd); } }
 @media (max-width: 900px) {
   .cn-inner { grid-template-columns: 1fr; gap: 40px; }
   .niches-grid { grid-template-columns: 1fr 1fr; }
   .approval-grid { grid-template-columns: 1fr; }
-  .tiers-grid { grid-template-columns: 1fr; }
   .creators-stat-strip { grid-template-columns: 1fr 1fr; }
+  .social-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) { .niches-grid { grid-template-columns: 1fr; } }

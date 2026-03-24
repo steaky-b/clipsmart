@@ -1,0 +1,73 @@
+/* ═══════════════ SERVICES GRID ═══════════════ */
+.smm-services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.smm-service-card {
+  background: var(--s1); border: 1px solid var(--bd); border-radius: 16px;
+  padding: 28px; transition: border-color .2s;
+}
+.smm-service-card:hover { border-color: var(--g-dark); }
+.smm-service-icon { font-size: 28px; margin-bottom: 14px; }
+.smm-service-t { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.smm-service-b { font-size: 13.5px; line-height: 1.65; color: var(--t2); }
+
+/* ═══════════════ PLATFORMS ═══════════════ */
+.smm-platforms-section { background: var(--s1); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); }
+.smm-platforms { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.smm-platform {
+  background: var(--bg); border: 1px solid var(--bd); border-radius: 16px;
+  padding: 32px 28px; text-align: center; transition: border-color .2s;
+  position: relative; overflow: hidden;
+}
+.smm-platform::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--g); transform: scaleX(0); transition: transform .3s;
+}
+.smm-platform:hover { border-color: var(--g-bdr); }
+.smm-platform:hover::before { transform: scaleX(1); }
+.smm-platform-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: var(--g); margin-bottom: 10px; }
+.smm-platform-desc { font-size: 13.5px; color: var(--t2); line-height: 1.6; }
+
+/* ═══════════════ PROCESS ═══════════════ */
+.smm-process { display: flex; flex-direction: column; gap: 0; }
+.smm-process-step {
+  display: flex; gap: 24px; align-items: flex-start;
+  padding: 28px 0; border-bottom: 1px solid var(--bd);
+}
+.smm-process-step:last-child { border-bottom: none; }
+.smm-step-num {
+  font-family: 'Bricolage Grotesque', sans-serif; font-size: 11px; font-weight: 800;
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--g-glow); border: 1px solid var(--g-bdr);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--g); flex-shrink: 0;
+}
+.smm-step-t { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.smm-step-b { font-size: 14px; color: var(--t2); line-height: 1.65; }
+
+/* ═══════════════ COMBO CALLOUT ═══════════════ */
+.smm-combo-card {
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 56px; align-items: center;
+  background: var(--g-glow); border: 1px solid var(--g-bdr); border-radius: 20px;
+  padding: 56px 48px; position: relative; overflow: hidden;
+}
+.smm-combo-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--g);
+}
+.smm-combo-h { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(26px,3vw,38px); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.smm-combo-h em { font-style: normal; color: var(--g); }
+.smm-combo-p { font-size: 15px; line-height: 1.75; color: var(--t1); margin-bottom: 24px; }
+.smm-combo-right { display: flex; flex-direction: column; gap: 20px; }
+.smm-combo-stat { background: rgba(0,0,0,.2); border: 1px solid var(--g-bdr); border-radius: 16px; padding: 24px; }
+.smm-combo-stat-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 40px; font-weight: 800; color: var(--g); line-height: 1; margin-bottom: 8px; }
+.smm-combo-stat-l { font-size: 13px; color: var(--t1); line-height: 1.55; }
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width: 900px) {
+  .smm-services-grid { grid-template-columns: 1fr 1fr; }
+  .smm-platforms { grid-template-columns: 1fr; }
+  .smm-combo-card { grid-template-columns: 1fr; gap: 32px; padding: 36px 28px; }
+}
+
+@media (max-width: 600px) {
+  .smm-services-grid { grid-template-columns: 1fr; }
+}

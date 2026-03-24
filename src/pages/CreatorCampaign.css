@@ -1,0 +1,77 @@
+/* ═══════════════ STEPS ═══════════════ */
+.cc-steps { position: relative; z-index: 1; }
+.cc-step {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: center;
+  padding: 80px var(--pad); max-width: var(--max); margin: 0 auto;
+  border-bottom: 1px solid var(--bd);
+}
+.cc-step.even .cc-step-visual { order: -1; }
+.cc-step-label {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--t3); margin-bottom: 20px;
+}
+.cc-step-num {
+  font-family: 'Bricolage Grotesque', sans-serif; font-size: 12px; font-weight: 800;
+  width: 36px; height: 36px; border-radius: 9px; border: 1.5px solid var(--g-bdr);
+  display: flex; align-items: center; justify-content: center; color: var(--g);
+}
+.cc-step-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(24px, 2.5vw, 36px); font-weight: 800;
+  letter-spacing: -.8px; line-height: 1.1; margin-bottom: 16px;
+}
+.cc-step-p { font-size: 15px; line-height: 1.75; color: var(--t1); margin-bottom: 28px; }
+.cc-stat {
+  display: inline-flex; align-items: center; gap: 14px;
+  background: var(--g-glow); border: 1px solid var(--g-bdr);
+  border-radius: 12px; padding: 14px 20px;
+}
+.cc-stat-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 28px; font-weight: 800; color: var(--g); }
+.cc-stat-l { font-size: 13px; color: var(--t1); }
+
+.cc-step-img { width: 100%; border-radius: 16px; display: block; border: 1px solid var(--bd); }
+.cc-visual-placeholder {
+  width: 100%; aspect-ratio: 4/3; border-radius: 16px;
+  background: var(--s1); border: 1px solid var(--bd);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif; font-size: 64px; font-weight: 800;
+  color: var(--t3);
+}
+
+/* ═══════════════ MECHANICS ═══════════════ */
+.cc-mechanics-section { background: var(--s1); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); }
+.cc-mechanics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.cc-mechanic-card {
+  background: var(--bg); border: 1px solid var(--bd); border-radius: 16px;
+  padding: 32px 28px; transition: border-color .2s;
+}
+.cc-mechanic-card:hover { border-color: var(--g-dark); }
+.cc-mechanic-icon { font-size: 28px; margin-bottom: 16px; }
+.cc-mechanic-t { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.cc-mechanic-b { font-size: 14px; line-height: 1.7; color: var(--t2); }
+
+/* ═══════════════ COMPARE ═══════════════ */
+.cc-compare { border: 1px solid var(--bd); border-radius: 16px; overflow: hidden; }
+.cc-compare-head { display: grid; grid-template-columns: 180px 1fr 1fr; background: var(--s2); border-bottom: 1px solid var(--bd); }
+.cc-compare-head > div { padding: 14px 24px; font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--t3); }
+.cc-compare-head > .green { color: var(--g); }
+.cc-compare-row { display: grid; grid-template-columns: 180px 1fr 1fr; border-bottom: 1px solid var(--bd); transition: background .15s; }
+.cc-compare-row:last-child { border-bottom: none; }
+.cc-compare-row:hover { background: rgba(255,255,255,.015); }
+.cc-compare-label { padding: 18px 24px; font-size: 12px; font-weight: 600; color: var(--t3); background: var(--s2); display: flex; align-items: center; border-right: 1px solid var(--bd); }
+.cc-compare-them { padding: 18px 24px; font-size: 13.5px; color: var(--t3); display: flex; align-items: center; border-right: 1px solid var(--bd); }
+.cc-compare-us { padding: 18px 24px; font-size: 13.5px; color: var(--t1); display: flex; align-items: center; background: rgba(46,204,113,.02); }
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width: 900px) {
+  .cc-step { grid-template-columns: 1fr; gap: 36px; padding: 60px var(--pad); }
+  .cc-step.even .cc-step-visual { order: 0; }
+  .cc-mechanics-grid { grid-template-columns: 1fr; }
+  .cc-compare-head { grid-template-columns: 1fr 1fr; }
+  .cc-compare-head > div:first-child { display: none; }
+  .cc-compare-row { grid-template-columns: 1fr 1fr; }
+  .cc-compare-label { display: none; }
+  .cc-compare-them { border-right: 1px solid var(--bd); }
+}

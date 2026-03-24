@@ -4,9 +4,8 @@ import './Home.css'
 
 const TICKER_ITEMS = [
   { value: '2B+', label: 'Total Views Generated' },
-  { value: '70K+', label: 'Active Creators' },
+  { value: '80K+', label: 'Active Creators' },
   { value: '$0.09', label: 'Effective CPM Achieved' },
-  { value: '$1 RPM', label: '1M Views Per $1,000' },
   { value: '100%', label: 'Organic — Zero Ad Account Risk' },
   { value: '48hrs', label: 'Campaign Goes Live' },
   { label: 'Performance-Based · Pay Only For Results' },
@@ -14,25 +13,25 @@ const TICKER_ITEMS = [
 
 const STATS = [
   { v: '2B+', l: 'Total views generated', s: 'Across all campaigns' },
-  { v: '70K+', l: 'Active creators', s: 'In our Whop community' },
-  { v: '1M+', l: 'Guaranteed views', s: 'Per $1,000 at $1 RPM' },
+  { v: '80K+', l: 'Active creators', s: 'In our network' },
+  { v: '1M+', l: 'Guaranteed views', s: 'Per $1,000 — guaranteed' },
   { v: '$0', l: 'Upfront creator fees', s: 'Pay only for performance' },
 ]
 
 const CASES = [
+  { cat: 'E-Commerce', name: 'Gains Nutrition', views: '4.2M views', spend: '$1,500 spend', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
   { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', spend: '$1,000 spend · $0.09 CPM', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
   { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', spend: '$2,500 spend · 1,456 clips', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
   { cat: 'Podcast', name: 'Bussin With The Boys', views: '3.8M views', spend: '$500 spend · viral clip', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
-  { cat: 'E-Commerce', name: 'Gains Nutrition', views: '4.2M views', spend: '$1,500 spend', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
   { cat: 'Sports', name: 'Base Body Works', views: '2.1M views', spend: '$750 spend', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
   { cat: 'Music', name: 'Artist Campaign', views: '1.9M views', spend: '$500 spend', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
 ]
 
 const HOW_STEPS = [
-  { n: '01', t: 'You fund a campaign budget', b: 'Set your budget — at $1 RPM, every $1,000 guarantees 1M+ views. Hard cap. No surprises.' },
-  { n: '02', t: 'Creators flood your brand with content', b: '70,000+ creators post original short-form videos on TikTok, Instagram, and YouTube.' },
+  { n: '01', t: 'You fund a campaign budget', b: 'Set your budget — every $1,000 guarantees 1M+ views. Hard cap. No surprises.' },
+  { n: '02', t: 'Creators flood your brand with content', b: '80,000+ creators post original short-form videos on TikTok, Instagram, and YouTube.' },
   { n: '03', t: 'We review every clip before it counts', b: 'Our team manually approves every submission. Off-brand or low quality? Rejected. You never pay for bad content.' },
-  { n: '04', t: 'You pay only for views that happened', b: 'At $1 per 1,000 views. Deducted from your budget. Track every clip in real time.' },
+  { n: '04', t: 'You pay only for views that happened', b: 'Deducted from your budget as views roll in. Track every clip in real time.' },
 ]
 
 const WHY_ROWS = [
@@ -41,22 +40,30 @@ const WHY_ROWS = [
   { them: 'Sponsored labels kill organic trust', us: '100% organic — no "Sponsored" tags' },
   { them: 'Requires ad account + creatives', us: 'Zero ad account risk or creative cost' },
   { them: 'Weeks of briefing and production', us: 'Campaign live in 48 hours' },
-  { them: 'You can burn budget with nothing to show', us: 'Every pound spent = views already received' },
+  { them: 'You can burn budget with nothing to show', us: 'Every dollar spent = views already received' },
+]
+
+const RFY_ITEMS = [
+  { icon: '🛍', label: 'E-commerce & DTC products' },
+  { icon: '🎵', label: 'Music artists & producers' },
+  { icon: '🎙', label: 'Podcasters & media brands' },
+  { icon: '💪', label: 'Health, fitness & wellness brands' },
+  { icon: '🏆', label: 'Sports events & PPV promotions' },
+  { icon: '📱', label: 'Apps & digital products' },
 ]
 
 const FAQS = [
   { q: 'What is performance UGC?', a: 'Performance UGC means creators post about your brand from their own accounts — and you only pay when content hits your view threshold. No flat fees. No "projected" results. Only real views, counted after they happen.' },
-  { q: 'How does the $1 RPM pricing work?', a: 'RPM = Revenue Per Mille (per 1,000 views). At $1 RPM, every 1,000 organic views costs you $1. A $1,000 budget = a minimum of 1,000,000 views — guaranteed. You\'ll often get more, because creators are incentivised to over-deliver.' },
+  { q: 'How does the pricing work?', a: 'You pay per 1,000 organic views. At our standard rate, a $1,000 budget guarantees a minimum of 1,000,000 views. You\'ll often get more, because creators are incentivised to over-deliver.' },
   { q: 'Do I need to ship products to creators?', a: 'For most campaigns, no. Our creators are briefed with talking points, angles, and messaging. For product-based brands, we can facilitate seeding — but it\'s not required to launch.' },
   { q: 'What platforms do creators post on?', a: 'Primarily TikTok, Instagram Reels, and YouTube Shorts. All three are tracked. Views from all platforms count toward your campaign total.' },
-  { q: 'How quickly does a campaign go live?', a: 'Once onboarded and budget confirmed, your campaign brief goes out to the creator network within 24–48 hours. First clips typically appear the same day.' },
-  { q: 'What types of brands work best with ClipSmart?', a: 'Music artists, podcasters, e-commerce brands, health & wellness products, sports events, and franchise businesses. If your audience watches short-form video, ClipSmart works.' },
+  { q: 'How quickly does a campaign go live?', a: 'Once onboarded and budget confirmed, your campaign brief goes out to the creator network within 24–48 hours. First clips typically appear within 16 hours.' },
+  { q: 'What types of brands work best with ClipSmart?', a: 'E-commerce brands, music artists, podcasters, health & wellness products, sports events, and franchise businesses. If your audience watches short-form video, ClipSmart works.' },
 ]
 
 export default function Home() {
   return (
     <>
-      {/* Ambient glow */}
       <div className="home-glow-tl" />
       <div className="home-glow-br" />
 
@@ -70,12 +77,12 @@ export default function Home() {
             </div>
             <h1 className="fade-up">
               1 million views.<br />
-              £1,000.<br />
+              $1,000.<br />
               <em>Guaranteed.</em>
             </h1>
             <p className="hero-sub fade-up">
               Hundreds of creators flood TikTok, Instagram, and YouTube with content about your brand.
-              You only pay when it performs — at £1 per 1,000 views.
+              You only pay when it performs — at $1 per 1,000 views.
             </p>
             <div className="hero-actions fade-up">
               <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
@@ -83,7 +90,7 @@ export default function Home() {
               </a>
               <Link to="/case-studies" className="btn-ghost">View case studies</Link>
             </div>
-            <p className="hero-hint fade-up">30-minute call · No prep needed · No agency fees</p>
+            <p className="hero-hint fade-up">30-minute call · No prep needed · Full refund if we don't deliver</p>
           </div>
 
           <div className="hero-video fade-up">
@@ -172,7 +179,7 @@ export default function Home() {
           <div className="how-steps-col">
             <div className="section-eyebrow fade-up">How It Works</div>
             <h2 className="section-h2 fade-up">Simple process.<br /><em>Zero guesswork.</em></h2>
-            <p className="section-lead fade-up">Set a budget. We brief 70,000+ creators. They post. You only pay when content hits your view threshold.</p>
+            <p className="section-lead fade-up">Set a budget. We brief 80,000+ creators. They post. You only pay when content hits your view threshold.</p>
             <div className="how-steps">
               {HOW_STEPS.map(({ n, t, b }) => (
                 <div key={n} className="how-step fade-up">
@@ -234,6 +241,44 @@ export default function Home() {
         </div>
       </div>
 
+      {/* IS THIS RIGHT FOR YOU? */}
+      <div className="section rfy-section">
+        <div className="rfy-inner">
+          <div className="rfy-left fade-up">
+            <div className="section-eyebrow">Is This Right For You?</div>
+            <h2 className="section-h2">Built for brands that <em>need results,<br />not promises.</em></h2>
+            <p className="rfy-lead">ClipSmart works best when your audience watches short-form video. If that's your customer, this is the most efficient reach you'll ever buy.</p>
+            <div className="rfy-grid">
+              {RFY_ITEMS.map(({ icon, label }) => (
+                <div key={label} className="rfy-item">
+                  <span className="rfy-icon">{icon}</span>
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rfy-right fade-up">
+            <div className="rfy-card">
+              <div className="rfy-card-eyebrow">Not sure if it's a fit?</div>
+              <h3 className="rfy-card-h">Let's talk.</h3>
+              <p className="rfy-card-p">Book a 30-minute call. We'll tell you honestly whether ClipSmart is right for your brand — before you spend anything.</p>
+              <a
+                href="https://calendly.com/esaanwar/partner-with-clipsmart"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary rfy-btn"
+              >
+                Book a free call →
+              </a>
+              <div className="rfy-guarantee">
+                <span className="rfy-guarantee-icon">✓</span>
+                Full refund if we don't hit your guaranteed views
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* FAQ */}
       <div className="faq-section">
         <div className="faq-inner">
@@ -264,7 +309,7 @@ export default function Home() {
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
               Book a free call →
             </a>
-            <span className="cta-note">No agency fees · No commitment</span>
+            <span className="cta-note">Full refund if we don't hit your guaranteed views</span>
           </div>
         </div>
       </div>
@@ -284,4 +329,3 @@ function FAQItem({ q, a }) {
     </div>
   )
 }
-

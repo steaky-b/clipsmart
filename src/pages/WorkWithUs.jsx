@@ -1,25 +1,6 @@
 import { useState } from 'react'
 import './WorkWithUs.css'
 
-const TIERS = [
-  {
-    name: 'Starter', price: '$1,000', views: '1M+ views guaranteed',
-    features: ['1,000,000 minimum guaranteed views', '$1 RPM — pay per view only', 'Access to full 70K+ creator network', 'Manual clip review included', '48-hour campaign launch', 'Real-time view tracking'],
-    ideal: 'First campaigns, new brands, testing the model.',
-  },
-  {
-    name: 'Growth', price: '$2,500', views: '2.5M+ views guaranteed',
-    features: ['2,500,000 minimum guaranteed views', '$1 RPM — pay per view only', 'Priority campaign briefing', 'Dedicated account manager', '48-hour campaign launch', 'Campaign performance report'],
-    ideal: 'Brands ready to scale. Our most popular tier.',
-    featured: true,
-  },
-  {
-    name: 'Scale', price: '$5,000+', views: '5M+ views guaranteed',
-    features: ['5,000,000+ minimum guaranteed views', 'Custom RPM negotiation available', 'Multi-platform targeting', 'White-label reporting available', 'Direct campaign manager access', 'Full analytics dashboard'],
-    ideal: 'Established brands or recurring campaigns.',
-  },
-]
-
 const STEPS = [
   { n: '01', t: 'Fill in the form', b: 'Tell us about your brand and goals. Takes 3 minutes.' },
   { n: '02', t: 'We reach out within 24 hours', b: 'We\'ll review your submission and come back with initial thoughts and a time to speak.' },
@@ -51,6 +32,9 @@ export default function WorkWithUs() {
         <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Work With Us</div>
         <h1>Let's build your<br /><em>campaign.</em></h1>
         <p>Fill in the form below. We'll reach out within 24 hours to book a 30-minute call — no prep needed, no commitment required.</p>
+        <div className="wwu-hero-guarantee">
+          <span>✓</span> Full refund if we don't hit your guaranteed views
+        </div>
       </div>
 
       {/* MAIN CONTENT */}
@@ -72,7 +56,7 @@ export default function WorkWithUs() {
               ))}
             </div>
             <div className="wwu-stats stagger">
-              {[['1M+','Views per $1,000'],['$0.09','Effective CPM achieved'],['48hrs','Campaign goes live']].map(([v,l]) => (
+              {[['1M+','Views per $1,000'],['$0.09','Effective CPM achieved'],['16hrs','First clip live']].map(([v,l]) => (
                 <div key={l} className="ms">
                   <div className="ms-v">{v}</div>
                   <div className="ms-l">{l}</div>
@@ -119,8 +103,8 @@ export default function WorkWithUs() {
                     <label>Campaign type</label>
                     <select value={form.campType} onChange={e => update('campType', e.target.value)}>
                       <option value="" disabled>Select campaign type</option>
-                      <option value="music">Music / Artist</option>
                       <option value="ecomm">E-Commerce / Product</option>
+                      <option value="music">Music / Artist</option>
                       <option value="health">Health & Wellness</option>
                       <option value="podcast">Podcast / Media</option>
                       <option value="sports">Sports / PPV / Events</option>
@@ -131,10 +115,10 @@ export default function WorkWithUs() {
                     <label>Budget range</label>
                     <select value={form.budget} onChange={e => update('budget', e.target.value)}>
                       <option value="" disabled>Select a range</option>
-                      <option value="1k">$1,000 (Starter)</option>
-                      <option value="2.5k">$2,500 (Growth — recommended)</option>
-                      <option value="5k">$5,000 (Scale)</option>
-                      <option value="5k+">$5,000+ (Custom)</option>
+                      <option value="1k">$1,000</option>
+                      <option value="2.5k">$2,500</option>
+                      <option value="5k">$5,000</option>
+                      <option value="5k+">$5,000+</option>
                       <option value="unsure">Not sure yet</option>
                     </select>
                   </div>
@@ -152,27 +136,19 @@ export default function WorkWithUs() {
         </div>
       </div>
 
-      {/* TIERS */}
-      <div className="section">
-        <div className="section-eyebrow fade-up">Campaign Tiers</div>
-        <h2 className="section-h2 fade-up">Simple, transparent<br /><em>campaign tiers.</em></h2>
-        <div className="wwu-tiers-grid">
-          {TIERS.map(({ name, price, views, features, ideal, featured }) => (
-            <div key={name} className={'wwu-tier' + (featured ? ' featured' : '') + ' fade-up'}>
-              {featured && <div className="wwu-tier-badge">Most Popular</div>}
-              <div className="wwu-tier-name">{name}</div>
-              <div className="wwu-tier-price">{price}</div>
-              <div className="wwu-tier-views">{views}</div>
-              <div className="wwu-tier-divider" />
-              <ul className="wwu-tier-features">
-                {features.map(f => <li key={f}>{f}</li>)}
-              </ul>
-              <p className="wwu-tier-ideal">{ideal}</p>
-              <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className={'btn-primary wwu-tier-btn' + (featured ? '' : ' btn-ghost-alt')}>
-                Get started →
-              </a>
-            </div>
-          ))}
+      {/* CTA */}
+      <div className="cta-section">
+        <div className="cta-box fade-up">
+          <div>
+            <h2 className="cta-h">Prefer to talk first?<br /><em>Book a call.</em></h2>
+            <p className="cta-p">30 minutes, no prep needed, no commitment. We'll map out exactly what your budget gets.</p>
+          </div>
+          <div className="cta-actions">
+            <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
+              Book a free call →
+            </a>
+            <span className="cta-note">Full refund if we don't hit your guaranteed views</span>
+          </div>
         </div>
       </div>
     </>

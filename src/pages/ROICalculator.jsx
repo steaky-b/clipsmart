@@ -19,12 +19,11 @@ export default function ROICalculator() {
   const calc = useMemo(() => {
     const b = activeBudget
     const views = Math.round(b / rpm * 1000)
-    const cpm = rpm
     const paidAdCpm = 10
     const paidAdSpend = Math.round((views / 1000) * paidAdCpm)
     const savings = paidAdSpend - b
-    const savingsPct = Math.round((savings / paidAdSpend) * 100)
-    return { views, cpm, paidAdSpend, savings, savingsPct }
+    const savingsPct = paidAdSpend > 0 ? Math.round((savings / paidAdSpend) * 100) : 0
+    return { views, paidAdSpend, savings, savingsPct }
   }, [activeBudget, rpm])
 
   const fmt = (n) => n >= 1_000_000
@@ -38,7 +37,7 @@ export default function ROICalculator() {
       <div className="page-hero">
         <div className="section-eyebrow" style={{ justifyContent: 'center' }}>ROI Calculator</div>
         <h1>See exactly what your<br /><em>budget buys you.</em></h1>
-        <p>Adjust your budget and see guaranteed views, effective CPM, and what you'd pay for the same reach on paid ads.</p>
+        <p>Adjust your budget and RPM rate to see your guaranteed views and how much you save compared to paid ads.</p>
       </div>
 
       <div className="calc-section">
@@ -99,45 +98,34 @@ export default function ROICalculator() {
 
           {/* Results */}
           <div className="calc-results fade-up">
-            <div className="calc-main-result">
-              <div className="calc-mr-label">Guaranteed Minimum Views</div>
-              <div className="calc-mr-val">{fmt(calc.views)}</div>
-              <div className="calc-mr-sub">at ${rpm} RPM · ${activeBudget.toLocaleString()} budget</div>
-            </div>
-
-            <div className="calc-metrics">
-              <div className="calc-metric">
-                <div className="cm-val">${calc.cpm}</div>
-                <div className="cm-lbl">Your effective CPM</div>
-                <div className="cm-sub">Cost per 1,000 views</div>
+            {/* Savings hero */}
+            <div className="calc-savings-hero">
+              <div className="calc-savings-label">You save vs. paid ads</div>
+              <div className="calc-savings-val">
+                {calc.savings > 0 ? `$${calc.savings.toLocaleString()}` : '—'}
               </div>
-              <div className="calc-metric">
-                <div className="cm-val">${activeBudget.toLocaleString()}</div>
-                <div className="cm-lbl">Your total spend</div>
-                <div className="cm-sub">Hard cap — no overrun</div>
-              </div>
-            </div>
-
-            <div className="calc-vs">
-              <div className="calc-vs-head">ClipSmart vs Paid Ads</div>
-              <div className="calc-vs-row">
-                <div className="calc-vs-col them">
-                  <div className="calc-vs-col-label">Paid Ads (avg. $10 CPM)</div>
-                  <div className="calc-vs-col-val">${calc.paidAdSpend.toLocaleString()}</div>
-                  <div className="calc-vs-col-sub">for {fmt(calc.views)} views</div>
-                </div>
-                <div className="calc-vs-divider">vs</div>
-                <div className="calc-vs-col us">
-                  <div className="calc-vs-col-label">ClipSmart</div>
-                  <div className="calc-vs-col-val">${activeBudget.toLocaleString()}</div>
-                  <div className="calc-vs-col-sub">for {fmt(calc.views)}+ views</div>
-                </div>
-              </div>
-              {calc.savings > 0 && (
-                <div className="calc-savings">
-                  You save <strong>${calc.savings.toLocaleString()}</strong> ({calc.savingsPct}% less) vs paid ads
-                </div>
+              {calc.savingsPct > 0 && (
+                <div className="calc-savings-pct">{calc.savingsPct}% cheaper than running paid ads for the same reach</div>
               )}
+            </div>
+
+            {/* Secondary stats */}
+            <div className="calc-trio">
+              <div className="calc-trio-item">
+                <div className="ct-val">{fmt(calc.views)}</div>
+                <div className="ct-lbl">Guaranteed views</div>
+                <div className="ct-sub">Minimum, hard-capped</div>
+              </div>
+              <div className="calc-trio-item">
+                <div className="ct-val">${activeBudget.toLocaleString()}</div>
+                <div className="ct-lbl">Your spend</div>
+                <div className="ct-sub">No overrun ever</div>
+              </div>
+              <div className="calc-trio-item">
+                <div className="ct-val ct-muted">${calc.paidAdSpend.toLocaleString()}</div>
+                <div className="ct-lbl">Paid ads equivalent</div>
+                <div className="ct-sub">At avg. $10 CPM</div>
+              </div>
             </div>
 
             <a
@@ -148,6 +136,7 @@ export default function ROICalculator() {
             >
               Lock in this budget →
             </a>
+            <p className="calc-guarantee">Full refund if we don't hit your guaranteed views</p>
           </div>
         </div>
       </div>
