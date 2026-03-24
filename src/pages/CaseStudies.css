@@ -111,17 +111,34 @@
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width: 900px) {
-  .cs-featured { grid-template-columns: 1fr; gap: 28px; padding: 32px 24px; }
-  .cs-grid { grid-template-columns: 1fr; }
+  .cs-featured { grid-template-columns: 1fr; gap: 24px; padding: 28px 22px; }
+  .cs-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
 }
 
 @media (max-width: 768px) {
-  .cs-featured { padding: 24px 20px !important; gap: 24px !important; }
-  .csf-metrics { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .csfm-val { font-size: 22px !important; }
-  .cs-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-  .cs-filter { gap: 6px; }
-  .cs-ftab { font-size: 12px !important; padding: 6px 12px !important; }
+  .cs-featured { padding: 20px 16px !important; gap: 18px !important; }
+  .csf-name { font-size: 20px !important; }
+  .csf-desc { font-size: 13px !important; display: none !important; }
+  .csf-metrics { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .csfm { padding: 12px !important; }
+  .csfm-val { font-size: 20px !important; }
+  .csfm-lbl { font-size: 11px !important; }
+  .csf-quote { font-size: 13px !important; margin-bottom: 14px !important; }
+
+  /* Card grid: 2 across stays — just tighten */
+  .cs-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .cs-card-visual { padding: 16px 14px 12px !important; min-height: 90px !important; }
+  .cs-card-name { font-size: 14px !important; }
+  .cs-card-body { padding: 12px 14px 14px !important; gap: 8px !important; }
+  .cs-card-metrics { gap: 6px !important; }
+  .cscm { padding: 8px 10px !important; }
+  .cscm-val { font-size: 16px !important; }
+  .cs-card-highlight { font-size: 12px !important; display: none !important; }
+  .cs-card-cta { font-size: 12px !important; }
+
+  /* Filter */
+  .cs-filter { gap: 5px !important; margin-bottom: 20px !important; }
+  .cs-ftab { font-size: 11.5px !important; padding: 6px 10px !important; min-height: 34px !important; }
 }
 
 @media (max-width: 480px) {

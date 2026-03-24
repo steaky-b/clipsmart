@@ -85,19 +85,32 @@
 @media (max-width: 900px) {
   .calc-inner { grid-template-columns: 1fr; }
   .calc-trio { grid-template-columns: repeat(3,1fr); }
-  .calc-section { padding: 24px var(--pad) 80px; }
+  .calc-section { padding: 20px var(--pad) 60px; }
 }
 
 @media (max-width: 768px) {
-  .calc-section { padding: 16px var(--pad) 56px !important; }
-  .calc-card { padding: 28px 20px !important; }
-  .calc-results { padding: 28px 20px !important; }
-  .calc-savings-val { font-size: clamp(44px,10vw,72px) !important; }
-  .calc-presets { grid-template-columns: repeat(2,1fr) !important; }
+  .calc-section { padding: 12px var(--pad) 44px !important; }
+  .calc-card { padding: 22px 16px !important; }
+  .calc-results { padding: 22px 16px !important; gap: 16px !important; }
+  .calc-savings-hero { padding: 24px 14px !important; }
+  .calc-savings-val { font-size: clamp(36px,10vw,60px) !important; }
+  .calc-savings-label { font-size: 10px !important; margin-bottom: 8px !important; }
+  /* Trio: 3 across — stays */
+  .calc-trio { grid-template-columns: repeat(3,1fr) !important; gap: 8px !important; }
+  .calc-trio-item { padding: 12px 8px !important; }
+  .ct-val { font-size: clamp(14px,4vw,20px) !important; }
+  .ct-lbl { font-size: 10px !important; }
+  .ct-sub { font-size: 9.5px !important; }
+  .calc-presets { grid-template-columns: repeat(2,1fr) !important; gap: 8px !important; }
+  .calc-preset { padding: 12px 8px !important; font-size: 13px !important; }
 }
 
 @media (max-width: 480px) {
-  .calc-trio { grid-template-columns: 1fr !important; }
-  .ct-val { font-size: 22px !important; }
-  .calc-presets { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  /* Trio stays 3-across — just very compact */
+  .calc-trio { grid-template-columns: repeat(3,1fr) !important; }
+  .calc-trio-item { padding: 10px 5px !important; }
+  .ct-val { font-size: clamp(13px,3.5vw,18px) !important; }
+  .ct-lbl { font-size: 9px !important; }
+  .ct-sub { display: none !important; }
+  .calc-presets { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
 }
