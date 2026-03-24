@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClipSmart — Creator Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#2ECC71;--g-dark:#1B7A43;--g-glow:rgba(46,204,113,0.10);--g-bdr:rgba(46,204,113,0.26);
+  --bg:#0A0A0A;--s1:#101010;--s2:#161616;--s3:#1E1E1E;
+  --bd:#1E1E1E;--bd2:#2A2A2A;--white:#FFFFFF;--t1:#DEDEDE;--t2:#888;--t3:#444;
+  --nav-h:68px;--max:1280px;--pad:64px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'Instrument Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:inherit;}
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");opacity:0.025;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);background:rgba(10,10,10,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;letter-spacing:-.3px;}
+.nav-logo-mark{width:30px;height:30px;border:2px solid var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--g);}
+.nav-links{display:flex;gap:2px;align-items:center;}
+.nav-link{padding:7px 16px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--t2);border:1px solid transparent;transition:all .2s;}
+.nav-link:hover{color:var(--white);}
+.nav-link.active{color:var(--white);}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--g);color:#000;font-family:'Bricolage Grotesque',sans-serif;font-size:13.5px;font-weight:700;padding:10px 24px;border-radius:10px;border:none;transition:all .22s;white-space:nowrap;}
+.nav-cta:hover{background:#27ae60;transform:translateY(-1px);}
+
+.glow-bl{position:fixed;width:700px;height:700px;border-radius:50%;bottom:-280px;left:-200px;background:radial-gradient(circle,rgba(46,204,113,.06) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.glow-tr{position:fixed;width:500px;height:500px;border-radius:50%;top:-180px;right:-160px;background:radial-gradient(circle,rgba(46,204,113,.04) 0%,transparent 65%);pointer-events:none;z-index:0;}
+
+.page{padding-top:calc(var(--nav-h) + 80px);padding-bottom:120px;}
+.inner{max-width:var(--max);margin:0 auto;padding:0 var(--pad);position:relative;z-index:1;}
+
+.eyebrow{display:flex;align-items:center;gap:12px;font-size:10.5px;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;color:var(--g);margin-bottom:20px;}
+.eyebrow::before{content:'';display:block;width:28px;height:2px;background:var(--g);}
+
+/* HERO */
+.hero-net{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:100px;}
+.hero-left h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(38px,4.2vw,60px);font-weight:800;line-height:1.07;letter-spacing:-1.8px;margin-bottom:22px;}
+.hero-left h1 em{font-style:normal;color:var(--g);}
+.hero-left p{font-size:17px;line-height:1.75;color:var(--t1);margin-bottom:32px;}
+.hero-right{display:flex;flex-direction:column;gap:14px;}
+
+/* CREATOR COUNT DISPLAY */
+.count-display{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:36px 40px;text-align:center;position:relative;overflow:hidden;}
+.count-display::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(46,204,113,.08) 0%,transparent 65%);}
+.count-val{font-family:'Bricolage Grotesque',sans-serif;font-size:72px;font-weight:800;color:var(--g);line-height:1;letter-spacing:-3px;margin-bottom:8px;position:relative;z-index:1;}
+.count-lbl{font-size:14px;color:var(--t2);position:relative;z-index:1;}
+.live-dot{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--g);background:var(--g-glow);border:1px solid var(--g-bdr);padding:5px 12px;border-radius:100px;margin-top:14px;position:relative;z-index:1;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 2.2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+
+.region-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.region-card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;}
+.rc-region{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:6px;}
+.rc-count{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:3px;}
+.rc-pct{font-size:12px;color:var(--g);}
+.rc-bar{height:4px;background:var(--s3);border-radius:100px;margin-top:8px;overflow:hidden;}
+.rc-fill{height:100%;background:var(--g);border-radius:100px;}
+
+/* STAT STRIP */
+.stat-strip{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:80px;}
+.sc{padding:26px 28px;border-right:1px solid var(--bd);}
+.sc:last-child{border-right:none;}
+.sv{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--g);line-height:1;margin-bottom:7px;}
+.sl{font-size:12.5px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.ss{font-size:11px;color:var(--t3);}
+
+/* NICHE BREAKDOWN */
+.niche-section{margin-bottom:80px;}
+.section-head{margin-bottom:44px;}
+.section-head h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,42px);font-weight:800;letter-spacing:-1px;margin-bottom:8px;}
+.section-head h2 em{font-style:normal;color:var(--g);}
+.section-head p{font-size:15px;color:var(--t2);max-width:540px;}
+
+.niche-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.niche-card{background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:22px 20px;transition:border-color .2s,transform .2s;}
+.niche-card:hover{border-color:var(--g-dark);transform:translateY(-2px);}
+.niche-icon{font-size:26px;margin-bottom:12px;}
+.niche-name{font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;font-weight:700;margin-bottom:5px;}
+.niche-count{font-size:13px;color:var(--g);font-weight:600;margin-bottom:10px;}
+.niche-bar-wrap{height:4px;background:var(--s3);border-radius:100px;overflow:hidden;}
+.niche-bar{height:100%;background:var(--g);border-radius:100px;}
+.niche-examples{margin-top:12px;font-size:12px;color:var(--t3);line-height:1.6;}
+
+/* REVIEW PROCESS */
+.review-section{margin-bottom:80px;}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px;}
+.review-step{background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:28px 26px;display:flex;gap:18px;align-items:flex-start;transition:border-color .2s;}
+.review-step:hover{border-color:var(--g-dark);}
+.rs-num{width:38px;height:38px;border-radius:10px;background:var(--g);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;color:#000;flex-shrink:0;}
+.rs-title{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;}
+.rs-body{font-size:13.5px;color:var(--t2);line-height:1.7;}
+
+/* APPROVAL CRITERIA */
+.criteria-section{margin-bottom:80px;}
+.criteria-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px;}
+.criteria-box{background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:28px 26px;}
+.criteria-box.pass{border-color:rgba(46,204,113,.25);background:rgba(46,204,113,.04);}
+.criteria-box.fail{border-color:rgba(231,76,60,.2);background:rgba(231,76,60,.03);}
+.cb-title{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.cb-title span{font-size:16px;}
+.criteria-list{display:flex;flex-direction:column;gap:10px;}
+.cl-item{display:flex;gap:10px;font-size:13.5px;color:var(--t1);line-height:1.6;}
+.cl-check{flex-shrink:0;margin-top:2px;}
+.cl-check.yes{color:var(--g);}
+.cl-check.no{color:#E74C3C;}
+
+/* EARNINGS */
+.earnings-section{margin-bottom:80px;}
+.earnings-table{width:100%;border-collapse:collapse;background:var(--s1);border:1px solid var(--bd);border-radius:14px;overflow:hidden;}
+.earnings-table th{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);padding:14px 20px;text-align:left;border-bottom:1px solid var(--bd);}
+.earnings-table td{font-size:14px;color:var(--t1);padding:15px 20px;border-bottom:1px solid rgba(255,255,255,.04);}
+.earnings-table tr:last-child td{border-bottom:none;}
+.earnings-table tr:hover td{background:rgba(255,255,255,.01);}
+.earnings-table .hl td{color:var(--g);font-weight:600;}
+.tag-green{display:inline-flex;align-items:center;background:var(--g-glow);border:1px solid var(--g-bdr);color:var(--g);font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;}
+
+/* FAQ */
+.faq-section{}
+.faq-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--bd);border-radius:14px;overflow:hidden;}
+.faq-item{border-bottom:1px solid var(--bd);}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{width:100%;background:transparent;border:none;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;font-family:'Instrument Sans',sans-serif;font-size:14.5px;font-weight:600;color:var(--white);transition:background .2s;}
+.faq-q:hover{background:rgba(255,255,255,.02);}
+.faq-q .faq-icon{color:var(--g);font-size:18px;transition:transform .25s;flex-shrink:0;margin-left:16px;}
+.faq-q.open .faq-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .32s cubic-bezier(.4,0,.2,1);}
+.faq-a-inner{padding:0 24px 20px;font-size:13.5px;color:var(--t2);line-height:1.75;}
+
+/* CTA */
+.cta-banner{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:56px 60px;display:flex;align-items:center;justify-content:space-between;gap:40px;margin-top:80px;position:relative;overflow:hidden;}
+.cta-banner::before{content:'';position:absolute;right:-80px;bottom:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(46,204,113,.07) 0%,transparent 65%);}
+.cta-left h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,2.5vw,34px);font-weight:800;letter-spacing:-.7px;margin-bottom:10px;}
+.cta-left h2 em{font-style:normal;color:var(--g);}
+.cta-left p{font-size:15px;color:var(--t2);max-width:420px;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--g);color:#000;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;padding:14px 28px;border-radius:11px;border:none;transition:all .22s;white-space:nowrap;}
+.btn-primary:hover{background:#27ae60;transform:translateY(-2px);box-shadow:0 12px 32px rgba(46,204,113,.3);}
+
+.fu{opacity:0;transform:translateY(16px);transition:opacity .44s ease,transform .44s ease;}
+.fu.in{opacity:1;transform:translateY(0);}
+.fu-d1{transition-delay:.06s;}
+.fu-d2{transition-delay:.12s;}
+.fu-d3{transition-delay:.18s;}
+
+.footer-logo{display:flex;align-items:center;gap:9px;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;}
+.footer-logo-mark{width:26px;height:26px;border:2px solid var(--g);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--g);}
+.footer-copy{font-size:12.5px;color:var(--t3);}
+
+/* ════════════════════════════════════════
+   CREATOR NETWORK — MOBILE OPTIMISED
+════════════════════════════════════════ */
+
+
+
+
+
+/* ── HAMBURGER NAV ── */
+/* ════════════════════════════════
+   GLOBAL MOBILE OPTIMISATION
+════════════════════════════════ */
+
+/* ── 1100px: tablet landscape ── */
+@media(max-width:1100px){
+  :root{--pad:40px;}
+}
+
+/* ── 768px: tablet portrait / large phone ── */
+@media(max-width:768px){
+  :root{--pad:20px;}
+
+  /* Section padding: cut from 100px to 56px */
+  .section{padding:56px var(--pad)!important;}
+  .rpm-inner{padding:52px var(--pad)!important;}
+  .calc-inner{padding:52px var(--pad)!important;}
+  .payment-section{padding:52px var(--pad)!important;}
+  .pricing-section{padding:52px var(--pad)!important;}
+  .pricing-inner{padding:52px var(--pad)!important;}
+
+  /* Page heroes: smaller heading + less top padding */
+  .page-hero,.hero-calc{padding:calc(68px + 44px) var(--pad) 44px!important;}
+  .page-hero h1,.hero-calc h1{font-size:clamp(26px,7vw,40px)!important;letter-spacing:-1px!important;}
+  .page-hero p,.hero-calc p{font-size:15px!important;line-height:1.65!important;}
+
+  /* Homepage hero */
+  .hero{min-height:auto!important;}
+  .hero-inner{grid-template-columns:1fr!important;gap:28px!important;padding-top:calc(68px + 40px)!important;}
+  .hero-left{order:1!important;text-align:center;display:flex;flex-direction:column;align-items:center;}
+  .hero h1{font-size:clamp(26px,7vw,40px)!important;letter-spacing:-1px!important;text-align:center!important;}
+  .hero-sub{font-size:15px!important;text-align:center!important;max-width:100%!important;}
+  .hero-proof{align-self:center;}
+  .hero-actions{justify-content:center!important;}
+  .hero-video{order:2!important;width:100%!important;}
+
+  /* Step blocks: less padding */
+  .step-content{padding:36px var(--pad) 32px!important;}
+  .step-visual{min-height:220px!important;}
+  .step-h{font-size:clamp(18px,5vw,26px)!important;}
+  .step-p{font-size:13.5px!important;}
+  .step-stat{padding:10px 14px!important;}
+  .step-stat-v{font-size:20px!important;}
+
+  /* Stat strips: 2 cols */
+  .stat-strip,.stat-row,.stats-inner{grid-template-columns:1fr 1fr!important;}
+  .sc,.stat-cell,.stat-block{border-right:none!important;border-bottom:1px solid var(--bd,#1E1E1E)!important;padding:20px 16px!important;}
+  .sv,.stat-v,.sc-v{font-size:24px!important;}
+
+  /* Who grid: 2 cols, smaller cards */
+  .who-grid{grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  .who-card{padding:16px 14px!important;}
+  .who-t{font-size:13px!important;}
+  .who-b{font-size:12px!important;line-height:1.5!important;}
+
+  /* Why table: stack to single col */
+  .why-row{grid-template-columns:1fr!important;}
+  .why-row-num{display:none!important;}
+  .why-row-them{border-right:none!important;border-bottom:1px solid var(--bd,#1E1E1E)!important;}
+  .why-row-them-t,.why-row-us-t{font-size:12.5px!important;}
+
+  /* Case grid */
+  .case-grid{grid-template-columns:1fr!important;}
+  .case-card.featured{grid-column:auto!important;}
+  .case-thumb-img{aspect-ratio:16/9!important;}
+  .case-card.featured .case-thumb-img{aspect-ratio:16/8!important;}
+  .tc-v{font-size:32px!important;}
+  .totals-strip{grid-template-columns:1fr 1fr!important;}
+  .filter-tabs{flex-wrap:wrap;gap:5px;}
+  .filter-tab{font-size:12px!important;padding:6px 11px!important;}
+
+  /* Brand cards */
+  .brand-grid{grid-template-columns:1fr!important;}
+  .brand-body{padding:16px 18px 18px!important;}
+
+  /* Creator network */
+  .hero-net{grid-template-columns:1fr!important;gap:28px!important;}
+  .count-val{font-size:52px!important;}
+  .niche-grid{grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  .niche-card{padding:16px 14px!important;}
+  .review-grid{grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  .review-step{padding:18px 16px!important;}
+
+  /* Calculator */
+  .calc-wrap{grid-template-columns:1fr!important;}
+  .calc-results{border-left:none!important;border-top:1px solid var(--bd,#1E1E1E)!important;}
+  .result-hero-val{font-size:44px!important;}
+  .rpm-segments,.rpm-seg-wrap{flex-wrap:wrap!important;}
+  .rpm-seg{min-width:calc(33% - 6px)!important;}
+  .calc-inputs,.calc-results{padding:24px 20px!important;}
+  .result-grid{grid-template-columns:1fr 1fr!important;}
+
+  /* Work with us */
+  .main-wrap{grid-template-columns:1fr!important;gap:36px!important;
+    padding:calc(68px + 40px) var(--pad) 56px!important;}
+  .stats-row{grid-template-columns:1fr 1fr 1fr!important;gap:10px!important;}
+  .mini-stat{padding:14px 12px!important;}
+  .ms-v{font-size:20px!important;}
+  .pricing-grid{grid-template-columns:1fr!important;gap:12px!important;}
+  .pricing-card.rec{transform:none!important;}
+  .payment-grid{grid-template-columns:1fr!important;gap:10px!important;}
+  .form-row{grid-template-columns:1fr!important;}
+
+  /* RPM explainer */
+  .rpm-grid{grid-template-columns:1fr!important;}
+  .rpm-card{padding:22px 18px!important;}
+  .rpm-icon{font-size:20px!important;margin-bottom:10px!important;}
+
+  /* CTA box */
+  .cta-box{flex-direction:column!important;text-align:center!important;
+    padding:36px 20px!important;gap:20px!important;}
+  .cta-actions{align-items:center!important;}
+
+  /* Sections heading */
+  .section-h2{font-size:clamp(22px,5.5vw,32px)!important;letter-spacing:-.3px!important;}
+  .section-lead{font-size:14px!important;}
+
+  /* Footer */
+  /* Compare table */
+  .compare-table{font-size:12px!important;overflow-x:auto;}
+  .compare-table td,.col-head{padding:9px 10px!important;}
+
+  /* Modals */
+  .csmodal-metrics,.bmodal-metrics{grid-template-columns:1fr 1fr!important;}
+  .csmodal-body{padding:18px 18px 22px!important;}
+  .csmodal-title{font-size:20px!important;}
+  .bmodal-body{padding:16px 20px 22px!important;}
+
+  /* Logo bar */
+  .logo-bar-inner{gap:12px;flex-wrap:wrap;}
+
+  /* FAQ */
+  .faq-inner{grid-template-columns:1fr!important;gap:24px!important;}
+  .faq-q{font-size:14px!important;}
+
+  /* Hero brands page */
+  .hero-brands-inner{flex-direction:column!important;gap:0!important;}
+  .hero-brands{padding:calc(68px + 40px) var(--pad) 36px!important;}
+  .hero-brands h1{font-size:clamp(26px,7vw,40px)!important;}
+
+  /* How it works page hero */
+  .page-hero::before{display:none;}
+}
+
+/* ── 480px: small phones ── */
+@media(max-width:480px){
+  :root{--pad:14px;}
+
+  .section{padding:44px var(--pad)!important;}
+  .page-hero,.hero-calc{padding:calc(68px + 32px) var(--pad) 32px!important;}
+  .page-hero h1,.hero-calc h1{font-size:clamp(24px,8vw,34px)!important;}
+  .hero h1{font-size:clamp(24px,8vw,34px)!important;}
+  .section-h2{font-size:clamp(20px,7vw,28px)!important;}
+
+  /* Stats: single col */
+  .stat-strip,.stat-row,.stats-inner{grid-template-columns:1fr!important;}
+
+  /* Who: single col */
+  .who-grid{grid-template-columns:1fr!important;}
+
+  /* Niche: single col */
+  .niche-grid{grid-template-columns:1fr!important;}
+
+  /* Step visual: shorter */
+  .step-visual{min-height:180px!important;}
+  .step-stat{flex-direction:column;gap:3px;padding:10px 12px!important;}
+  .step-stat-v{font-size:18px!important;}
+
+  /* Result hero */
+  .result-hero-val{font-size:36px!important;}
+  .rpm-seg{min-width:calc(50% - 5px)!important;}
+  .result-grid{grid-template-columns:1fr 1fr!important;}
+
+  /* Stats row on work with us */
+  .stats-row{grid-template-columns:1fr!important;}
+
+  /* CTA box */
+  .cta-box{padding:28px 14px!important;}
+  .cta-h{font-size:clamp(20px,7vw,28px)!important;}
+
+  /* Footer: single col */
+  /* Totals strip: single col */
+  .totals-strip{grid-template-columns:1fr!important;}
+
+  /* case carousel */
+  .case-carousel{grid-template-columns:1fr!important;}
+
+  /* hero proof strip */
+  .hero-proof{font-size:11px!important;}
+  .hero-actions{flex-direction:column!important;align-items:center!important;gap:10px!important;}
+  .btn-primary{font-size:14px!important;padding:13px 24px!important;}
+}
+
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--bd);padding:52px var(--pad) 32px;position:relative;z-index:1;}
+.footer-inner{max-width:var(--max);margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;margin-bottom:36px;}
+.footer-brand p{font-size:13px;color:var(--t2);line-height:1.7;max-width:240px;margin-top:12px;}
+.footer-col-h{font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;color:var(--white);}
+.footer-links{display:flex;flex-direction:column;gap:9px;}
+.footer-link{font-size:13px;color:var(--t2);transition:color .2s;text-decoration:none;}
+.footer-link:hover{color:var(--g);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+  gap:12px;padding-top:24px;border-top:1px solid var(--bd);font-size:11.5px;color:var(--t3);}
+.footer-legal{display:flex;gap:18px;flex-wrap:wrap;}
+.footer-legal a{font-size:11.5px;color:var(--t3);text-decoration:none;transition:color .18s;}
+.footer-legal a:hover{color:var(--t2);}
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr!important;gap:24px;}}
+@media(max-width:540px){.footer-top{grid-template-columns:1fr!important;gap:18px;}
+  .footer-bottom{flex-direction:column;text-align:center;gap:6px;}}
+
+
+/* ── MOB NAV ── */
+.mob-menu-btn{display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:38px;height:38px;border:1px solid #2A2A2A;border-radius:9px;
+  background:#161616;cursor:pointer;padding:9px;flex-shrink:0;}
+.mob-menu-btn span{display:block;height:1.5px;background:#DEDEDE;border-radius:2px;transition:all .25s;}
+.mob-menu-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.mob-menu-btn.open span:nth-child(2){opacity:0;}
+.mob-menu-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mob-drawer{display:none;position:fixed;top:68px;left:0;right:0;
+  background:rgba(8,8,8,.98);backdrop-filter:blur(20px);
+  border-bottom:1px solid #1E1E1E;z-index:900;
+  padding:10px 14px 18px;flex-direction:column;gap:2px;}
+.mob-drawer.open{display:flex;}
+.mob-drawer a{display:block;padding:10px 13px;border-radius:9px;
+  font-size:14px;font-weight:500;color:#DEDEDE;
+  border:1px solid transparent;transition:all .18s;text-decoration:none;}
+.mob-drawer a:hover,.mob-drawer a.mob-active{
+  background:rgba(46,204,113,.10);border-color:rgba(46,204,113,.26);color:#2ECC71;}
+.mob-drawer .mob-book{margin-top:6px;background:#2ECC71;color:#000;font-weight:700;
+  border-radius:10px;text-align:center;border-color:#2ECC71;
+  font-family:'Bricolage Grotesque',sans-serif;}
+@media(max-width:900px){
+  .nav-links{display:none!important;}
+  .nav-cta{display:none!important;}
+  .mob-menu-btn{display:flex!important;}
+}
+
+</style>
+<style>
+/* ══════════════════════════ MOBILE OPTIMISATION ══════════════════════════ */
+
+/* Hamburger button */
+
+
+
+
+
+
+/* Mobile drawer */
+
+
+
+
+
+
+/* Show hamburger, hide nav links at 900px */
+/* ── INDEX / ALL PAGES: general responsive rules ── */
+/* ── INDEX SPECIFIC ── */
+/* ── HOW IT WORKS ── */
+/* ── BRANDS ── */
+/* ── CREATOR NETWORK ── */
+/* ── ROI CALCULATOR ── */
+/* ── WORK WITH US ── */
+/* ── CASE STUDIES ── */
+/* Prevent overflow on all pages */
+img,video,iframe,table{max-width:100%;}
+</style>
+</head>
+<body>
+<div class="glow-bl"></div>
+<div class="glow-tr"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-logo-mark">+</div>clip smart</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="roi-calculator.html" class="nav-link">Calculator</a>
+    <a href="brands.html" class="nav-link">Brands</a>
+    <a href="creator-network.html" class="nav-link active">Creators</a>
+    <a href="case-studies.html" class="nav-link">Case Studies</a>
+    <a href="work-with-us.html" class="nav-link">Work With Us</a>
+  </div>
+  <button class="mob-menu-btn" id="mobMenuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="work-with-us.html" class="nav-cta">Book a call →</a>
+</nav>
+<div class="mob-drawer" id="mobDrawer">
+  <a href="index.html" class="">Home</a>
+  <a href="how-it-works.html" class="">How It Works</a>
+  <a href="roi-calculator.html" class="">Calculator</a>
+  <a href="brands.html" class="">Brands</a>
+  <a href="creator-network.html" class="mob-active">Creators</a>
+  <a href="case-studies.html" class="">Case Studies</a>
+  <a href="work-with-us.html" class="">Work With Us</a>
+  <a href="https://calendly.com/esaanwar/partner-with-clipsmart" class="mob-book" target="_blank">Book a free call →</a>
+</div>
+<div class="page">
+<div class="inner">
+
+  <!-- HERO -->
+  <div class="hero-net fu">
+    <div class="hero-left">
+      <div class="eyebrow">Creator Network</div>
+      <h1>70,000+ creators.<br><em>All vetted.<br>All performance-paid.</em></h1>
+      <p>Every creator in our network is approved before they post for your brand. They earn when content performs — which means they're motivated to make it good.</p>
+      <a href="work-with-us.html" class="btn-primary">Start a campaign →</a>
+    </div>
+    <div class="hero-right">
+      <div class="count-display">
+        <div class="count-val" id="creator-counter">70,000+</div>
+        <div class="count-lbl">Active creators in network</div>
+        <div class="live-dot"><div class="dot"></div>Growing weekly</div>
+      </div>
+      <div class="region-grid">
+        <div class="region-card">
+          <div class="rc-region">North America</div>
+          <div class="rc-count">~55,000</div>
+          <div class="rc-pct">78% of network</div>
+          <div class="rc-bar"><div class="rc-fill" style="width:78%"></div></div>
+        </div>
+        <div class="region-card">
+          <div class="rc-region">Europe</div>
+          <div class="rc-count">~8,500</div>
+          <div class="rc-pct">12% of network</div>
+          <div class="rc-bar"><div class="rc-fill" style="width:12%"></div></div>
+        </div>
+        <div class="region-card">
+          <div class="rc-region">UK & Ireland</div>
+          <div class="rc-count">~4,200</div>
+          <div class="rc-pct">6% of network</div>
+          <div class="rc-bar"><div class="rc-fill" style="width:6%"></div></div>
+        </div>
+        <div class="region-card">
+          <div class="rc-region">Rest of World</div>
+          <div class="rc-count">~2,300</div>
+          <div class="rc-pct">4% of network</div>
+          <div class="rc-bar"><div class="rc-fill" style="width:4%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip fu fu-d1">
+    <div class="sc"><div class="sv">70K+</div><div class="sl">Active creators</div><div class="ss">Across all platforms</div></div>
+    <div class="sc"><div class="sv">60%</div><div class="sl">Min. US audience</div><div class="ss">Required per creator</div></div>
+    <div class="sc"><div class="sv">100%</div><div class="sl">Manual review</div><div class="ss">Every submission checked</div></div>
+    <div class="sc"><div class="sv">$0.09</div><div class="sl">Lowest CPM achieved</div><div class="ss">ProdByCPKShawn campaign</div></div>
+    <div class="sc"><div class="sv">48hrs</div><div class="sl">Average time to first clip</div><div class="ss">From campaign brief</div></div>
+  </div>
+
+  <!-- NICHE BREAKDOWN -->
+  <div class="niche-section fu">
+    <div class="section-head">
+      <div class="eyebrow">Niche Coverage</div>
+      <h2>We have creators in <em>your space.</em></h2>
+      <p>Our network spans dozens of content niches. If your brand targets an audience, we have creators already posting for it.</p>
+    </div>
+    <div class="niche-grid">
+      <div class="niche-card fu">
+        <div class="niche-icon">🎵</div>
+        <div class="niche-name">Music & Entertainment</div>
+        <div class="niche-count">~14,000 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:80%"></div></div>
+        <div class="niche-examples">Songs, producers, artists, playlists, music reactions</div>
+      </div>
+      <div class="niche-card fu fu-d1">
+        <div class="niche-icon">🛒</div>
+        <div class="niche-name">E-Commerce & Products</div>
+        <div class="niche-count">~18,000 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:95%"></div></div>
+        <div class="niche-examples">Product reviews, unboxings, Amazon finds, hauls, gift guides</div>
+      </div>
+      <div class="niche-card fu fu-d2">
+        <div class="niche-icon">💪</div>
+        <div class="niche-name">Health, Fitness & Wellness</div>
+        <div class="niche-count">~12,000 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:72%"></div></div>
+        <div class="niche-examples">Supplements, training gear, nutrition, mental health, biohacking</div>
+      </div>
+      <div class="niche-card fu fu-d3">
+        <div class="niche-icon">🎙️</div>
+        <div class="niche-name">Podcasts & Media</div>
+        <div class="niche-count">~8,000 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:50%"></div></div>
+        <div class="niche-examples">Clip repurposing, podcast highlights, talk show content</div>
+      </div>
+      <div class="niche-card fu">
+        <div class="niche-icon">🏆</div>
+        <div class="niche-name">Sports & Outdoors</div>
+        <div class="niche-count">~9,500 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:58%"></div></div>
+        <div class="niche-examples">Training gear, sports equipment, fan content, athlete lifestyle</div>
+      </div>
+      <div class="niche-card fu fu-d1">
+        <div class="niche-icon">💄</div>
+        <div class="niche-name">Beauty & Fashion</div>
+        <div class="niche-count">~11,000 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:68%"></div></div>
+        <div class="niche-examples">Skincare, makeup, hair care, clothing hauls, styling</div>
+      </div>
+      <div class="niche-card fu fu-d2">
+        <div class="niche-icon">🍕</div>
+        <div class="niche-name">Food & Lifestyle</div>
+        <div class="niche-count">~7,000 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:44%"></div></div>
+        <div class="niche-examples">Recipes, restaurant reviews, food products, cooking gear</div>
+      </div>
+      <div class="niche-card fu fu-d3">
+        <div class="niche-icon">💡</div>
+        <div class="niche-name">Tech & Software</div>
+        <div class="niche-count">~5,500 creators</div>
+        <div class="niche-bar-wrap"><div class="niche-bar" style="width:36%"></div></div>
+        <div class="niche-examples">App reviews, gadgets, productivity tools, SaaS walkthroughs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW REVIEW WORKS -->
+  <div class="review-section fu">
+    <div class="section-head">
+      <div class="eyebrow">The Review Process</div>
+      <h2>Every clip is checked <em>before you pay.</em></h2>
+      <p>This is what separates performance UGC from just hiring random creators. You only spend budget on content that actually meets the brief.</p>
+    </div>
+    <div class="review-grid">
+      <div class="review-step fu">
+        <div class="rs-num">01</div>
+        <div>
+          <div class="rs-title">Creator submits content</div>
+          <div class="rs-body">Creator posts the video on their own TikTok, Instagram, or YouTube account and submits the link through our platform. It's already live before review — that's by design.</div>
+        </div>
+      </div>
+      <div class="review-step fu fu-d1">
+        <div class="rs-num">02</div>
+        <div>
+          <div class="rs-title">We check the audience geography</div>
+          <div class="rs-body">We verify the creator's audience is at least 60% US (or your target region). If they don't meet the threshold, the clip is rejected — but stays live, generating free views you don't pay for.</div>
+        </div>
+      </div>
+      <div class="review-step fu fu-d2">
+        <div class="rs-num">03</div>
+        <div>
+          <div class="rs-title">We check the content quality</div>
+          <div class="rs-body">Is the content on-brand? Does it match the brief? Is it coherent, accurate, and non-misleading? Our team watches every clip. Off-brand or low-quality — rejected. No exceptions.</div>
+        </div>
+      </div>
+      <div class="review-step fu fu-d3">
+        <div class="rs-num">04</div>
+        <div>
+          <div class="rs-title">We wait for the view threshold</div>
+          <div class="rs-body">Once approved, we wait for the clip to hit the minimum view threshold (2,500 views by default). Only then does it start earning. This ensures only content with real engagement costs you anything.</div>
+        </div>
+      </div>
+      <div class="review-step fu">
+        <div class="rs-num">05</div>
+        <div>
+          <div class="rs-title">Payout is calculated and capped</div>
+          <div class="rs-body">The creator earns their RPM rate on every qualified view — up to the per-clip payout cap. Even if one video gets 10 million views, your budget is protected.</div>
+        </div>
+      </div>
+      <div class="review-step fu fu-d1">
+        <div class="rs-num">06</div>
+        <div>
+          <div class="rs-title">You see it all in real time</div>
+          <div class="rs-body">Your campaign dashboard shows every approved clip, live view counts, budget used, and projected total reach — updated continuously for the duration of the campaign.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPROVAL CRITERIA -->
+  <div class="criteria-section fu">
+    <div class="section-head">
+      <div class="eyebrow">Approval Criteria</div>
+      <h2>What gets approved.<br><em>What gets rejected.</em></h2>
+      <p>Total transparency on how we decide. No grey areas — brands and creators both know the rules upfront.</p>
+    </div>
+    <div class="criteria-cols">
+      <div class="criteria-box pass">
+        <div class="cb-title"><span>✓</span> Approved — content gets paid</div>
+        <div class="criteria-list">
+          <div class="cl-item"><span class="cl-check yes">✓</span><span>Matches the campaign brief in tone, product, and message</span></div>
+          <div class="cl-item"><span class="cl-check yes">✓</span><span>Creator's audience is 60%+ in the target region</span></div>
+          <div class="cl-item"><span class="cl-check yes">✓</span><span>Clip reaches or exceeds the minimum view threshold (2,500 default)</span></div>
+          <div class="cl-item"><span class="cl-check yes">✓</span><span>Content is accurate and not misleading about the product</span></div>
+          <div class="cl-item"><span class="cl-check yes">✓</span><span>Original content — not a repost or splice of another creator's work</span></div>
+          <div class="cl-item"><span class="cl-check yes">✓</span><span>Posted on the creator's own account, not a bought or ghost account</span></div>
+        </div>
+      </div>
+      <div class="criteria-box fail">
+        <div class="cb-title"><span>✗</span> Rejected — no payment, clip stays live</div>
+        <div class="criteria-list">
+          <div class="cl-item"><span class="cl-check no">✗</span><span>Audience below 60% in the target region (free views still accumulate)</span></div>
+          <div class="cl-item"><span class="cl-check no">✗</span><span>Content doesn't reference the product or brand clearly</span></div>
+          <div class="cl-item"><span class="cl-check no">✗</span><span>Off-brand: wrong tone, inappropriate context, misleading claims</span></div>
+          <div class="cl-item"><span class="cl-check no">✗</span><span>Doesn't reach the minimum view threshold within the review window</span></div>
+          <div class="cl-item"><span class="cl-check no">✗</span><span>Stolen or repurposed content from another creator or brand</span></div>
+          <div class="cl-item"><span class="cl-check no">✗</span><span>Submitted after the campaign end date</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EARNINGS TABLE -->
+  <div class="earnings-section fu">
+    <div class="section-head">
+      <div class="eyebrow">Creator Earnings</div>
+      <h2>What creators earn at <em>each RPM.</em></h2>
+      <p>Higher RPM attracts more experienced, higher-effort creators. Here's how the math works for them — and what it means for content quality.</p>
+    </div>
+    <table class="earnings-table">
+      <thead>
+        <tr>
+          <th>RPM Rate</th>
+          <th>Views on clip</th>
+          <th>Creator earns</th>
+          <th>Payout cap</th>
+          <th>Who it attracts</th>
+          <th>Content quality</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>$1 RPM</strong></td>
+          <td>100K views</td>
+          <td>$100</td>
+          <td>$150–$200</td>
+          <td>High-volume posters, trend-followers</td>
+          <td>Fast, organic, volume-driven</td>
+        </tr>
+        <tr class="hl">
+          <td><strong>$1.50 RPM</strong> <span class="tag-green">Popular</span></td>
+          <td>100K views</td>
+          <td>$150</td>
+          <td>$200</td>
+          <td>Mid-tier creators, engaged audiences</td>
+          <td>Balanced quality and volume</td>
+        </tr>
+        <tr>
+          <td><strong>$2 RPM</strong></td>
+          <td>100K views</td>
+          <td>$200</td>
+          <td>$200</td>
+          <td>Niche creators, experienced reviewers</td>
+          <td>More effort, longer demos</td>
+        </tr>
+        <tr>
+          <td><strong>$2.50 RPM</strong></td>
+          <td>100K views</td>
+          <td>$250</td>
+          <td>$250</td>
+          <td>Specialist creators, deeper content</td>
+          <td>High production, specific niches</td>
+        </tr>
+        <tr>
+          <td><strong>$3 RPM</strong></td>
+          <td>100K views</td>
+          <td>$300</td>
+          <td>$300</td>
+          <td>Elite creators, dedicated reviewers</td>
+          <td>Best quality, most effort per clip</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;padding:16px 20px;background:var(--s1);border:1px solid var(--bd);border-radius:11px;font-size:13px;color:var(--t2);">
+      <strong style="color:var(--white);">Note:</strong> Rejected clips earn nothing but stay live on the creator's account — meaning your brand still gets free views from them. The creator takes the risk on content that doesn't qualify. You only pay for what performs.
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section fu">
+    <div class="section-head">
+      <div class="eyebrow">Common Questions</div>
+      <h2>What brands ask us <em>about creators.</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q"><span>Do creators actually know what they're doing?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Our network is made up of people who already create content regularly — they're not learning on the job for your campaign. We don't recruit beginners. Creators apply to join, and we approve based on content history, audience quality, and engagement rates. The ones who make it into the network are already posting consistently.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>What if a creator posts something off-brand?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">It gets rejected and they don't get paid. The clip may or may not stay live on their account (their choice), but it won't cost you anything. This is why the review process matters — we check before payment is triggered, not after. In practice, creators have a strong incentive to stay on-brief because rejected clips mean zero earnings.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Can creators promote products they've never held?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — and this is one of the most common questions we get. Creators can produce effective content using supplied digital assets: product photos, existing video footage, screen recordings, or green-screen reviews. Formats like "best custom gifts," product rankings, and walkthrough videos consistently perform well without physical props. For brands that want hands-on content, a tiered approach works well: start with digital-first campaigns, then send physical product to your top 5–10 performers in month 2.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>How do you make sure the audience is real?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">We check audience demographics for every creator before they're eligible to post for a paid campaign. The 60% regional requirement filters out creators with inflated or irrelevant audiences. We also monitor for bot-driven view spikes — if a clip hits the threshold through inauthentic activity, it's flagged and rejected. Real engagement is the only thing that earns a payout.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>What platforms do creators post on?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">TikTok is the primary platform — it's where the majority of our creator network is active and where performance UGC generates the most views. Creators can also post to Instagram Reels and YouTube Shorts. All three platforms count toward the view totals. You can specify platform preferences in your campaign brief.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Can I specify which creators work on my campaign?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">The campaign is open to all approved creators in the relevant niche unless you specify otherwise. You can request exclusions (e.g. no creators who have previously posted for a competitor) and you can whitelist specific creators if you have a relationship with them. All decisions on who posts are based on quality of submission, not pre-selection.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner fu">
+    <div class="cta-left">
+      <h2>Ready to put 70,000+ creators</h2>
+      <h2><em>to work for your brand?</em></h2>
+      <p>Book a free call. We'll scope the campaign before it ends — including which creator niches are the strongest fit for your product.</p>
+    </div>
+    <a href="work-with-us.html" class="btn-primary" style="flex-shrink:0;">Book a free call →</a>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="nav-logo-mark">+</div>clip smart</div>
+        <p>Performance UGC campaigns that pay for themselves. You only pay when your content performs.</p>
+      </div>
+      <div>
+        <div class="footer-col-h">Company</div>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="how-it-works.html" class="footer-link">How It Works</a>
+          <a href="case-studies.html" class="footer-link">Case Studies</a>
+          <a href="brands.html" class="footer-link">Brands</a>
+          <a href="creator-network.html" class="footer-link">Creators</a>
+          <a href="work-with-us.html" class="footer-link">Work With Us</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-h">Campaign Types</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Music &amp; Artists</a>
+          <a href="#" class="footer-link">E-Commerce</a>
+          <a href="#" class="footer-link">Health &amp; Wellness</a>
+          <a href="#" class="footer-link">Podcasts &amp; Media</a>
+          <a href="#" class="footer-link">Sports &amp; Events</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-h">Get Started</div>
+        <div class="footer-links">
+          <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener" class="footer-link">Book a Call</a>
+          <a href="roi-calculator.html" class="footer-link">ROI Calculator</a>
+          <a href="case-studies.html" class="footer-link">See Results</a>
+          <a href="work-with-us.html" class="footer-link">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 ClipSmart. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+      <div>Performance-First Creator Marketing</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q').forEach(b=>{
+      b.classList.remove('open');
+      b.nextElementSibling.style.maxHeight = '0';
+    });
+    if(!isOpen){
+      btn.classList.add('open');
+      btn.nextElementSibling.style.maxHeight = btn.nextElementSibling.scrollHeight+'px';
+    }
+  });
+});
+
+// Scroll anims
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+</script>
+
+<script>
+(function(){
+  var btn=document.getElementById('mobMenuBtn');
+  var drawer=document.getElementById('mobDrawer');
+  if(!btn||!drawer)return;
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();btn.classList.toggle('open');drawer.classList.toggle('open');
+  });
+  document.addEventListener('click',function(e){
+    if(!drawer.contains(e.target)&&!btn.contains(e.target)){
+      btn.classList.remove('open');drawer.classList.remove('open');
+    }
+  });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){
+      btn.classList.remove('open');drawer.classList.remove('open');
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){btn.classList.remove('open');drawer.classList.remove('open');}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClipSmart — Work With Us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--g:#2ECC71;--g-dark:#1B7A43;--g-glow:rgba(46,204,113,0.10);--g-bdr:rgba(46,204,113,0.26);--bg:#0A0A0A;--s1:#101010;--s2:#161616;--s3:#1E1E1E;--bd:#1E1E1E;--bd2:#2A2A2A;--white:#FFFFFF;--t1:#DEDEDE;--t2:#888;--t3:#444;--nav-h:68px;--max:1280px;--pad:64px;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'Instrument Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");opacity:0.025;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);background:rgba(10,10,10,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;letter-spacing:-.3px;}
+.nav-logo-mark{width:30px;height:30px;border:2px solid var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--g);line-height:1;}
+.nav-links{display:flex;gap:2px;align-items:center;}
+.nav-link{padding:7px 16px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--t2);border:1px solid transparent;transition:all .2s;}
+.nav-link:hover{color:var(--white);}
+.nav-link.active{color:var(--white);}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--g);color:#000;font-family:'Bricolage Grotesque',sans-serif;font-size:13.5px;font-weight:700;padding:10px 24px;border-radius:10px;border:none;transition:all .22s;white-space:nowrap;}
+.nav-cta:hover{background:#27ae60;transform:translateY(-1px);}
+
+.section-eyebrow{display:flex;align-items:center;gap:12px;font-size:10.5px;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;color:var(--g);margin-bottom:20px;}
+.section-eyebrow::before{content:'';display:block;width:28px;height:2px;background:var(--g);}
+
+/* MAIN LAYOUT */
+.main-wrap{
+  max-width:var(--max);margin:0 auto;
+  padding:calc(var(--nav-h) + 72px) var(--pad) 100px;
+  display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:start;
+  position:relative;z-index:1;
+}
+
+/* LEFT SIDE */
+.left-col{}
+.left-col h1{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(36px,4.5vw,58px);font-weight:800;
+  line-height:1.07;letter-spacing:-1.8px;margin-bottom:22px;
+}
+.left-col h1 em{font-style:normal;color:var(--g);}
+.left-col p{font-size:17px;line-height:1.75;color:var(--t1);margin-bottom:44px;max-width:460px;}
+
+/* WHAT TO EXPECT */
+.expect-list{display:flex;flex-direction:column;gap:0;margin-bottom:44px;}
+.expect-item{
+  display:flex;gap:18px;align-items:flex-start;
+  padding:20px 0;border-bottom:1px solid var(--bd);
+}
+.expect-item:last-child{border-bottom:none;}
+.expect-n{
+  font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:800;
+  width:32px;height:32px;border-radius:8px;background:var(--g-glow);border:1px solid var(--g-bdr);
+  display:flex;align-items:center;justify-content:center;color:var(--g);flex-shrink:0;
+}
+.expect-t{font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;font-weight:700;margin-bottom:4px;}
+.expect-b{font-size:13px;color:var(--t2);line-height:1.6;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.mini-stat{
+  background:var(--s1);border:1px solid var(--bd);border-radius:12px;
+  padding:20px 18px;text-align:center;position:relative;overflow:hidden;
+}
+.mini-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g);}
+.ms-v{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:var(--g);line-height:1;margin-bottom:5px;}
+.ms-l{font-size:12px;color:var(--t2);}
+
+/* RIGHT SIDE — FORM / BOOKING */
+.right-col{}
+.booking-card{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:20px;overflow:hidden;
+  position:sticky;top:calc(var(--nav-h) + 24px);
+}
+.booking-head{
+  padding:28px 32px;border-bottom:1px solid var(--bd);
+  background:var(--s2);position:relative;overflow:hidden;
+}
+.booking-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g);}
+.booking-head h2{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.booking-head p{font-size:13.5px;color:var(--t2);}
+
+.booking-body{padding:32px;}
+
+.form-group{margin-bottom:20px;}
+.form-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;display:block;}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:var(--s2);border:1px solid var(--bd2);
+  border-radius:10px;padding:13px 16px;
+  font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:400;
+  color:var(--white);outline:none;transition:border-color .2s;
+}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--t3);}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--g);}
+.form-select{appearance:none;cursor:pointer;}
+option{background:var(--s2);}
+.form-textarea{min-height:100px;resize:vertical;line-height:1.6;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+.submit-btn{
+  width:100%;background:var(--g);color:#000;
+  font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;
+  padding:16px;border-radius:12px;border:none;cursor:pointer;
+  transition:all .22s;margin-top:6px;
+}
+.submit-btn:hover{background:#27ae60;transform:translateY(-1px);box-shadow:0 10px 28px rgba(46,204,113,.3);}
+
+.form-note{font-size:12px;color:var(--t3);text-align:center;margin-top:14px;line-height:1.6;}
+
+/* OR DIVIDER */
+.or-divider{display:flex;align-items:center;gap:14px;margin:20px 0;}
+.or-line{flex:1;height:1px;background:var(--bd2);}
+.or-text{font-size:12px;color:var(--t3);}
+
+/* DIRECT BOOK */
+.direct-book{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:transparent;border:1px solid var(--bd2);border-radius:12px;
+  padding:14px;color:var(--t1);font-size:14px;font-weight:500;
+  cursor:pointer;transition:all .2s;width:100%;text-decoration:none;
+}
+.direct-book:hover{border-color:var(--g-bdr);color:var(--g);}
+
+/* PRICING PREVIEW */
+.pricing-section{
+  background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  padding:80px var(--pad);
+}
+.pricing-inner{max-width:var(--max);margin:0 auto;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
+.pricing-card{
+  background:var(--bg);border:1px solid var(--bd);
+  border-radius:16px;overflow:hidden;transition:all .22s;
+}
+.pricing-card:hover{border-color:var(--g-dark);transform:translateY(-3px);}
+.pricing-card.rec{border-color:var(--g-dark);background:rgba(26,122,67,.07);}
+.rec-badge{
+  background:var(--g);color:#000;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  padding:8px 24px;text-align:center;
+}
+.pricing-head{padding:28px 26px 22px;border-bottom:1px solid var(--bd);}
+.pricing-name{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px;}
+.pricing-card.rec .pricing-name{color:var(--g);}
+.pricing-budget{font-size:13.5px;color:var(--t2);}
+.pricing-body{padding:24px 26px;}
+.pricing-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13.5px;}
+.pricing-row:last-child{border-bottom:none;}
+.pk{color:var(--t2);}
+.pv{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;color:var(--white);}
+.pricing-card.rec .pv{color:var(--g);}
+.pricing-highlight{
+  margin-top:18px;padding:14px 16px;
+  background:var(--g-glow);border:1px solid var(--g-bdr);border-radius:10px;
+  font-size:13px;color:var(--t1);line-height:1.6;
+}
+.pricing-card:not(.rec) .pricing-highlight{background:var(--s2);border-color:var(--bd2);}
+
+/* PAYMENT OPTIONS */
+.payment-section{padding:80px var(--pad);max-width:var(--max);margin:0 auto;position:relative;z-index:1;}
+.payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;}
+.payment-card{
+  background:var(--s1);border:1px solid var(--bd);border-radius:14px;
+  padding:28px 26px;transition:border-color .2s;
+}
+.payment-card:hover{border-color:var(--g-dark);}
+.payment-icon{font-size:24px;margin-bottom:14px;}
+.payment-t{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px;}
+.payment-b{font-size:13.5px;color:var(--t2);line-height:1.65;}
+.payment-b strong{color:var(--white);}
+
+/* REFUND */
+.refund-banner{
+  background:var(--g-glow);border:1px solid var(--g-bdr);
+  border-radius:14px;padding:24px 28px;
+  display:flex;gap:18px;align-items:center;
+  margin-top:20px;
+}
+.refund-icon{font-size:24px;flex-shrink:0;}
+.refund-t{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;}
+.refund-b{font-size:13.5px;color:var(--t2);line-height:1.6;}
+
+.fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.stagger>*{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease;}
+.stagger.visible>*:nth-child(1){opacity:1;transform:translateY(0);transition-delay:.05s;}
+.stagger.visible>*:nth-child(2){opacity:1;transform:translateY(0);transition-delay:.12s;}
+.stagger.visible>*:nth-child(3){opacity:1;transform:translateY(0);transition-delay:.19s;}
+
+/* Success state */
+.form-success{display:none;text-align:center;padding:32px;background:var(--g-glow);border:1px solid var(--g-bdr);border-radius:14px;}
+.form-success.show{display:block;}
+.form-success h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:var(--g);margin-bottom:10px;}
+.form-success p{font-size:14px;color:var(--t1);line-height:1.7;}
+
+
+/* ════════════════════════════════════════
+   WORK WITH US — MOBILE OPTIMISED
+════════════════════════════════════════ */
+
+
+
+
+
+/* ── HAMBURGER NAV ── */
+/* ════════════════════════════════
+   GLOBAL MOBILE OPTIMISATION
+════════════════════════════════ */
+
+/* ── 1100px: tablet landscape ── */
+@media(max-width:1100px){
+  :root{--pad:40px;}
+}
+
+/* ── 768px: tablet portrait / large phone ── */
+@media(max-width:768px){
+  :root{--pad:20px;}
+
+  /* Section padding: cut from 100px to 56px */
+  .section{padding:56px var(--pad)!important;}
+  .rpm-inner{padding:52px var(--pad)!important;}
+  .calc-inner{padding:52px var(--pad)!important;}
+  .payment-section{padding:52px var(--pad)!important;}
+  .pricing-section{padding:52px var(--pad)!important;}
+  .pricing-inner{padding:52px var(--pad)!important;}
+
+  /* Page heroes: smaller heading + less top padding */
+  .page-hero,.hero-calc{padding:calc(68px + 44px) var(--pad) 44px!important;}
+  .page-hero h1,.hero-calc h1{font-size:clamp(26px,7vw,40px)!important;letter-spacing:-1px!important;}
+  .page-hero p,.hero-calc p{font-size:15px!important;line-height:1.65!important;}
+
+  /* Homepage hero */
+  .hero{min-height:auto!important;}
+  .hero-inner{grid-template-columns:1fr!important;gap:28px!important;padding-top:calc(68px + 40px)!important;}
+  .hero-left{order:1!important;text-align:center;display:flex;flex-direction:column;align-items:center;}
+  .hero h1{font-size:clamp(26px,7vw,40px)!important;letter-spacing:-1px!important;text-align:center!important;}
+  .hero-sub{font-size:15px!important;text-align:center!important;max-width:100%!important;}
+  .hero-proof{align-self:center;}
+  .hero-actions{justify-content:center!important;}
+  .hero-video{order:2!important;width:100%!important;}
+
+  /* Step blocks: less padding */
+  .step-content{padding:36px var(--pad) 32px!important;}
+  .step-visual{min-height:220px!important;}
+  .step-h{font-size:clamp(18px,5vw,26px)!important;}
+  .step-p{font-size:13.5px!important;}
+  .step-stat{padding:10px 14px!important;}
+  .step-stat-v{font-size:20px!important;}
+
+  /* Stat strips: 2 cols */
+  .stat-strip,.stat-row,.stats-inner{grid-template-columns:1fr 1fr!important;}
+  .sc,.stat-cell,.stat-block{border-right:none!important;border-bottom:1px solid var(--bd,#1E1E1E)!important;padding:20px 16px!important;}
+  .sv,.stat-v,.sc-v{font-size:24px!important;}
+
+  /* Who grid: 2 cols, smaller cards */
+  .who-grid{grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  .who-card{padding:16px 14px!important;}
+  .who-t{font-size:13px!important;}
+  .who-b{font-size:12px!important;line-height:1.5!important;}
+
+  /* Why table: stack to single col */
+  .why-row{grid-template-columns:1fr!important;}
+  .why-row-num{display:none!important;}
+  .why-row-them{border-right:none!important;border-bottom:1px solid var(--bd,#1E1E1E)!important;}
+  .why-row-them-t,.why-row-us-t{font-size:12.5px!important;}
+
+  /* Case grid */
+  .case-grid{grid-template-columns:1fr!important;}
+  .case-card.featured{grid-column:auto!important;}
+  .case-thumb-img{aspect-ratio:16/9!important;}
+  .case-card.featured .case-thumb-img{aspect-ratio:16/8!important;}
+  .tc-v{font-size:32px!important;}
+  .totals-strip{grid-template-columns:1fr 1fr!important;}
+  .filter-tabs{flex-wrap:wrap;gap:5px;}
+  .filter-tab{font-size:12px!important;padding:6px 11px!important;}
+
+  /* Brand cards */
+  .brand-grid{grid-template-columns:1fr!important;}
+  .brand-body{padding:16px 18px 18px!important;}
+
+  /* Creator network */
+  .hero-net{grid-template-columns:1fr!important;gap:28px!important;}
+  .count-val{font-size:52px!important;}
+  .niche-grid{grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  .niche-card{padding:16px 14px!important;}
+  .review-grid{grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  .review-step{padding:18px 16px!important;}
+
+  /* Calculator */
+  .calc-wrap{grid-template-columns:1fr!important;}
+  .calc-results{border-left:none!important;border-top:1px solid var(--bd,#1E1E1E)!important;}
+  .result-hero-val{font-size:44px!important;}
+  .rpm-segments,.rpm-seg-wrap{flex-wrap:wrap!important;}
+  .rpm-seg{min-width:calc(33% - 6px)!important;}
+  .calc-inputs,.calc-results{padding:24px 20px!important;}
+  .result-grid{grid-template-columns:1fr 1fr!important;}
+
+  /* Work with us */
+  .main-wrap{grid-template-columns:1fr!important;gap:36px!important;
+    padding:calc(68px + 40px) var(--pad) 56px!important;}
+  .stats-row{grid-template-columns:1fr 1fr 1fr!important;gap:10px!important;}
+  .mini-stat{padding:14px 12px!important;}
+  .ms-v{font-size:20px!important;}
+  .pricing-grid{grid-template-columns:1fr!important;gap:12px!important;}
+  .pricing-card.rec{transform:none!important;}
+  .payment-grid{grid-template-columns:1fr!important;gap:10px!important;}
+  .form-row{grid-template-columns:1fr!important;}
+
+  /* RPM explainer */
+  .rpm-grid{grid-template-columns:1fr!important;}
+  .rpm-card{padding:22px 18px!important;}
+  .rpm-icon{font-size:20px!important;margin-bottom:10px!important;}
+
+  /* CTA box */
+  .cta-box{flex-direction:column!important;text-align:center!important;
+    padding:36px 20px!important;gap:20px!important;}
+  .cta-actions{align-items:center!important;}
+
+  /* Sections heading */
+  .section-h2{font-size:clamp(22px,5.5vw,32px)!important;letter-spacing:-.3px!important;}
+  .section-lead{font-size:14px!important;}
+
+  /* Footer */
+  /* Compare table */
+  .compare-table{font-size:12px!important;overflow-x:auto;}
+  .compare-table td,.col-head{padding:9px 10px!important;}
+
+  /* Modals */
+  .csmodal-metrics,.bmodal-metrics{grid-template-columns:1fr 1fr!important;}
+  .csmodal-body{padding:18px 18px 22px!important;}
+  .csmodal-title{font-size:20px!important;}
+  .bmodal-body{padding:16px 20px 22px!important;}
+
+  /* Logo bar */
+  .logo-bar-inner{gap:12px;flex-wrap:wrap;}
+
+  /* FAQ */
+  .faq-inner{grid-template-columns:1fr!important;gap:24px!important;}
+  .faq-q{font-size:14px!important;}
+
+  /* Hero brands page */
+  .hero-brands-inner{flex-direction:column!important;gap:0!important;}
+  .hero-brands{padding:calc(68px + 40px) var(--pad) 36px!important;}
+  .hero-brands h1{font-size:clamp(26px,7vw,40px)!important;}
+
+  /* How it works page hero */
+  .page-hero::before{display:none;}
+}
+
+/* ── 480px: small phones ── */
+@media(max-width:480px){
+  :root{--pad:14px;}
+
+  .section{padding:44px var(--pad)!important;}
+  .page-hero,.hero-calc{padding:calc(68px + 32px) var(--pad) 32px!important;}
+  .page-hero h1,.hero-calc h1{font-size:clamp(24px,8vw,34px)!important;}
+  .hero h1{font-size:clamp(24px,8vw,34px)!important;}
+  .section-h2{font-size:clamp(20px,7vw,28px)!important;}
+
+  /* Stats: single col */
+  .stat-strip,.stat-row,.stats-inner{grid-template-columns:1fr!important;}
+
+  /* Who: single col */
+  .who-grid{grid-template-columns:1fr!important;}
+
+  /* Niche: single col */
+  .niche-grid{grid-template-columns:1fr!important;}
+
+  /* Step visual: shorter */
+  .step-visual{min-height:180px!important;}
+  .step-stat{flex-direction:column;gap:3px;padding:10px 12px!important;}
+  .step-stat-v{font-size:18px!important;}
+
+  /* Result hero */
+  .result-hero-val{font-size:36px!important;}
+  .rpm-seg{min-width:calc(50% - 5px)!important;}
+  .result-grid{grid-template-columns:1fr 1fr!important;}
+
+  /* Stats row on work with us */
+  .stats-row{grid-template-columns:1fr!important;}
+
+  /* CTA box */
+  .cta-box{padding:28px 14px!important;}
+  .cta-h{font-size:clamp(20px,7vw,28px)!important;}
+
+  /* Footer: single col */
+  /* Totals strip: single col */
+  .totals-strip{grid-template-columns:1fr!important;}
+
+  /* case carousel */
+  .case-carousel{grid-template-columns:1fr!important;}
+
+  /* hero proof strip */
+  .hero-proof{font-size:11px!important;}
+  .hero-actions{flex-direction:column!important;align-items:center!important;gap:10px!important;}
+  .btn-primary{font-size:14px!important;padding:13px 24px!important;}
+}
+
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--bd);padding:52px var(--pad) 32px;position:relative;z-index:1;}
+.footer-inner{max-width:var(--max);margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;margin-bottom:36px;}
+.footer-brand p{font-size:13px;color:var(--t2);line-height:1.7;max-width:240px;margin-top:12px;}
+.footer-col-h{font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;color:var(--white);}
+.footer-links{display:flex;flex-direction:column;gap:9px;}
+.footer-link{font-size:13px;color:var(--t2);transition:color .2s;text-decoration:none;}
+.footer-link:hover{color:var(--g);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+  gap:12px;padding-top:24px;border-top:1px solid var(--bd);font-size:11.5px;color:var(--t3);}
+.footer-legal{display:flex;gap:18px;flex-wrap:wrap;}
+.footer-legal a{font-size:11.5px;color:var(--t3);text-decoration:none;transition:color .18s;}
+.footer-legal a:hover{color:var(--t2);}
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr!important;gap:24px;}}
+@media(max-width:540px){.footer-top{grid-template-columns:1fr!important;gap:18px;}
+  .footer-bottom{flex-direction:column;text-align:center;gap:6px;}}
+
+
+/* ── MOB NAV ── */
+.mob-menu-btn{display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:38px;height:38px;border:1px solid #2A2A2A;border-radius:9px;
+  background:#161616;cursor:pointer;padding:9px;flex-shrink:0;}
+.mob-menu-btn span{display:block;height:1.5px;background:#DEDEDE;border-radius:2px;transition:all .25s;}
+.mob-menu-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.mob-menu-btn.open span:nth-child(2){opacity:0;}
+.mob-menu-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mob-drawer{display:none;position:fixed;top:68px;left:0;right:0;
+  background:rgba(8,8,8,.98);backdrop-filter:blur(20px);
+  border-bottom:1px solid #1E1E1E;z-index:900;
+  padding:10px 14px 18px;flex-direction:column;gap:2px;}
+.mob-drawer.open{display:flex;}
+.mob-drawer a{display:block;padding:10px 13px;border-radius:9px;
+  font-size:14px;font-weight:500;color:#DEDEDE;
+  border:1px solid transparent;transition:all .18s;text-decoration:none;}
+.mob-drawer a:hover,.mob-drawer a.mob-active{
+  background:rgba(46,204,113,.10);border-color:rgba(46,204,113,.26);color:#2ECC71;}
+.mob-drawer .mob-book{margin-top:6px;background:#2ECC71;color:#000;font-weight:700;
+  border-radius:10px;text-align:center;border-color:#2ECC71;
+  font-family:'Bricolage Grotesque',sans-serif;}
+@media(max-width:900px){
+  .nav-links{display:none!important;}
+  .nav-cta{display:none!important;}
+  .mob-menu-btn{display:flex!important;}
+}
+
+</style>
+<style>
+/* ══════════════════════════ MOBILE OPTIMISATION ══════════════════════════ */
+
+/* Hamburger button */
+
+
+
+
+
+
+/* Mobile drawer */
+
+
+
+
+
+
+/* Show hamburger, hide nav links at 900px */
+/* ── INDEX / ALL PAGES: general responsive rules ── */
+/* ── INDEX SPECIFIC ── */
+/* ── HOW IT WORKS ── */
+/* ── BRANDS ── */
+/* ── CREATOR NETWORK ── */
+/* ── ROI CALCULATOR ── */
+/* ── WORK WITH US ── */
+/* ── CASE STUDIES ── */
+/* Prevent overflow on all pages */
+img,video,iframe,table{max-width:100%;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-logo-mark">+</div>clip smart</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="roi-calculator.html" class="nav-link">Calculator</a>
+    <a href="brands.html" class="nav-link">Brands</a>
+    <a href="creator-network.html" class="nav-link">Creators</a>
+    <a href="case-studies.html" class="nav-link">Case Studies</a>
+    <a href="work-with-us.html" class="nav-link active">Work With Us</a>
+  </div>
+  <button class="mob-menu-btn" id="mobMenuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="#contact-form" class="nav-cta">Get in Touch →</a>
+</nav>
+<div class="mob-drawer" id="mobDrawer">
+  <a href="index.html" class="">Home</a>
+  <a href="how-it-works.html" class="">How It Works</a>
+  <a href="roi-calculator.html" class="">Calculator</a>
+  <a href="brands.html" class="">Brands</a>
+  <a href="creator-network.html" class="">Creators</a>
+  <a href="case-studies.html" class="">Case Studies</a>
+  <a href="work-with-us.html" class="mob-active">Work With Us</a>
+  <a href="https://calendly.com/esaanwar/partner-with-clipsmart" class="mob-book" target="_blank">Book a free call →</a>
+</div>
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <div class="left-col">
+    <div class="section-eyebrow fade-up">Work With Us</div>
+    <h1 class="fade-up">Let's build your<br><em>campaign.</em></h1>
+    <p class="fade-up">Tell us about your brand and what you're looking to achieve. We'll get back to you within 24 hours to book a 30-minute call — and we'll come prepared with a plan built around you.</p>
+
+    <!-- WHAT HAPPENS -->
+    <div class="expect-list fade-up">
+      <div class="expect-item">
+        <div class="expect-n">01</div>
+        <div>
+          <div class="expect-t">Fill in the form</div>
+          <div class="expect-b">Tell us about your brand, your budget range, and what you're trying to achieve. Takes under 2 minutes.</div>
+        </div>
+      </div>
+      <div class="expect-item">
+        <div class="expect-n">02</div>
+        <div>
+          <div class="expect-t">We reach out within 24 hours</div>
+          <div class="expect-b">We'll review your submission and come back with some initial thoughts and a time to speak.</div>
+        </div>
+      </div>
+      <div class="expect-item">
+        <div class="expect-n">03</div>
+        <div>
+          <div class="expect-t">30-minute call — no prep needed</div>
+          <div class="expect-b">We ask about your brand, your goals, and your current marketing. You don't need to prepare anything. Just show up.</div>
+        </div>
+      </div>
+      <div class="expect-item">
+        <div class="expect-n">04</div>
+        <div>
+          <div class="expect-t">Campaign live in 48–72 hours</div>
+          <div class="expect-b">Once you're in, we brief the creator network and your campaign goes live within 48–72 hours of sign-off.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row stagger">
+      <div class="mini-stat"><div class="ms-v">1M+</div><div class="ms-l">Views per $1,000</div></div>
+      <div class="mini-stat"><div class="ms-v">$0.09</div><div class="ms-l">Effective CPM achieved</div></div>
+      <div class="mini-stat"><div class="ms-v">48hrs</div><div class="ms-l">Campaign goes live</div></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="right-col" id="contact-form">
+    <div class="booking-card fade-up">
+      <div class="booking-head">
+        <h2>Get in Touch</h2>
+        <p>We'll respond within 24 hours to book your call.</p>
+      </div>
+      <div class="booking-body">
+
+        <div id="formWrap">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First name</label>
+              <input type="text" class="form-input" placeholder="Aston" id="fname">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last name</label>
+              <input type="text" class="form-input" placeholder="Baker" id="lname">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email address</label>
+            <input type="email" class="form-input" placeholder="you@brand.com" id="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Brand / Company name</label>
+            <input type="text" class="form-input" placeholder="Your brand name" id="brand">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">What type of campaign?</label>
+            <select class="form-select form-input" id="campType">
+              <option value="" disabled selected>Select campaign type</option>
+              <option value="music">Music / Artist</option>
+              <option value="ecomm">E-Commerce / Product</option>
+              <option value="health">Health & Wellness</option>
+              <option value="podcast">Podcast / Media</option>
+              <option value="sports">Sports / PPV / Events</option>
+              <option value="franchise">Franchise / Licensing</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Budget range</label>
+            <select class="form-select form-input" id="budget">
+              <option value="" disabled selected>Select a range</option>
+              <option value="1k">$1,000 (Starter)</option>
+              <option value="2.5k">$2,500 (Growth — recommended)</option>
+              <option value="5k">$5,000 (Scale)</option>
+              <option value="5k+">$5,000+ (Custom)</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tell us about your brand & goals</label>
+            <textarea class="form-textarea" placeholder="What do you sell? What are you trying to achieve? Any context helps..." id="message"></textarea>
+          </div>
+
+          <button class="submit-btn" onclick="submitForm()">Send message →</button>
+          <p class="form-note">No pitch. No pressure. We'll tell you honestly if we think this is a fit.</p>
+
+          <div class="or-divider">
+            <div class="or-line"></div>
+            <div class="or-text">or book directly</div>
+            <div class="or-line"></div>
+          </div>
+
+          <!-- SWAP with your actual Calendly link -->
+          <a href="https://calendly.com/YOURLINK" class="direct-book" target="_blank">
+            📅 Book a call on Calendly →
+          </a>
+        </div>
+
+        <div class="form-success" id="formSuccess">
+          <div style="font-size:48px;margin-bottom:16px;">✅</div>
+          <h3>Message received!</h3>
+          <p>We'll be in touch within 24 hours to set up your call. Keep an eye on your inbox.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRICING -->
+<div class="pricing-section">
+<div class="pricing-inner">
+  <div class="section-eyebrow fade-up">Pricing</div>
+  <h2 class="fade-up" style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.12;margin-bottom:10px;">Simple, transparent<br><em style="font-style:normal;color:var(--g);">campaign tiers.</em></h2>
+  <p class="fade-up" style="font-size:16px;color:var(--t2);max-width:500px;line-height:1.7;">All tiers use $1 RPM. Every dollar you put in is guaranteed to deliver views. One viral clip can't drain your budget.</p>
+
+  <div class="pricing-grid stagger">
+
+    <div class="pricing-card">
+      <div class="pricing-head">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-budget">$1,000 campaign budget</div>
+      </div>
+      <div class="pricing-body">
+        <div class="pricing-row"><span class="pk">RPM rate</span><span class="pv">$1.00</span></div>
+        <div class="pricing-row"><span class="pk">Guaranteed paid views</span><span class="pv">1M+</span></div>
+        <div class="pricing-row"><span class="pk">Min. view threshold</span><span class="pv">2,500</span></div>
+        <div class="pricing-row"><span class="pk">Payout cap per clip</span><span class="pv">$150</span></div>
+        <div class="pricing-row"><span class="pk">Ad account risk</span><span class="pv" style="color:var(--g);">Zero</span></div>
+        <div class="pricing-highlight">Best for testing the market and validating your messaging before committing more budget.</div>
+      </div>
+    </div>
+
+    <div class="pricing-card rec">
+      <div class="rec-badge">★ Recommended</div>
+      <div class="pricing-head">
+        <div class="pricing-name">Growth</div>
+        <div class="pricing-budget">$2,500 campaign budget</div>
+      </div>
+      <div class="pricing-body">
+        <div class="pricing-row"><span class="pk">RPM rate</span><span class="pv">$1.00</span></div>
+        <div class="pricing-row"><span class="pk">Guaranteed paid views</span><span class="pv">2.5M+</span></div>
+        <div class="pricing-row"><span class="pk">Min. view threshold</span><span class="pv">2,500</span></div>
+        <div class="pricing-row"><span class="pk">Payout cap per clip</span><span class="pv">$200</span></div>
+        <div class="pricing-row"><span class="pk">Ad account risk</span><span class="pv">Zero</span></div>
+        <div class="pricing-highlight">Our recommended starting point. Enough volume to build real brand awareness and meaningful traffic — while still learning what works before scaling.</div>
+      </div>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-head">
+        <div class="pricing-name">Scale</div>
+        <div class="pricing-budget">$5,000 campaign budget</div>
+      </div>
+      <div class="pricing-body">
+        <div class="pricing-row"><span class="pk">RPM rate</span><span class="pv">$1.00</span></div>
+        <div class="pricing-row"><span class="pk">Guaranteed paid views</span><span class="pv">5M+</span></div>
+        <div class="pricing-row"><span class="pk">Min. view threshold</span><span class="pv">5,000</span></div>
+        <div class="pricing-row"><span class="pk">Payout cap per clip</span><span class="pv">$300</span></div>
+        <div class="pricing-row"><span class="pk">Ad account risk</span><span class="pv" style="color:var(--g);">Zero</span></div>
+        <div class="pricing-highlight">Best for dominating a conversation. Use this when you have proven messaging and you're ready to flood the market.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- PAYMENT OPTIONS -->
+<div class="payment-section">
+  <div class="section-eyebrow fade-up">Payment Options</div>
+  <h2 class="fade-up" style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,2.8vw,38px);font-weight:800;letter-spacing:-.8px;line-height:1.12;margin-bottom:8px;">Two ways to<br><em style="font-style:normal;color:var(--g);">get started.</em></h2>
+
+  <div class="payment-grid stagger">
+    <div class="payment-card">
+      <div class="payment-icon">💳</div>
+      <div class="payment-t">Pay in Full</div>
+      <div class="payment-b">Fund the full campaign budget upfront in a single payment. Simplest option — one transaction, campaign goes live immediately.</div>
+    </div>
+    <div class="payment-card">
+      <div class="payment-icon">📅</div>
+      <div class="payment-t">Finance via Klarna</div>
+      <div class="payment-b">Spread the cost across <strong>3 monthly payments</strong> at no interest. A $2,500 Growth campaign becomes ~$833/month. Less than most brands spend on a single Meta ad set.</div>
+    </div>
+  </div>
+
+  <div class="refund-banner fade-up">
+    <div class="refund-icon">🔒</div>
+    <div>
+      <div class="refund-t">Full refund if we don't deliver</div>
+      <div class="refund-b">If we don't hit the agreed minimum view threshold, you get your money back in full. The risk sits with us — not with you. There is no scenario where you spend money and get nothing.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="nav-logo-mark">+</div>clip smart</div>
+        <p>Performance UGC campaigns that pay for themselves. You only pay when your content performs.</p>
+      </div>
+      <div>
+        <div class="footer-col-h">Company</div>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="how-it-works.html" class="footer-link">How It Works</a>
+          <a href="case-studies.html" class="footer-link">Case Studies</a>
+          <a href="brands.html" class="footer-link">Brands</a>
+          <a href="creator-network.html" class="footer-link">Creators</a>
+          <a href="work-with-us.html" class="footer-link">Work With Us</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-h">Campaign Types</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Music &amp; Artists</a>
+          <a href="#" class="footer-link">E-Commerce</a>
+          <a href="#" class="footer-link">Health &amp; Wellness</a>
+          <a href="#" class="footer-link">Podcasts &amp; Media</a>
+          <a href="#" class="footer-link">Sports &amp; Events</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-h">Get Started</div>
+        <div class="footer-links">
+          <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener" class="footer-link">Book a Call</a>
+          <a href="roi-calculator.html" class="footer-link">ROI Calculator</a>
+          <a href="case-studies.html" class="footer-link">See Results</a>
+          <a href="work-with-us.html" class="footer-link">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 ClipSmart. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+      <div>Performance-First Creator Marketing</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+async function submitForm(){
+  const req=['fname','lname','email','brand'];
+  let ok=true;
+  req.forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    if(!el.value.trim()){el.style.borderColor='#E74C3C';ok=false;}
+    else el.style.borderColor='';
+  });
+  if(!ok)return;
+  var btn=document.querySelector('.submit-btn');
+  btn.textContent='Sending...';btn.disabled=true;
+  var data={
+    name:document.getElementById('fname').value.trim()+' '+document.getElementById('lname').value.trim(),
+    email:document.getElementById('email').value.trim(),
+    brand:document.getElementById('brand').value.trim(),
+    campaign:document.getElementById('campType')?document.getElementById('campType').value:'',
+    budget:document.getElementById('budget')?document.getElementById('budget').value:'',
+    message:document.getElementById('message')?document.getElementById('message').value.trim():'',
+    _subject:'New ClipSmart Enquiry — '+document.getElementById('brand').value.trim()
+  };
+  try{
+    var res=await fetch('https://formspree.io/f/xpwrjqdv',{
+      method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(data)
+    });
+    if(res.ok){
+      document.getElementById('formWrap').style.display='none';
+      document.getElementById('formSuccess').classList.add('show');
+    }else{
+      btn.textContent='Send message →';btn.disabled=false;
+      alert('Something went wrong. Please email sales@clipsmart.co.uk directly.');
+    }
+  }catch(e){
+    btn.textContent='Send message →';btn.disabled=false;
+    alert('Could not send. Please email sales@clipsmart.co.uk directly.');
+  }
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up,.stagger').forEach(el => obs.observe(el));
+// Fallback visibility
+setTimeout(function(){document.querySelectorAll('.fade-up,.stagger>*').forEach(function(el){el.classList.add('visible');});},150);
+</script>
+
+<script>
+(function(){
+  var btn=document.getElementById('mobMenuBtn');
+  var drawer=document.getElementById('mobDrawer');
+  if(!btn||!drawer)return;
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();btn.classList.toggle('open');drawer.classList.toggle('open');
+  });
+  document.addEventListener('click',function(e){
+    if(!drawer.contains(e.target)&&!btn.contains(e.target)){
+      btn.classList.remove('open');drawer.classList.remove('open');
+    }
+  });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){
+      btn.classList.remove('open');drawer.classList.remove('open');
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){btn.classList.remove('open');drawer.classList.remove('open');}
+  });
+})();
+</script>
+</body>
+</html>
