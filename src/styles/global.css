@@ -32,6 +32,9 @@ body {
   font-family: 'Instrument Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* Support iPhone notch / home indicator */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 a { text-decoration: none; color: inherit; }
 img { display: block; max-width: 100%; }
@@ -190,7 +193,7 @@ body::before {
 /* ═══════════════════════════════
    SHARED SECTION STYLES
 ═══════════════════════════════ */
-.section { padding: 100px var(--pad); max-width: var(--max); margin: 0 auto; position: relative; z-index: 1; }
+.section { padding: 88px var(--pad); max-width: var(--max); margin: 0 auto; position: relative; z-index: 1; }
 .section-eyebrow {
   display: flex;
   align-items: center;
@@ -288,7 +291,7 @@ body::before {
 ═══════════════════════════════ */
 .stats-section { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; }
 .stats-inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
-.stat-block { padding: 48px 44px; border-right: 1px solid var(--bd); position: relative; }
+.stat-block { padding: 40px 36px; border-right: 1px solid var(--bd); position: relative; }
 .stat-block:last-child { border-right: none; }
 .stat-block::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
@@ -317,7 +320,7 @@ body::before {
    PAGE HERO (inner pages)
 ═══════════════════════════════ */
 .page-hero {
-  padding: calc(var(--nav-h) + 80px) var(--pad) 80px;
+  padding: calc(var(--nav-h) + 64px) var(--pad) 64px;
   max-width: var(--max);
   margin: 0 auto;
   text-align: center;
@@ -338,7 +341,7 @@ body::before {
 /* ═══════════════════════════════
    CTA SECTION
 ═══════════════════════════════ */
-.cta-section { padding: 0 var(--pad) 100px; max-width: var(--max); margin: 0 auto; position: relative; z-index: 1; }
+.cta-section { padding: 0 var(--pad) 80px; max-width: var(--max); margin: 0 auto; position: relative; z-index: 1; }
 .cta-box {
   background: var(--g-glow);
   border: 1px solid var(--g-bdr);
@@ -376,6 +379,7 @@ body::before {
 .footer {
   border-top: 1px solid var(--bd);
   padding: 52px var(--pad) 32px;
+  padding-bottom: max(32px, env(safe-area-inset-bottom));
   position: relative;
   z-index: 1;
 }
@@ -426,11 +430,13 @@ body::before {
 ═══════════════════════════════ */
 @media (max-width: 900px) {
   :root { --pad: 24px; }
+  .nav { padding: 0 20px; }
   .nav-links, .nav-cta { display: none !important; }
   .mob-menu-btn { display: flex !important; }
 
   /* Footer: 2-col */
   .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .footer { padding: 44px 20px 28px; }
 
   /* Stats: 4 across — compact */
   .stats-inner { grid-template-columns: repeat(4,1fr); }
@@ -457,13 +463,10 @@ body::before {
    TOUCH TARGETS (applied globally)
 ═══════════════════════════════ */
 @media (hover: none) and (pointer: coarse) {
-  /* Minimum 44px touch targets on interactive elements */
   .nav-link, .mob-drawer a { min-height: 44px; display: flex; align-items: center; }
   .btn-primary, .btn-ghost { min-height: 48px; }
   .nav-cta { min-height: 44px; }
-  /* Prevent tap highlight on mobile */
   a, button { -webkit-tap-highlight-color: transparent; }
-  /* Disable hover states that can stick on touch */
   .case-thumb:hover, .cs-card:hover, .niche-card:hover { transform: none; box-shadow: none; }
 }
 
@@ -471,7 +474,11 @@ body::before {
    RESPONSIVE — 768px (tablet portrait / large phone)
 ═══════════════════════════════ */
 @media (max-width: 768px) {
-  :root { --pad: 18px; }
+  :root { --pad: 20px; }
+
+  /* Nav — fixed horizontal padding regardless of --pad */
+  .nav { padding: 0 18px; }
+  .mob-drawer { padding: 10px 16px 20px; }
 
   .section { padding: 40px var(--pad) !important; }
   .section-eyebrow { margin-bottom: 10px !important; }
@@ -484,7 +491,7 @@ body::before {
 
   /* Stats: 4 across — slim row */
   .stats-inner { grid-template-columns: repeat(4,1fr) !important; }
-  .stat-block { border-right: 1px solid var(--bd) !important; border-bottom: none !important; padding: 16px 6px !important; }
+  .stat-block { border-right: 1px solid var(--bd) !important; border-bottom: none !important; padding: 18px 8px !important; }
   .stat-block:last-child { border-right: none !important; }
   .stat-block:nth-child(odd) { border-right: 1px solid var(--bd) !important; }
   .stat-v { font-size: 20px !important; }
@@ -492,34 +499,57 @@ body::before {
   .stat-s { display: none !important; }
 
   /* CTA */
-  .cta-box { flex-direction: column !important; text-align: center !important; padding: 24px 16px !important; gap: 14px !important; }
+  .cta-box { flex-direction: column !important; text-align: center !important; padding: 24px 20px !important; gap: 14px !important; }
   .cta-actions { align-items: center !important; }
   .cta-section { padding: 0 var(--pad) 40px !important; }
   .cta-h { font-size: clamp(19px,5vw,26px) !important; }
   .cta-p { font-size: 13px !important; }
+
+  /* Footer */
+  .footer { padding: 36px 20px 24px !important; }
+  .footer-top { gap: 24px !important; }
+  .footer-brand p { font-size: 12.5px !important; max-width: 100% !important; }
+
+  /* Ticker */
+  .ticker-item { font-size: 12.5px !important; padding: 0 20px !important; gap: 16px !important; }
 }
 
 /* ═══════════════════════════════
    RESPONSIVE — 480px (small phones)
 ═══════════════════════════════ */
 @media (max-width: 480px) {
-  :root { --pad: 14px; }
+  :root { --pad: 16px; }
+
+  /* Nav & drawer — guaranteed breathing room */
+  .nav { padding: 0 16px; }
+  .mob-drawer { padding: 10px 14px 18px; }
 
   .section { padding: 32px var(--pad) !important; }
   .page-hero { padding: calc(var(--nav-h) + 20px) var(--pad) 20px !important; }
   .page-hero h1 { font-size: clamp(20px,7vw,28px) !important; }
   .section-h2 { font-size: clamp(18px,6.5vw,24px) !important; }
 
-  /* Stats: 4 across — very tight */
+  /* Stats: 4 across — compact with proper side padding */
   .stats-inner { grid-template-columns: repeat(4,1fr) !important; }
-  .stat-block { padding: 12px 3px !important; }
+  .stat-block { padding: 14px 6px !important; }
   .stat-v { font-size: 16px !important; }
   .stat-l { font-size: 8.5px !important; }
 
   /* Buttons */
   .btn-primary { font-size: 14px !important; padding: 12px 18px !important; }
+  .btn-ghost { font-size: 13.5px !important; padding: 11px 16px !important; }
 
-  /* Footer: 2-col on small phones */
-  .footer-top { grid-template-columns: 1fr 1fr !important; gap: 18px !important; }
+  /* Footer */
+  .footer { padding: 28px 16px 20px !important; }
+  .footer-top { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
   .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+  .footer-col-h { font-size: 10px !important; }
+  .footer-links a { font-size: 12.5px !important; }
+
+  /* CTA */
+  .cta-box { padding: 20px 16px !important; border-radius: 16px !important; }
+  .cta-section { padding: 0 var(--pad) 32px !important; }
+
+  /* Ticker */
+  .ticker-item { font-size: 12px !important; padding: 0 14px !important; }
 }

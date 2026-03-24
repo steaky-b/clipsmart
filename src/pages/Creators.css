@@ -122,9 +122,9 @@
 }
 
 @media (max-width: 480px) {
-  /* Stat strip — 4 across, very tight */
+  /* Stat strip — 4 across, compact */
   .creators-stat-strip { grid-template-columns: repeat(4,1fr) !important; }
-  .cstat { padding: 10px 3px !important; }
+  .cstat { padding: 12px 5px !important; }
   .cstat-v { font-size: 15px !important; }
   .cstat-l { font-size: 9px !important; line-height: 1.3 !important; }
 
