@@ -107,10 +107,21 @@
   .cs-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 600px) {
-  .csf-metrics { grid-template-columns: 1fr 1fr; }
-  .cs-modal { max-height: 95vh; }
-  .cs-modal-head { padding: 32px 24px 24px; }
-  .cs-modal-body { padding: 24px 24px 28px; }
+@media (max-width: 768px) {
+  .cs-featured { padding: 24px 20px !important; gap: 24px !important; }
+  .csf-metrics { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .csfm-val { font-size: 22px !important; }
+  .cs-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .cs-filter { gap: 6px; }
+  .cs-ftab { font-size: 12px !important; padding: 6px 12px !important; }
+}
+
+@media (max-width: 480px) {
+  .cs-modal-overlay { padding: 12px; align-items: flex-end; }
+  .cs-modal { max-height: 92vh; border-radius: 16px 16px 0 0; }
+  .cs-modal-head { padding: 28px 20px 20px; }
+  .cs-modal-body { padding: 20px 20px 24px; }
   .csm-results { grid-template-columns: 1fr 1fr; }
+  .csm-result-v { font-size: 22px !important; }
+  .csm-name { font-size: 24px !important; }
 }

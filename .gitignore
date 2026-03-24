@@ -13,6 +13,14 @@ dist-ssr
 archive/
 *.local
 
+# Legacy HTML files
+brands.html
+case-studies.html
+creator-network.html
+how-it-works.html
+roi-calculator.html
+work-with-us.html
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

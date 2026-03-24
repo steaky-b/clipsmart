@@ -60,7 +60,16 @@
   .hiw-hub-card { padding: 36px 28px; }
 }
 
+@media (max-width: 768px) {
+  .hiw-hub-section { padding: 0 var(--pad) 44px !important; }
+  .hiw-hub-card { padding: 28px 22px !important; }
+  .hiw-hub-h { font-size: clamp(24px,6vw,34px) !important; }
+  .hiw-hub-icon { font-size: 32px !important; margin-bottom: 14px !important; }
+  .hiw-hub-p { font-size: 14px !important; margin-bottom: 24px !important; }
+}
+
 @media (max-width: 480px) {
   .hiw-hub-stats { grid-template-columns: repeat(3,1fr); gap: 8px; }
-  .hiw-hub-stat-v { font-size: 18px; }
+  .hiw-hub-stat-v { font-size: 17px; }
+  .hiw-hub-stat-l { font-size: 10px; }
 }

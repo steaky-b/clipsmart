@@ -68,10 +68,27 @@
 @media (max-width: 900px) {
   .cc-step { grid-template-columns: 1fr; gap: 36px; padding: 60px var(--pad); }
   .cc-step.even .cc-step-visual { order: 0; }
-  .cc-mechanics-grid { grid-template-columns: 1fr; }
+  .cc-mechanics-grid { grid-template-columns: 1fr 1fr; }
   .cc-compare-head { grid-template-columns: 1fr 1fr; }
   .cc-compare-head > div:first-child { display: none; }
   .cc-compare-row { grid-template-columns: 1fr 1fr; }
   .cc-compare-label { display: none; }
   .cc-compare-them { border-right: 1px solid var(--bd); }
+}
+
+@media (max-width: 768px) {
+  .cc-step { padding: 44px var(--pad) !important; gap: 28px !important; }
+  .cc-step-h { font-size: clamp(22px,5.5vw,30px) !important; }
+  .cc-step-p { font-size: 14px !important; }
+  .cc-mechanics-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .cc-mechanic-card { padding: 24px 20px !important; }
+  .cc-visual-placeholder { aspect-ratio: 16/9 !important; font-size: 48px !important; }
+}
+
+@media (max-width: 480px) {
+  .cc-compare-head { grid-template-columns: 1fr 1fr !important; font-size: 11px !important; }
+  .cc-compare-row { grid-template-columns: 1fr 1fr !important; }
+  .cc-compare-them, .cc-compare-us { font-size: 12px !important; padding: 12px !important; }
+  .cc-stat { flex-direction: column; gap: 4px !important; }
+  .cc-stat-v { font-size: 22px !important; }
 }

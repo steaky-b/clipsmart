@@ -67,4 +67,23 @@
   .wwu-inner { grid-template-columns: 1fr; gap: 48px; }
   .wwu-tiers-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
+  .wwu-stats { grid-template-columns: repeat(3,1fr); }
+}
+
+@media (max-width: 768px) {
+  .wwu-section { padding: 24px var(--pad) 56px !important; }
+  .wwu-inner { gap: 36px !important; }
+  .wwu-h { font-size: clamp(24px,6vw,36px) !important; }
+  .booking-head { padding: 24px 24px 20px !important; }
+  .booking-form { padding: 20px 24px 28px !important; }
+  .wwu-stats { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px !important; }
+  .ms { padding: 14px 10px !important; }
+  .ms-v { font-size: 20px !important; }
+}
+
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr !important; }
+  .wwu-stats { grid-template-columns: 1fr !important; gap: 8px !important; }
+  .booking-head { padding: 20px 18px 16px !important; }
+  .booking-form { padding: 16px 18px 24px !important; }
 }

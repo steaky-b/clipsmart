@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 
 const LINKS = [
   { to: '/how-it-works', label: 'How It Works' },
@@ -11,10 +11,11 @@ const LINKS = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false)
+  const { pathname } = useLocation()
 
   useEffect(() => {
     setOpen(false)
-  }, [])
+  }, [pathname])
 
   return (
     <>

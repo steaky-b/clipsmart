@@ -80,8 +80,19 @@
 @media (max-width: 900px) {
   .calc-inner { grid-template-columns: 1fr; }
   .calc-trio { grid-template-columns: repeat(3,1fr); }
+  .calc-section { padding: 24px var(--pad) 80px; }
+}
+
+@media (max-width: 768px) {
+  .calc-section { padding: 16px var(--pad) 56px !important; }
+  .calc-card { padding: 28px 20px !important; }
+  .calc-results { padding: 28px 20px !important; }
+  .calc-savings-val { font-size: clamp(44px,10vw,72px) !important; }
+  .calc-presets { grid-template-columns: repeat(2,1fr) !important; }
 }
 
 @media (max-width: 480px) {
-  .calc-trio { grid-template-columns: 1fr; }
+  .calc-trio { grid-template-columns: 1fr !important; }
+  .ct-val { font-size: 22px !important; }
+  .calc-presets { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
 }
