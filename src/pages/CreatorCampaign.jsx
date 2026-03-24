@@ -114,19 +114,21 @@ export default function CreatorCampaign() {
       <div className="section">
         <div className="section-eyebrow fade-up">Comparison</div>
         <h2 className="section-h2 fade-up">ClipSmart vs everything<br /><em>you've tried before.</em></h2>
-        <div className="cc-compare fade-up">
-          <div className="cc-compare-head">
-            <div />
-            <div className="cc-compare-col-head">Everyone Else</div>
-            <div className="cc-compare-col-head green">ClipSmart</div>
-          </div>
-          {COMPARE.map(({ label, them, us }) => (
-            <div key={label} className="cc-compare-row">
-              <div className="cc-compare-label">{label}</div>
-              <div className="cc-compare-them">{them}</div>
-              <div className="cc-compare-us">{us}</div>
+        <div className="cc-compare-scroll">
+          <div className="cc-compare fade-up">
+            <div className="cc-compare-head">
+              <div />
+              <div className="cc-compare-col-head">Everyone Else</div>
+              <div className="cc-compare-col-head green">ClipSmart</div>
             </div>
-          ))}
+            {COMPARE.map(({ label, them, us }) => (
+              <div key={label} className="cc-compare-row">
+                <div className="cc-compare-label">{label}</div>
+                <div className="cc-compare-them">{them}</div>
+                <div className="cc-compare-us">{us}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

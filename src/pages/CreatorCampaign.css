@@ -53,27 +53,29 @@
 .cc-mechanic-b { font-size: 14px; line-height: 1.7; color: var(--t2); }
 
 /* ═══════════════ COMPARE ═══════════════ */
-.cc-compare { border: 1px solid var(--bd); border-radius: 16px; overflow: hidden; }
-.cc-compare-head { display: grid; grid-template-columns: 180px 1fr 1fr; background: var(--s2); border-bottom: 1px solid var(--bd); }
-.cc-compare-head > div { padding: 14px 24px; font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--t3); }
+.cc-compare-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 16px;
+  border: 1px solid var(--bd);
+}
+.cc-compare { border-radius: 16px; overflow: hidden; min-width: 480px; }
+.cc-compare-head { display: grid; grid-template-columns: 160px 1fr 1fr; background: var(--s2); border-bottom: 1px solid var(--bd); }
+.cc-compare-head > div { padding: 14px 20px; font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--t3); }
 .cc-compare-head > .green { color: var(--g); }
-.cc-compare-row { display: grid; grid-template-columns: 180px 1fr 1fr; border-bottom: 1px solid var(--bd); transition: background .15s; }
+.cc-compare-col-head { }
+.cc-compare-row { display: grid; grid-template-columns: 160px 1fr 1fr; border-bottom: 1px solid var(--bd); transition: background .15s; }
 .cc-compare-row:last-child { border-bottom: none; }
 .cc-compare-row:hover { background: rgba(255,255,255,.015); }
-.cc-compare-label { padding: 18px 24px; font-size: 12px; font-weight: 600; color: var(--t3); background: var(--s2); display: flex; align-items: center; border-right: 1px solid var(--bd); }
-.cc-compare-them { padding: 18px 24px; font-size: 13.5px; color: var(--t3); display: flex; align-items: center; border-right: 1px solid var(--bd); }
-.cc-compare-us { padding: 18px 24px; font-size: 13.5px; color: var(--t1); display: flex; align-items: center; background: rgba(46,204,113,.02); }
+.cc-compare-label { padding: 16px 20px; font-size: 12px; font-weight: 600; color: var(--t3); background: var(--s2); display: flex; align-items: center; border-right: 1px solid var(--bd); }
+.cc-compare-them { padding: 16px 20px; font-size: 13px; color: var(--t3); display: flex; align-items: center; border-right: 1px solid var(--bd); }
+.cc-compare-us { padding: 16px 20px; font-size: 13px; color: var(--t1); display: flex; align-items: center; background: rgba(46,204,113,.02); }
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width: 900px) {
   .cc-step { grid-template-columns: 1fr; gap: 36px; padding: 60px var(--pad); }
   .cc-step.even .cc-step-visual { order: 0; }
   .cc-mechanics-grid { grid-template-columns: 1fr 1fr; }
-  .cc-compare-head { grid-template-columns: 1fr 1fr; }
-  .cc-compare-head > div:first-child { display: none; }
-  .cc-compare-row { grid-template-columns: 1fr 1fr; }
-  .cc-compare-label { display: none; }
-  .cc-compare-them { border-right: 1px solid var(--bd); }
 }
 
 @media (max-width: 768px) {
@@ -83,12 +85,10 @@
   .cc-mechanics-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
   .cc-mechanic-card { padding: 24px 20px !important; }
   .cc-visual-placeholder { aspect-ratio: 16/9 !important; font-size: 48px !important; }
+  /* compare table scrolls — keep min-width, let parent scroll */
 }
 
 @media (max-width: 480px) {
-  .cc-compare-head { grid-template-columns: 1fr 1fr !important; font-size: 11px !important; }
-  .cc-compare-row { grid-template-columns: 1fr 1fr !important; }
-  .cc-compare-them, .cc-compare-us { font-size: 12px !important; padding: 12px !important; }
   .cc-stat { flex-direction: column; gap: 4px !important; }
   .cc-stat-v { font-size: 22px !important; }
 }

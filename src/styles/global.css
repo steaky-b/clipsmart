@@ -263,6 +263,7 @@ body::before {
   overflow: hidden;
   position: relative;
   z-index: 1;
+  -webkit-overflow-scrolling: touch;
 }
 .ticker { display: flex; gap: 0; animation: ticker 28s linear infinite; }
 .ticker:hover { animation-play-state: paused; }
@@ -448,6 +449,20 @@ body::before {
   /* CTA */
   .cta-box { flex-direction: column; padding: 40px 32px; gap: 24px; text-align: center; }
   .cta-actions { align-items: center; }
+}
+
+/* ═══════════════════════════════
+   TOUCH TARGETS (applied globally)
+═══════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+  /* Minimum 44px touch targets on interactive elements */
+  .nav-link, .mob-drawer a { min-height: 44px; display: flex; align-items: center; }
+  .btn-primary, .btn-ghost { min-height: 48px; }
+  .nav-cta { min-height: 44px; }
+  /* Prevent tap highlight on mobile */
+  a, button { -webkit-tap-highlight-color: transparent; }
+  /* Disable hover states that can stick on touch */
+  .case-thumb:hover, .cs-card:hover, .niche-card:hover { transform: none; box-shadow: none; }
 }
 
 /* ═══════════════════════════════

@@ -219,25 +219,27 @@ export default function Home() {
       <div className="section why-section">
         <div className="section-eyebrow fade-up">Why Different</div>
         <h2 className="section-h2 fade-up">ClipSmart vs <em>everything<br />you've tried before.</em></h2>
-        <div className="why-strip fade-up">
-          <div className="why-header-row">
-            <div className="why-header-cell" />
-            <div className="why-header-cell">Everyone Else</div>
-            <div className="why-header-cell hl">ClipSmart</div>
-          </div>
-          {WHY_ROWS.map(({ them, us }, i) => (
-            <div key={i} className="why-row">
-              <div className="why-row-num">{String(i + 1).padStart(2, '0')}</div>
-              <div className="why-row-them">
-                <span className="why-badge-bad">✕</span>
-                <span className="why-row-them-t">{them}</span>
-              </div>
-              <div className="why-row-us">
-                <span className="why-badge-good">✓</span>
-                <span className="why-row-us-t">{us}</span>
-              </div>
+        <div className="why-scroll-wrap">
+          <div className="why-strip fade-up">
+            <div className="why-header-row">
+              <div className="why-header-cell" />
+              <div className="why-header-cell">Everyone Else</div>
+              <div className="why-header-cell hl">ClipSmart</div>
             </div>
-          ))}
+            {WHY_ROWS.map(({ them, us }, i) => (
+              <div key={i} className="why-row">
+                <div className="why-row-num">{String(i + 1).padStart(2, '0')}</div>
+                <div className="why-row-them">
+                  <span className="why-badge-bad">✕</span>
+                  <span className="why-row-them-t">{them}</span>
+                </div>
+                <div className="why-row-us">
+                  <span className="why-badge-good">✓</span>
+                  <span className="why-row-us-t">{us}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
