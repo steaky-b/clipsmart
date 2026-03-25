@@ -1,7 +1,5 @@
-Add real brand images to case studies and home carousel
+Layout and typography fixes
 
-- Add 5 brand images to public/: NHC Murda 60x, ProdByCPKShawn, Growing Up Italian, Epigenetics Supplements, QRUNITUP
-- CaseStudies: real background images on grid cards, featured section, and modal headers
-- CaseStudies: update brand names (Epigenetics Supplements, Growing Up Italian, QRUNITUP)
-- Home: carousel cards show real brand images, logo bar updated with all 6 brands
-- CSS: image overlay styles for cards and modal headers with gradient fade
+- Creator section: max-width container centres phone cards, cards scale with viewport using clamp
+- HowItWorks: title now near top of page matching other pages, cards smaller with reduced padding and font sizes
+- CaseStudies: card category and name labels white with black text-shadow for readability over photos, darker overlay gradient

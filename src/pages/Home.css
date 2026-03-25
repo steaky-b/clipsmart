@@ -157,7 +157,7 @@
   font-size: 16px; line-height: 1.75; color: var(--t1);
   max-width: 580px; margin-top: 10px;
 }
-.creator-phones-wrap { overflow: hidden; }
+.creator-phones-wrap { overflow: hidden; max-width: var(--max); margin: 0 auto; }
 .creator-phones {
   display: flex; gap: 20px;
   padding: 8px var(--pad) 16px;
@@ -168,7 +168,7 @@
 .creator-phones::-webkit-scrollbar { display: none; }
 .phone-card {
   flex-shrink: 0;
-  width: 200px;
+  width: clamp(200px, 22vw, 260px);
 }
 .phone-frame {
   border-radius: 28px;
