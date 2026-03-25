@@ -42,12 +42,12 @@ const STATS = [
 ]
 
 const CASES = [
-  { cat: 'E-Commerce', name: 'Gains Nutrition', views: '4.2M views', spend: '$1,500 spend', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
-  { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', spend: '$1,000 spend · $0.09 CPM', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
-  { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', spend: '$2,500 spend · 1,456 clips', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
-  { cat: 'Podcast', name: 'Bussin With The Boys', views: '3.8M views', spend: '$500 spend · viral clip', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
-  { cat: 'Sports', name: 'Base Body Works', views: '2.1M views', spend: '$750 spend', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
-  { cat: 'Music', name: 'Artist Campaign', views: '1.9M views', spend: '$500 spend', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
+  { cat: 'E-Commerce', name: 'Epigenetics Supplements', views: '4.2M views', spend: '$1,500 spend', img: '/cs-epigenetics.png', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
+  { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', spend: '$1,000 spend · $0.09 CPM', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
+  { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', spend: '$2,500 spend · 1,456 clips', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
+  { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', spend: '$500 spend · viral clip', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
+  { cat: 'Health & Wellness', name: 'Base Body Works', views: '2.1M views', spend: '$750 spend', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
+  { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', spend: '$500 spend', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
 ]
 
 const HOW_STEPS = [
@@ -166,7 +166,7 @@ export default function Home() {
           <span className="logo-bar-label">Brands we've worked with</span>
           <div className="logo-bar-sep" />
           <div className="logo-items">
-            {['Gains Nutrition', 'Base Body Works', 'NHC Murda 60x', 'ProdByCPKShawn', 'Bussin With The Boys'].map((name) => (
+            {['Epigenetics Supplements', 'Base Body Works', 'NHC Murda 60x', 'ProdByCPKShawn', 'Growing Up Italian', 'QRUNITUP'].map((name) => (
               <div key={name} className="logo-item">
                 <span className="logo-item-text">{name}</span>
               </div>
@@ -220,7 +220,13 @@ export default function Home() {
           <div className="cases-track">
             {[...CASES, ...CASES].map((c, i) => (
               <div key={i} className="case-thumb">
-                <div className="case-img" style={{ background: c.gradient }}>
+                <div
+                  className="case-img"
+                  style={c.img
+                    ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
+                    : { background: c.gradient }
+                  }
+                >
                   <div className="case-img-overlay" />
                 </div>
                 <div className="case-meta">

@@ -1,9 +1,7 @@
-Site improvements: hero, HIW lock, creator section, guarantee, CPM chart, form fix
+Add real brand images to case studies and home carousel
 
-- Home: centred column hero, performance UGC title, video below text, platform chips
-- Home: creator content phone-frame section and guarantee strip
-- Home: stats updated to 2.3B+ views
-- HowItWorks: viewport-locked, CTA removed, footer hidden
-- CaseStudies: featured first, 2.3B+ combined views, different niches stat
-- WorkWithUs: real Netlify Forms fetch POST with loading and error handling
-- ROICalculator: live CPM comparison bar chart vs Meta, Google, TV
+- Add 5 brand images to public/: NHC Murda 60x, ProdByCPKShawn, Growing Up Italian, Epigenetics Supplements, QRUNITUP
+- CaseStudies: real background images on grid cards, featured section, and modal headers
+- CaseStudies: update brand names (Epigenetics Supplements, Growing Up Italian, QRUNITUP)
+- Home: carousel cards show real brand images, logo bar updated with all 6 brands
+- CSS: image overlay styles for cards and modal headers with gradient fade

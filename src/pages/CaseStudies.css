@@ -1,3 +1,48 @@
+/* ═══════════════ FEATURED CARD IMAGE ═══════════════ */
+.csf-img {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 16px;
+  border: 1px solid var(--bd2);
+  margin-bottom: 16px;
+}
+
+/* ═══════════════ CARD VISUAL IMAGE OVERLAY ═══════════════ */
+.cs-card-visual.has-img {
+  min-height: 160px;
+}
+.cs-card-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.15) 0%, rgba(0,0,0,.7) 100%);
+  border-radius: 0;
+}
+
+/* Modal image overlay */
+.cs-modal-head.has-img {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+.cs-modal-head.has-img::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.2) 0%, rgba(0,0,0,.75) 100%);
+  border-radius: 20px 20px 0 0;
+}
+.cs-modal-head.has-img .csm-cat,
+.cs-modal-head.has-img .csm-name,
+.cs-modal-head.has-img .csm-sub {
+  position: relative;
+  z-index: 1;
+}
+
 /* ═══════════════ FEATURED CARD ═══════════════ */
 .cs-featured {
   background: var(--s1); border: 1px solid var(--g-bdr); border-radius: 20px;

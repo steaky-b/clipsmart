@@ -3,13 +3,14 @@ import './CaseStudies.css'
 
 const CAMPAIGNS = [
   {
-    id: 'gains', cat: 'ecommerce', catLabel: 'E-Commerce', name: 'Gains Nutrition', subtitle: 'Supplement Brand',
+    id: 'gains', cat: 'ecommerce', catLabel: 'E-Commerce', name: 'Epigenetics Supplements', subtitle: 'GLP-1 Plus',
     brief: 'Supplement brand needing authentic product awareness without relying on influencer flat fees or traditional ads. Goal was DTC sales through organic creator content.',
     results: [
       { v: '4.2M', l: 'Total views' }, { v: '$1,500', l: 'Total spend' },
       { v: '$0.36', l: 'Effective CPM' }, { v: '487', l: 'Creator clips' },
     ],
     highlight: '4.2M organic views at a fraction of paid ad cost.',
+    img: '/cs-epigenetics.png',
     gradient: 'linear-gradient(135deg,#0d1a1a,#050a0a)',
   },
   {
@@ -20,6 +21,7 @@ const CAMPAIGNS = [
       { v: '$0.09', l: 'Effective CPM' }, { v: '1,062', l: 'Creator clips' },
     ],
     highlight: '$0.09 effective CPM — the lowest we\'ve ever achieved.',
+    img: '/cs-cpkshawn.png',
     gradient: 'linear-gradient(135deg,#0d1a0d,#050a05)',
   },
   {
@@ -31,16 +33,18 @@ const CAMPAIGNS = [
     ],
     highlight: 'Campaign hit 12M views using only 60% of the budget.',
     quote: 'Went from 7 posts on TikTok to 1,456. From under 1,000 organic views to over 12 million — and we\'d only spent 60% of the budget.',
+    img: '/cs-nhc-murda.png',
     gradient: 'linear-gradient(135deg,#0d0d1a,#05050a)',
   },
   {
-    id: 'bussin', cat: 'podcast', catLabel: 'Podcast', name: 'Bussin With The Boys', subtitle: 'Sports Podcast',
-    brief: 'High-profile sports podcast looking to grow short-form clip virality on TikTok and YouTube Shorts without a large production budget.',
+    id: 'bussin', cat: 'podcast', catLabel: 'Podcast', name: 'Growing Up Italian', subtitle: 'Comedy Podcast',
+    brief: 'High-profile comedy podcast looking to grow short-form clip virality on TikTok and YouTube Shorts without a large production budget.',
     results: [
       { v: '3.8M', l: 'Total views' }, { v: '$500', l: 'Total spend' },
       { v: '$0.13', l: 'Effective CPM' }, { v: '312', l: 'Creator clips' },
     ],
     highlight: '3.8M views from a $500 test budget.',
+    img: '/cs-growing-up-italian.png',
     gradient: 'linear-gradient(135deg,#1a0d0d,#0a0505)',
   },
   {
@@ -54,13 +58,14 @@ const CAMPAIGNS = [
     gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
   },
   {
-    id: 'client3', cat: 'sports', catLabel: 'Sports / Events', name: 'Sports Campaign', subtitle: 'PPV Event',
-    brief: 'PPV event promotion with targeted creator posts driving awareness and ticket interest across TikTok and Instagram in the weeks leading up to the event.',
+    id: 'qrunitup', cat: 'music', catLabel: 'Music', name: 'QRUNITUP', subtitle: '"DFWM"',
+    brief: 'Music artist promoting a new single. Goal: mass TikTok reach to drive streams and chart discovery — zero ad spend, purely performance-based UGC.',
     results: [
       { v: '1.9M', l: 'Total views' }, { v: '$500', l: 'Total spend' },
       { v: '$0.26', l: 'Effective CPM' }, { v: '178', l: 'Creator clips' },
     ],
-    highlight: '1.9M views driving event awareness and ticket interest.',
+    highlight: '1.9M views driving streams and artist discovery.',
+    img: '/cs-qrunitup.png',
     gradient: 'linear-gradient(135deg,#1a0d1a,#0a050a)',
   },
 ]
@@ -102,10 +107,13 @@ export default function CaseStudies() {
       <div className="section">
         <div className="section-eyebrow fade-up">Most Talked About</div>
         <h2 className="section-h2 fade-up">Our most talked-about <em>result.</em></h2>
-        <div className="cs-featured fade-up">
+          <div className="cs-featured fade-up">
           <div className="csf-left">
             <div className="csf-tag">Music · Featured Campaign</div>
-            <div className="csf-logo">NHC</div>
+            {featured.img
+              ? <img src={featured.img} alt={featured.name} className="csf-img" />
+              : <div className="csf-logo">NHC</div>
+            }
             <div className="csf-name">{featured.name}</div>
             <div className="csf-sub">Music Artist · {featured.subtitle}</div>
             <p className="csf-desc">
@@ -159,7 +167,14 @@ export default function CaseStudies() {
         <div className="cs-grid">
           {filtered.map(c => (
             <button key={c.id} className="cs-card fade-up" onClick={() => setActiveModal(c.id)}>
-              <div className="cs-card-visual" style={{ background: c.gradient }}>
+              <div
+                className={'cs-card-visual' + (c.img ? ' has-img' : '')}
+                style={c.img
+                  ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
+                  : { background: c.gradient }
+                }
+              >
+                {c.img && <div className="cs-card-visual-overlay" />}
                 <div className="cs-card-cat">{c.catLabel}</div>
                 <div className="cs-card-name">{c.name}</div>
               </div>
@@ -185,7 +200,13 @@ export default function CaseStudies() {
         <div className="cs-modal-overlay" onClick={() => setActiveModal(null)}>
           <div className="cs-modal" onClick={e => e.stopPropagation()}>
             <button className="cs-modal-close" onClick={() => setActiveModal(null)} aria-label="Close">×</button>
-            <div className="cs-modal-head" style={{ background: modalData.gradient }}>
+            <div
+              className={'cs-modal-head' + (modalData.img ? ' has-img' : '')}
+              style={modalData.img
+                ? { backgroundImage: `url(${modalData.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
+                : { background: modalData.gradient }
+              }
+            >
               <div className="csm-cat">{modalData.catLabel}</div>
               <div className="csm-name">{modalData.name}</div>
               <div className="csm-sub">{modalData.subtitle}</div>
