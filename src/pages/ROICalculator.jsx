@@ -1,6 +1,46 @@
 import { useState, useMemo } from 'react'
 import './ROICalculator.css'
 
+const STATIC_CHANNELS = [
+  { label: 'Meta Ads', cpm: 10, color: '#4A90E2' },
+  { label: 'Google Display', cpm: 8, color: '#E8A838' },
+  { label: 'TV / Streaming', cpm: 25, color: '#9B59B6' },
+]
+
+function CPMChart({ rpm }) {
+  const clipsmart = rpm
+  const maxCpm = Math.max(clipsmart, ...STATIC_CHANNELS.map(c => c.cpm))
+  const allBars = [
+    { label: 'ClipSmart', cpm: clipsmart, color: '#2ECC71', highlight: true },
+    ...STATIC_CHANNELS,
+  ]
+  return (
+    <div className="cpm-bars">
+      {allBars.map(({ label, cpm, color, highlight }) => {
+        const pct = (cpm / maxCpm) * 100
+        const savings = highlight ? null : Math.round(((cpm - clipsmart) / cpm) * 100)
+        return (
+          <div key={label} className={'cpm-bar-col' + (highlight ? ' cpm-bar-col--hl' : '')}>
+            <div className="cpm-bar-amount" style={{ color: highlight ? color : 'var(--t1)' }}>
+              ${cpm}<span className="cpm-bar-unit"> CPM</span>
+            </div>
+            <div className="cpm-bar-track">
+              <div
+                className="cpm-bar-fill"
+                style={{ height: pct + '%', background: color, opacity: highlight ? 1 : 0.45 }}
+              />
+            </div>
+            <div className="cpm-bar-name">{label}</div>
+            {!highlight && savings > 0 && (
+              <div className="cpm-bar-save">{savings}% more<br />expensive</div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 const PRESETS = [
   { label: 'Starter', budget: 1000 },
   { label: 'Growth', budget: 2500 },
@@ -126,6 +166,15 @@ export default function ROICalculator() {
                 <div className="ct-lbl">Paid ads equivalent</div>
                 <div className="ct-sub">At avg. $10 CPM</div>
               </div>
+            </div>
+
+            {/* CPM Comparison Bar Chart */}
+            <div className="cpm-chart">
+              <div className="cpm-chart-head">
+                <div className="cpm-chart-label">CPM Comparison</div>
+                <div className="cpm-chart-sub">Cost per 1,000 views — ClipSmart vs the alternatives</div>
+              </div>
+              <CPMChart rpm={rpm} />
             </div>
 
             <a

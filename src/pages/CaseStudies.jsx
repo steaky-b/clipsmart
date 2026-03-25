@@ -75,10 +75,10 @@ const CATS = [
 ]
 
 const OVERVIEW_STATS = [
-  { v: '25.5M+', l: 'Total verified views', s: 'Across all campaigns' },
+  { v: '2.3B+', l: 'Combined views generated', s: 'Across all campaigns' },
   { v: '$0.09', l: 'Lowest CPM achieved', s: 'ProdByCPKShawn campaign' },
   { v: '3,699', l: 'Creator clips approved', s: 'Manually reviewed' },
-  { v: '6', l: 'Campaigns shown', s: 'Music · Podcast · E-com · Sports' },
+  { v: '6', l: 'Different niches', s: 'Music · Podcast · E-com · Sports' },
 ]
 
 export default function CaseStudies() {
@@ -96,19 +96,6 @@ export default function CaseStudies() {
         <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Case Studies</div>
         <h1>Not projections.<br /><em>Real campaigns.</em></h1>
         <p>Every number below is verified. Real money, real creators, real views.</p>
-      </div>
-
-      {/* OVERVIEW STATS */}
-      <div className="stats-section">
-        <div className="stats-inner stagger">
-          {OVERVIEW_STATS.map(({ v, l, s }) => (
-            <div key={l} className="stat-block">
-              <div className="stat-v">{v}</div>
-              <div className="stat-l">{l}</div>
-              <div className="stat-s">{s}</div>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* FEATURED */}
@@ -142,6 +129,19 @@ export default function CaseStudies() {
               Full breakdown →
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* OVERVIEW STATS */}
+      <div className="stats-section">
+        <div className="stats-inner stagger">
+          {OVERVIEW_STATS.map(({ v, l, s }) => (
+            <div key={l} className="stat-block">
+              <div className="stat-v">{v}</div>
+              <div className="stat-l">{l}</div>
+              <div className="stat-s">{s}</div>
+            </div>
+          ))}
         </div>
       </div>
 

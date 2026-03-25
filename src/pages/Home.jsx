@@ -2,8 +2,31 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Home.css'
 
+/* ── Platform SVG icons ── */
+function IconTikTok() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="TikTok">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.73a4.82 4.82 0 0 1-1.01-.04z" />
+    </svg>
+  )
+}
+function IconInstagram() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+    </svg>
+  )
+}
+function IconYouTube() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="YouTube">
+      <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z" />
+    </svg>
+  )
+}
+
 const TICKER_ITEMS = [
-  { value: '2B+', label: 'Total Views Generated' },
+  { value: '2.3B+', label: 'Total Views Generated' },
   { value: '80K+', label: 'Active Creators' },
   { value: '$0.09', label: 'Effective CPM Achieved' },
   { value: '100%', label: 'Organic — Zero Ad Account Risk' },
@@ -12,7 +35,7 @@ const TICKER_ITEMS = [
 ]
 
 const STATS = [
-  { v: '2B+', l: 'Total views generated', s: 'Across all campaigns' },
+  { v: '2.3B+', l: 'Total views generated', s: 'Across all campaigns' },
   { v: '80K+', l: 'Active creators', s: 'In our network' },
   { v: '1M+', l: 'Guaranteed views', s: 'Per $1,000 — guaranteed' },
   { v: '$0', l: 'Upfront creator fees', s: 'Pay only for performance' },
@@ -52,6 +75,37 @@ const RFY_ITEMS = [
   { icon: '📱', label: 'Apps & digital products' },
 ]
 
+const CREATOR_POSTS = [
+  {
+    gradient: 'linear-gradient(160deg,#0d2a1a,#050a07)',
+    username: '@fitnesscreator',
+    caption: 'This supplement actually works 🔥 not sponsored, just obsessed',
+    likes: '48.2K',
+    niche: 'Health & Fitness',
+  },
+  {
+    gradient: 'linear-gradient(160deg,#0a0d2a,#05070a)',
+    username: '@musiclovers',
+    caption: 'this beat has been stuck in my head for 3 days straight 🎵',
+    likes: '92.1K',
+    niche: 'Music',
+  },
+  {
+    gradient: 'linear-gradient(160deg,#2a1a0a,#0a0705)',
+    username: '@dailyreviews',
+    caption: 'POV: you finally found a brand that delivers 📦',
+    likes: '31.7K',
+    niche: 'E-Commerce',
+  },
+  {
+    gradient: 'linear-gradient(160deg,#1a0a2a,#07050a)',
+    username: '@podcastclips',
+    caption: 'They said THIS on the podcast and I can\'t stop replaying it',
+    likes: '67.4K',
+    niche: 'Podcast',
+  },
+]
+
 const FAQS = [
   { q: 'What is performance UGC?', a: 'Performance UGC means creators post about your brand from their own accounts — and you only pay when content hits your view threshold. No flat fees. No "projected" results. Only real views, counted after they happen.' },
   { q: 'How does the pricing work?', a: 'You pay per 1,000 organic views. At our standard rate, a $1,000 budget guarantees a minimum of 1,000,000 views. You\'ll often get more, because creators are incentivised to over-deliver.' },
@@ -70,28 +124,30 @@ export default function Home() {
       {/* HERO */}
       <div className="hero">
         <div className="hero-inner">
-          <div className="hero-left">
-            <div className="hero-proof fade-up">
-              <div className="hero-proof-dot" />
-              2B+ views generated across all campaigns
-            </div>
-            <h1 className="fade-up">
-              1 million views.<br />
-              $1,000.<br />
-              <em>Guaranteed.</em>
-            </h1>
-            <p className="hero-sub fade-up">
-              Hundreds of creators flood TikTok, Instagram, and YouTube with content about your brand.
-              You only pay when it performs — at $1 per 1,000 views.
-            </p>
-            <div className="hero-actions fade-up">
-              <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                Book a free call <span className="arr">→</span>
-              </a>
-              <Link to="/case-studies" className="btn-ghost">View case studies</Link>
-            </div>
-            <p className="hero-hint fade-up">30-minute call · No prep needed · Full refund if we don't deliver</p>
+          <div className="hero-proof fade-up">
+            <div className="hero-proof-dot" />
+            2.3B+ views generated across all campaigns
           </div>
+          <h1 className="fade-up">
+            Turn creators into your<br />
+            most powerful <em>marketing channel.</em>
+          </h1>
+          <p className="hero-sub fade-up">
+            Hundreds of creators flood TikTok, Instagram, and YouTube with content about your brand.
+            You only pay when it performs.
+          </p>
+          <div className="hero-platforms fade-up">
+            <span className="hero-platform-chip"><IconTikTok />TikTok</span>
+            <span className="hero-platform-chip"><IconInstagram />Instagram</span>
+            <span className="hero-platform-chip"><IconYouTube />YouTube</span>
+          </div>
+          <div className="hero-actions fade-up">
+            <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
+              Book a free call <span className="arr">→</span>
+            </a>
+            <Link to="/case-studies" className="btn-ghost">View case studies</Link>
+          </div>
+          <p className="hero-hint fade-up">30-minute call · No prep needed · Full refund if we don't deliver</p>
 
           <div className="hero-video fade-up">
             <div className="video-frame">
@@ -115,6 +171,12 @@ export default function Home() {
                 <span className="logo-item-text">{name}</span>
               </div>
             ))}
+          </div>
+          <div className="logo-bar-sep" />
+          <div className="logo-platforms">
+            <span className="logo-platform"><IconTikTok /></span>
+            <span className="logo-platform"><IconInstagram /></span>
+            <span className="logo-platform"><IconYouTube /></span>
           </div>
         </div>
       </div>
@@ -171,6 +233,46 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* CREATOR CONTENT EXAMPLES */}
+      <div className="creator-section">
+        <div className="creator-header">
+          <div className="section-eyebrow fade-up">What It Looks Like</div>
+          <h2 className="section-h2 fade-up">Real content. <em>Real creators.<br />Real accounts.</em></h2>
+          <p className="creator-lead fade-up">Every clip is posted from a creator's own account — no "Sponsored" tag, no ad creative, just organic content that feels native to the platform.</p>
+        </div>
+        <div className="creator-phones-wrap">
+          <div className="creator-phones">
+            {CREATOR_POSTS.map((post, i) => (
+              <div key={i} className="phone-card fade-up">
+                <div className="phone-frame">
+                  <div className="phone-screen" style={{ background: post.gradient }}>
+                    <div className="phone-niche">{post.niche}</div>
+                    <div className="phone-content-area" />
+                    <div className="phone-overlay">
+                      <div className="phone-sidebar">
+                        <div className="phone-likes">
+                          <span className="phone-heart">♥</span>
+                          <span>{post.likes}</span>
+                        </div>
+                        <div className="phone-share">↗</div>
+                      </div>
+                      <div className="phone-bottom">
+                        <div className="phone-user">{post.username}</div>
+                        <div className="phone-caption">{post.caption}</div>
+                        <div className="phone-platforms-row">
+                          <IconTikTok /><IconInstagram /><IconYouTube />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="creator-note fade-up">Placeholder previews — replace with real creator screenshots for maximum impact.</p>
       </div>
 
       {/* HOW IT WORKS PREVIEW */}
@@ -243,6 +345,20 @@ export default function Home() {
         </div>
       </div>
 
+      {/* GUARANTEE STRIP */}
+      <div className="guarantee-strip fade-up">
+        <div className="guarantee-strip-inner">
+          <div className="guarantee-icon">🛡</div>
+          <div className="guarantee-content">
+            <div className="guarantee-h">100% Money-Back Guarantee</div>
+            <div className="guarantee-p">If we don't hit your guaranteed view count, you get every cent back. No questions, no conditions, no fine print.</div>
+          </div>
+          <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary guarantee-btn">
+            Start risk-free →
+          </a>
+        </div>
+      </div>
+
       {/* IS THIS RIGHT FOR YOU? */}
       <div className="section rfy-section">
         <div className="rfy-inner">
@@ -304,7 +420,7 @@ export default function Home() {
       <div className="cta-section">
         <div className="cta-box fade-up">
           <div>
-            <h2 className="cta-h">Ready to see what <em>$1,000</em> actually buys?</h2>
+            <h2 className="cta-h">Ready to see what your budget <em>actually buys?</em></h2>
             <p className="cta-p">Book a 30-minute call. We'll show you exactly what your budget gets — before you commit a penny.</p>
           </div>
           <div className="cta-actions">

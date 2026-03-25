@@ -1,0 +1,9 @@
+Site improvements: hero, HIW lock, creator section, guarantee, CPM chart, form fix
+
+- Home: centred column hero, performance UGC title, video below text, platform chips
+- Home: creator content phone-frame section and guarantee strip
+- Home: stats updated to 2.3B+ views
+- HowItWorks: viewport-locked, CTA removed, footer hidden
+- CaseStudies: featured first, 2.3B+ combined views, different niches stat
+- WorkWithUs: real Netlify Forms fetch POST with loading and error handling
+- ROICalculator: live CPM comparison bar chart vs Meta, Google, TV

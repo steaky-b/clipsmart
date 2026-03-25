@@ -8,10 +8,17 @@ const STEPS = [
   { n: '04', t: 'Campaign live in 48–72 hours', b: 'Once you\'re in, we brief the creator network and your campaign goes live within 2–3 days.' },
 ]
 
+function encode(data) {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+    .join('&')
+}
+
 export default function WorkWithUs() {
   const [form, setForm] = useState({ fname: '', lname: '', email: '', brand: '', campType: '', budget: '', details: '' })
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [sending, setSending] = useState(false)
 
   const update = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -22,7 +29,23 @@ export default function WorkWithUs() {
       return
     }
     setError('')
-    setSubmitted(true)
+    setSending(true)
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode({ 'form-name': 'work-with-us', ...form }),
+      })
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        setError('Something went wrong. Please try again or book a call directly.')
+      }
+    } catch {
+      setError('Something went wrong. Please try again or book a call directly.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -80,7 +103,14 @@ export default function WorkWithUs() {
                   <p>We'll be in touch within 24 hours to book your call.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="booking-form">
+                <form
+                  name="work-with-us"
+                  method="POST"
+                  data-netlify="true"
+                  onSubmit={handleSubmit}
+                  className="booking-form"
+                >
+                  <input type="hidden" name="form-name" value="work-with-us" />
                   <div className="form-row">
                     <div className="form-group">
                       <label>First name</label>
@@ -127,7 +157,9 @@ export default function WorkWithUs() {
                     <textarea placeholder="What do you sell? Who's your audience? What have you tried before?" rows={4} value={form.details} onChange={e => update('details', e.target.value)} />
                   </div>
                   {error && <div className="form-error">{error}</div>}
-                  <button type="submit" className="btn-primary form-submit">Send message →</button>
+                  <button type="submit" className="btn-primary form-submit" disabled={sending}>
+                    {sending ? 'Sending…' : 'Send message →'}
+                  </button>
                   <p className="form-note">Or <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer">book a call directly →</a></p>
                 </form>
               )}

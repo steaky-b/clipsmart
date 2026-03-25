@@ -36,13 +36,15 @@ export default function Layout() {
     }
   }, [pathname])
 
+  const hideFooter = pathname === '/how-it-works'
+
   return (
     <>
       <Nav />
       <main>
         <Outlet />
       </main>
-      <Footer />
+      {!hideFooter && <Footer />}
     </>
   )
 }
