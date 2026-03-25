@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="footer-top">
           <div className="footer-brand">
             <Link to="/" className="nav-logo">
-              <div className="nav-logo-mark">+</div>
+              <img src="/logo.png" alt="ClipSmart" className="nav-logo-img" />
               clip smart
             </Link>
             <p>Performance UGC campaigns that pay for themselves. You only pay when your content performs.</p>
@@ -43,8 +43,8 @@ export default function Footer() {
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} ClipSmart. All rights reserved.</span>
           <div className="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms of Service</Link>
           </div>
         </div>
       </div>

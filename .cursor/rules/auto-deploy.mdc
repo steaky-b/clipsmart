@@ -1,0 +1,28 @@
+---
+description: After every set of site changes, commit and push to Git so Netlify auto-deploys
+alwaysApply: true
+---
+
+# Auto-deploy after every change
+
+After completing **any** code edit to the ClipSmart site, always finish the session by:
+
+1. Running `git add -A`
+2. Writing the commit message to a temp file (`commit_msg.txt`) — **never use heredoc syntax**, this is a PowerShell shell
+3. Committing with `git commit -F commit_msg.txt`
+4. Deleting the temp file
+5. Running `git push`
+
+This ensures Netlify picks up every change automatically without the user having to ask.
+
+## Example (PowerShell-safe)
+
+```powershell
+git add -A
+Set-Content -Path commit_msg.txt -Value "feat: describe what changed"
+git commit -F commit_msg.txt
+Remove-Item commit_msg.txt
+git push
+```
+
+Never skip this step after making changes to src/, public/, or any config file.

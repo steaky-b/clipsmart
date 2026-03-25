@@ -12,6 +12,7 @@ const CAMPAIGNS = [
     highlight: '4.2M organic views at a fraction of paid ad cost.',
     img: '/cs-epigenetics.png',
     gradient: 'linear-gradient(135deg,#0d1a1a,#050a0a)',
+    clips: ['linear-gradient(160deg,#0d4a4a,#051a1a)','linear-gradient(160deg,#0a3a3a,#051515)','linear-gradient(160deg,#0d5555,#051a1a)'],
   },
   {
     id: 'cpkshawn', cat: 'music', catLabel: 'Music', name: 'ProdByCPKShawn', subtitle: '"Yo Bunny"',
@@ -23,6 +24,7 @@ const CAMPAIGNS = [
     highlight: '$0.09 effective CPM — the lowest we\'ve ever achieved.',
     img: '/cs-cpkshawn.png',
     gradient: 'linear-gradient(135deg,#0d1a0d,#050a05)',
+    clips: ['linear-gradient(160deg,#0d4a0d,#051a05)','linear-gradient(160deg,#0a3a0a,#051505)','linear-gradient(160deg,#0d550d,#051a05)'],
   },
   {
     id: 'murda', cat: 'music', catLabel: 'Music', name: 'NHC Murda 60x', subtitle: '"Murdadale"',
@@ -35,6 +37,7 @@ const CAMPAIGNS = [
     quote: 'Went from 7 posts on TikTok to 1,456. From under 1,000 organic views to over 12 million — and we\'d only spent 60% of the budget.',
     img: '/cs-nhc-murda.png',
     gradient: 'linear-gradient(135deg,#0d0d1a,#05050a)',
+    clips: ['linear-gradient(160deg,#0d0d4a,#05051a)','linear-gradient(160deg,#0a0a3a,#050515)','linear-gradient(160deg,#0d0d55,#05051a)'],
   },
   {
     id: 'bussin', cat: 'podcast', catLabel: 'Podcast', name: 'Growing Up Italian', subtitle: 'Comedy Podcast',
@@ -46,6 +49,7 @@ const CAMPAIGNS = [
     highlight: '3.8M views from a $500 test budget.',
     img: '/cs-growing-up-italian.png',
     gradient: 'linear-gradient(135deg,#1a0d0d,#0a0505)',
+    clips: ['linear-gradient(160deg,#4a0d0d,#1a0505)','linear-gradient(160deg,#3a0a0a,#150505)','linear-gradient(160deg,#550d0d,#1a0505)'],
   },
   {
     id: 'base', cat: 'health', catLabel: 'Health & Wellness', name: 'Base Body Works', subtitle: 'Sports Performance',
@@ -56,6 +60,7 @@ const CAMPAIGNS = [
     ],
     highlight: '2.1M organic views targeting gym and fitness audiences.',
     gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
+    clips: ['linear-gradient(160deg,#4a4a0d,#1a1a05)','linear-gradient(160deg,#3a3a0a,#151505)','linear-gradient(160deg,#55550d,#1a1a05)'],
   },
   {
     id: 'qrunitup', cat: 'music', catLabel: 'Music', name: 'QRUNITUP', subtitle: '"DFWM"',
@@ -67,6 +72,7 @@ const CAMPAIGNS = [
     highlight: '1.9M views driving streams and artist discovery.',
     img: '/cs-qrunitup.png',
     gradient: 'linear-gradient(135deg,#1a0d1a,#0a050a)',
+    clips: ['linear-gradient(160deg,#4a0d4a,#1a051a)','linear-gradient(160deg,#3a0a3a,#150515)','linear-gradient(160deg,#550d55,#1a051a)'],
   },
 ]
 
@@ -154,7 +160,7 @@ export default function CaseStudies() {
       </div>
 
       {/* FILTER + GRID */}
-      <div className="section" style={{ paddingTop: 0 }}>
+      <div className="section" style={{ paddingTop: '52px' }}>
         <div className="section-eyebrow fade-up">All Campaigns</div>
         <h2 className="section-h2 fade-up">Every campaign. Every <em>result.</em></h2>
         <div className="cs-filter fade-up">
@@ -179,6 +185,13 @@ export default function CaseStudies() {
                 <div className="cs-card-name">{c.name}</div>
               </div>
               <div className="cs-card-body">
+                <div className="cs-card-clips">
+                  {c.clips.map((bg, i) => (
+                    <div key={i} className="cs-clip" style={{ background: bg }}>
+                      <div className="cs-clip-play">▶</div>
+                    </div>
+                  ))}
+                </div>
                 <div className="cs-card-metrics">
                   {c.results.slice(0, 2).map(({ v, l }) => (
                     <div key={l} className="cscm">

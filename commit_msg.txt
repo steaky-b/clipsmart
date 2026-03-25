@@ -1,5 +1,0 @@
-Layout and typography fixes
-
-- Creator section: max-width container centres phone cards, cards scale with viewport using clamp
-- HowItWorks: title now near top of page matching other pages, cards smaller with reduced padding and font sizes
-- CaseStudies: card category and name labels white with black text-shadow for readability over photos, darker overlay gradient

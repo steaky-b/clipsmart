@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: calc(var(--nav-h) + 48px) var(--pad) 32px;
+  padding: calc(var(--nav-h) + 64px) var(--pad) 32px;
   max-width: var(--max);
   margin: 0 auto;
   gap: 28px;

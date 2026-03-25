@@ -255,7 +255,9 @@ export default function Home() {
                 <div className="phone-frame">
                   <div className="phone-screen" style={{ background: post.gradient }}>
                     <div className="phone-niche">{post.niche}</div>
-                    <div className="phone-content-area" />
+                    <div className="phone-content-area">
+                      <div className="phone-play">▶</div>
+                    </div>
                     <div className="phone-overlay">
                       <div className="phone-sidebar">
                         <div className="phone-likes">
@@ -359,9 +361,6 @@ export default function Home() {
             <div className="guarantee-h">100% Money-Back Guarantee</div>
             <div className="guarantee-p">If we don't hit your guaranteed view count, you get every cent back. No questions, no conditions, no fine print.</div>
           </div>
-          <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary guarantee-btn">
-            Start risk-free →
-          </a>
         </div>
       </div>
 

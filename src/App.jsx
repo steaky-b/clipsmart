@@ -8,6 +8,8 @@ import ROICalculator from './pages/ROICalculator'
 import Creators from './pages/Creators'
 import CaseStudies from './pages/CaseStudies'
 import WorkWithUs from './pages/WorkWithUs'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
           <Route path="creators" element={<Creators />} />
           <Route path="case-studies" element={<CaseStudies />} />
           <Route path="work-with-us" element={<WorkWithUs />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
+          <Route path="terms" element={<TermsOfService />} />
         </Route>
       </Routes>
     </BrowserRouter>

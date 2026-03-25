@@ -91,6 +91,14 @@ body::before {
   color: var(--g);
   line-height: 1;
 }
+.nav-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  display: block;
+  object-fit: cover;
+}
 .nav-links { display: flex; gap: 2px; align-items: center; }
 .nav-link {
   padding: 7px 16px;
