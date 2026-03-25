@@ -14,7 +14,7 @@ export default function TermsOfService() {
 
           <div className="legal-block">
             <h2>1. Overview</h2>
-            <p>These Terms of Service ("Terms") govern your use of ClipSmart's services. By engaging ClipSmart for a campaign, you agree to these Terms. If you have questions, contact us at <a href="mailto:hello@clipsmart.co">hello@clipsmart.co</a>.</p>
+            <p>These Terms of Service ("Terms") govern your use of ClipSmart's services. By engaging ClipSmart for a campaign, you agree to these Terms. If you have questions, contact us at <a href="mailto:Contact@clipsmart.co.uk">Contact@clipsmart.co.uk</a>.</p>
           </div>
 
           <div className="legal-block">
@@ -82,7 +82,7 @@ export default function TermsOfService() {
 
           <div className="legal-block">
             <h2>11. Contact</h2>
-            <p>For any questions about these Terms, email <a href="mailto:hello@clipsmart.co">hello@clipsmart.co</a>.</p>
+            <p>For any questions about these Terms, email <a href="mailto:Contact@clipsmart.co.uk">Contact@clipsmart.co.uk</a>.</p>
           </div>
 
         </div>

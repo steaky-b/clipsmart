@@ -75,6 +75,9 @@
 
 @media (max-width: 900px) {
   .cn-inner { grid-template-columns: 1fr; gap: 32px; }
+  .cn-hero-left { text-align: center; align-items: center; }
+  .cn-hero-left .section-eyebrow { justify-content: center; }
+  .cn-hero-left a.btn-primary { margin-left: auto; margin-right: auto; }
   .niches-grid { grid-template-columns: 1fr 1fr; }
   .approval-grid { grid-template-columns: 1fr; }
   /* stat strip stays 4-across — compact */

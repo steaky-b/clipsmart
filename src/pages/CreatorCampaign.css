@@ -79,6 +79,7 @@
 }
 
 @media (max-width: 768px) {
+  .cc-step-img { max-height: 260px; object-fit: cover; }
   .cc-step { padding: 36px var(--pad) !important; gap: 20px !important; }
   .cc-step-label { margin-bottom: 12px !important; }
   .cc-step-h { font-size: clamp(20px,5vw,28px) !important; margin-bottom: 10px !important; }
@@ -96,6 +97,7 @@
 }
 
 @media (max-width: 480px) {
+  .cc-step-img { max-height: 200px; }
   .cc-step { padding: 28px var(--pad) !important; }
   .cc-stat { flex-direction: column; gap: 4px !important; padding: 8px 12px !important; }
   .cc-stat-v { font-size: 20px !important; }

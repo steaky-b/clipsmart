@@ -150,7 +150,7 @@
     height: auto;
     min-height: calc(100dvh - var(--nav-h));
     overflow: auto;
-    padding: 24px var(--pad) 36px;
+    padding: calc(var(--nav-h) + 24px) var(--pad) 36px;
     gap: 24px;
   }
   .hiw-hub-inner { grid-template-columns: 1fr; gap: 16px; flex: none; }
@@ -159,7 +159,7 @@
 }
 
 @media (max-width: 768px) {
-  .hiw-viewport { padding: 20px var(--pad) 28px; gap: 20px; }
+  .hiw-viewport { padding: calc(var(--nav-h) + 20px) var(--pad) 28px !important; gap: 20px; }
   .hiw-h1 { font-size: clamp(22px, 6vw, 32px) !important; letter-spacing: -1px; }
   .hiw-sub { font-size: 14px; }
   .hiw-hub-card { padding: 22px 18px !important; }
