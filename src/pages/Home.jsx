@@ -46,7 +46,7 @@ const CASES = [
   { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', spend: '$1,000 spend · $0.09 CPM', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
   { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', spend: '$2,500 spend · 1,456 clips', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
   { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', spend: '$500 spend · viral clip', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
-  { cat: 'Health & Wellness', name: 'Base Body Works', views: '2.1M views', spend: '$750 spend', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
+  { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', spend: '$750 spend', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
   { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', spend: '$500 spend', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
 ]
 
@@ -166,7 +166,7 @@ export default function Home() {
           <span className="logo-bar-label">Brands we've worked with</span>
           <div className="logo-bar-sep" />
           <div className="logo-items">
-            {['Epigenetics Supplements', 'Base Body Works', 'NHC Murda 60x', 'ProdByCPKShawn', 'Growing Up Italian', 'QRUNITUP'].map((name) => (
+            {['Epigenetics Supplements', 'Based Bodyworks', 'NHC Murda 60x', 'ProdByCPKShawn', 'Growing Up Italian', 'QRUNITUP'].map((name) => (
               <div key={name} className="logo-item">
                 <span className="logo-item-text">{name}</span>
               </div>

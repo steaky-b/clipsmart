@@ -52,7 +52,7 @@ const CAMPAIGNS = [
     clips: ['linear-gradient(160deg,#4a0d0d,#1a0505)','linear-gradient(160deg,#3a0a0a,#150505)','linear-gradient(160deg,#550d0d,#1a0505)'],
   },
   {
-    id: 'base', cat: 'health', catLabel: 'Health & Wellness', name: 'Base Body Works', subtitle: 'Sports Performance',
+    id: 'base', cat: 'health', catLabel: 'Health & Wellness', name: 'Based Bodyworks', subtitle: 'Sports Performance',
     brief: 'Sports performance brand targeting gym-goers and athletes across TikTok and Instagram. Needed authentic fitness content, not traditional influencer posts.',
     results: [
       { v: '2.1M', l: 'Total views' }, { v: '$750', l: 'Total spend' },
