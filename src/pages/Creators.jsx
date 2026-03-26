@@ -34,24 +34,24 @@ const APPROVED = [
 
 const FAQ_CREATORS = [
   {
-    q: 'Do I need a massive following to join?',
-    a: 'No — we require a minimum of 500 followers on your target platform. What matters more is engagement quality and niche fit. We have creators with 800 followers earning consistently because their audience is highly targeted.',
+    q: 'How do creators get paid — and why does that benefit my brand?',
+    a: 'Creators earn per view, not per post. That means every creator in your campaign is financially motivated to make content that actually performs. There are no flat rates, no guaranteed payouts for low-effort clips — if it doesn\'t get views, they don\'t get paid. Your budget only goes towards content that works.',
   },
   {
-    q: 'How do I actually get paid?',
-    a: 'You get paid per view, not per post. Once your clip is approved and live, we track the views it generates and pay you out based on performance. No chasing brands, no flat-rate guessing — your earnings scale with your content quality.',
+    q: 'With 80,000+ creators, how do you make sure the right ones post for my brand?',
+    a: 'When your campaign brief goes live, only creators whose niche, platform, and audience demographics match your target are eligible to apply. Every submission is then manually reviewed before going live — we check content quality, brand alignment, and engagement authenticity. You\'re never at the mercy of an algorithm.',
   },
   {
-    q: 'What kind of content do brands want?',
-    a: 'Authentic, organic-looking content that doesn\'t feel like an ad. Think raw phone footage, honest opinions, lifestyle integration. The content that performs best looks like something you\'d post for yourself — not a corporate promo.',
+    q: 'How quickly will content start going live after I launch a campaign?',
+    a: 'Typically within 16 hours of your campaign brief going live, you\'ll have your first clip posted and tracked. Most campaigns have multiple clips live within the first 24–48 hours. The network is active — creators are checking for new briefs daily.',
   },
   {
-    q: 'How long does it take to get my first campaign?',
-    a: 'Most approved creators receive their first campaign brief within 48 hours of joining. Average time from brief to first clip going live is 16 hours — we move fast.',
+    q: 'What platforms do the creators post on?',
+    a: 'The majority of our network posts across TikTok, Instagram Reels, and YouTube Shorts. When setting up your campaign you can specify which platforms to focus on, or run across all three simultaneously to maximise reach. Most brands see the strongest CPM on TikTok, but cross-platform campaigns compound results significantly.',
   },
   {
-    q: 'Is there a cost to join as a creator?',
-    a: 'Completely free. There are no fees, no subscriptions, and no minimum commitment. You pick the campaigns you want to post for and earn based on the views your content generates.',
+    q: 'Can I see which creators would post for my brand before committing?',
+    a: 'Yes — during your onboarding call we can show you a sample of creators in your niche before you commit a penny. We want you to be confident in the fit before the campaign launches. If the creators don\'t match your expectations, we\'ll find more that do.',
   },
 ]
 
@@ -184,7 +184,7 @@ export default function Creators() {
         <h2 className="section-h2 fade-up">Questions before <em>you join?</em></h2>
         <div className="creators-faq-list">
           {FAQ_CREATORS.map(({ q, a }, i) => (
-            <div key={i} className={`creators-faq-item fade-up${openFaq === i ? ' open' : ''}`}>
+            <div key={i} className={`creators-faq-item${openFaq === i ? ' open' : ''}`}>
               <button
                 className="creators-faq-q"
                 onClick={() => setOpenFaq(openFaq === i ? null : i)}
@@ -193,7 +193,7 @@ export default function Creators() {
                 {q}
                 <span className="creators-faq-icon">{openFaq === i ? '−' : '+'}</span>
               </button>
-              {openFaq === i && <div className="creators-faq-a">{a}</div>}
+              <div className="creators-faq-a">{a}</div>
             </div>
           ))}
         </div>
