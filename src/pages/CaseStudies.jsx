@@ -100,6 +100,7 @@ const OVERVIEW_STATS = [
 ]
 
 export default function CaseStudies() {
+  document.title = 'Case Studies — Real Results From Real Campaigns | ClipSmart'
   const [activeCat, setActiveCat] = useState('all')
   const [activeModal, setActiveModal] = useState(null)
 

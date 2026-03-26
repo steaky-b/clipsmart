@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import './HowItWorks.css'
 
 export default function HowItWorks() {
+  document.title = 'How It Works — ClipSmart'
   return (
     <div className="hiw-viewport">
       <div className="hiw-title-block">

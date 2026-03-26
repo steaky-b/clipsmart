@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './Creators.css'
 
 const STATS = [
@@ -31,6 +32,29 @@ const APPROVED = [
   'Audience quality verified — real engagement, not bot-inflated',
 ]
 
+const FAQ_CREATORS = [
+  {
+    q: 'Do I need a massive following to join?',
+    a: 'No — we require a minimum of 500 followers on your target platform. What matters more is engagement quality and niche fit. We have creators with 800 followers earning consistently because their audience is highly targeted.',
+  },
+  {
+    q: 'How do I actually get paid?',
+    a: 'You get paid per view, not per post. Once your clip is approved and live, we track the views it generates and pay you out based on performance. No chasing brands, no flat-rate guessing — your earnings scale with your content quality.',
+  },
+  {
+    q: 'What kind of content do brands want?',
+    a: 'Authentic, organic-looking content that doesn\'t feel like an ad. Think raw phone footage, honest opinions, lifestyle integration. The content that performs best looks like something you\'d post for yourself — not a corporate promo.',
+  },
+  {
+    q: 'How long does it take to get my first campaign?',
+    a: 'Most approved creators receive their first campaign brief within 48 hours of joining. Average time from brief to first clip going live is 16 hours — we move fast.',
+  },
+  {
+    q: 'Is there a cost to join as a creator?',
+    a: 'Completely free. There are no fees, no subscriptions, and no minimum commitment. You pick the campaigns you want to post for and earn based on the views your content generates.',
+  },
+]
+
 const REJECTED = [
   'Generic, low-effort content ("this product is amazing!")',
   'Misleading or exaggerated claims',
@@ -40,6 +64,9 @@ const REJECTED = [
 ]
 
 export default function Creators() {
+  document.title = 'Creator Network — 80,000+ Verified Creators | ClipSmart'
+  const [openFaq, setOpenFaq] = useState(null)
+
   return (
     <>
       {/* HERO */}
@@ -146,6 +173,27 @@ export default function Creators() {
               <div className="social-card-icon">{icon}</div>
               <h3 className="social-card-t">{title}</h3>
               <p className="social-card-b">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* FAQ */}
+      <div className="section creators-faq-section" style={{ paddingTop: 0 }}>
+        <div className="section-eyebrow fade-up">Creator FAQ</div>
+        <h2 className="section-h2 fade-up">Questions before <em>you join?</em></h2>
+        <div className="creators-faq-list">
+          {FAQ_CREATORS.map(({ q, a }, i) => (
+            <div key={i} className={`creators-faq-item fade-up${openFaq === i ? ' open' : ''}`}>
+              <button
+                className="creators-faq-q"
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                aria-expanded={openFaq === i}
+              >
+                {q}
+                <span className="creators-faq-icon">{openFaq === i ? '−' : '+'}</span>
+              </button>
+              {openFaq === i && <div className="creators-faq-a">{a}</div>}
             </div>
           ))}
         </div>

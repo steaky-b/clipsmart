@@ -1,6 +1,7 @@
 import './LegalPages.css'
 
 export default function PrivacyPolicy() {
+  document.title = 'Privacy Policy — ClipSmart'
   return (
     <>
       <div className="page-hero">

@@ -46,7 +46,7 @@ const CASES = [
   { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', spend: '$1,000 spend · $0.09 CPM', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
   { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', spend: '$2,500 spend · 1,456 clips', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
   { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', spend: '$500 spend · viral clip', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
-  { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', spend: '$750 spend', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
+  { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', spend: '$750 spend · 203 clips', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
   { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', spend: '$500 spend', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
 ]
 
@@ -116,6 +116,7 @@ const FAQS = [
 ]
 
 export default function Home() {
+  document.title = 'ClipSmart — Performance UGC Campaigns That Actually Convert'
   return (
     <>
       <div className="home-glow-tl" />
@@ -397,6 +398,35 @@ export default function Home() {
                 <span className="rfy-guarantee-icon">✓</span>
                 Full refund if we don't hit your guaranteed views
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* TESTIMONIALS */}
+      <div className="section testimonials-section">
+        <div className="section-eyebrow fade-up" style={{ justifyContent: 'center' }}>What Clients Say</div>
+        <h2 className="section-h2 fade-up" style={{ textAlign: 'center' }}>Don't take our word <em>for it.</em></h2>
+        <div className="testimonials-grid">
+          <div className="testimonial-card fade-up">
+            <div className="testimonial-quote">"Went from 7 posts on TikTok to 1,456. From under 1,000 organic views to over 12 million — and we'd only spent 60% of the budget."</div>
+            <div className="testimonial-author">
+              <div className="testimonial-name">NHC Murda 60x</div>
+              <div className="testimonial-role">Music Artist · "Murdadale"</div>
+            </div>
+          </div>
+          <div className="testimonial-card fade-up">
+            <div className="testimonial-quote">"[REPLACE WITH REAL QUOTE — client name: Epigenetics Supplements contact]"</div>
+            <div className="testimonial-author">
+              <div className="testimonial-name">[CLIENT FIRST NAME LAST NAME]</div>
+              <div className="testimonial-role">Epigenetics Supplements</div>
+            </div>
+          </div>
+          <div className="testimonial-card fade-up">
+            <div className="testimonial-quote">"[REPLACE WITH REAL QUOTE — client name: Growing Up Italian contact]"</div>
+            <div className="testimonial-author">
+              <div className="testimonial-name">[CLIENT FIRST NAME LAST NAME]</div>
+              <div className="testimonial-role">Growing Up Italian Podcast</div>
             </div>
           </div>
         </div>
