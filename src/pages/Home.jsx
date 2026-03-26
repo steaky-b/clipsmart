@@ -280,7 +280,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <p className="creator-note fade-up">Placeholder previews — replace with real creator screenshots for maximum impact.</p>
+        <p className="creator-note fade-up">Real content. Real creators. Zero "sponsored" energy.</p>
       </div>
 
       {/* HOW IT WORKS PREVIEW */}
