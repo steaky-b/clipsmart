@@ -192,6 +192,18 @@
 .cs-clip { aspect-ratio: 9/16; border-radius: 8px; position: relative; overflow: hidden; }
 .cs-clip-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; color: rgba(255,255,255,.7); }
 
+.cs-modal-clips { margin-top: 4px; }
+.cs-modal-clips-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--t3); margin-bottom: 12px;
+}
+.cs-modal-clips-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.cs-modal-clip-wrap { position: relative; }
+.cs-modal-clip-video {
+  width: 100%; aspect-ratio: 9/16; border-radius: 10px;
+  background: var(--s2); object-fit: cover; border: 1px solid var(--bd); display: block;
+}
+
 @media (max-width: 480px) {
   .cs-modal-overlay { padding: 0; align-items: flex-end; }
   .cs-modal {

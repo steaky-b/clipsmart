@@ -13,6 +13,7 @@ const CAMPAIGNS = [
     img: '/cs-epigenetics.png',
     gradient: 'linear-gradient(135deg,#0d1a1a,#050a0a)',
     clips: ['linear-gradient(160deg,#0d4a4a,#051a1a)','linear-gradient(160deg,#0a3a3a,#051515)','linear-gradient(160deg,#0d5555,#051a1a)'],
+    videos: ['/gains-clip-1.mp4', '/gains-clip-2.mp4', '/gains-clip-3.mp4'],
   },
   {
     id: 'cpkshawn', cat: 'music', catLabel: 'Music', name: 'ProdByCPKShawn', subtitle: '"Yo Bunny"',
@@ -25,6 +26,7 @@ const CAMPAIGNS = [
     img: '/cs-cpkshawn.png',
     gradient: 'linear-gradient(135deg,#0d1a0d,#050a05)',
     clips: ['linear-gradient(160deg,#0d4a0d,#051a05)','linear-gradient(160deg,#0a3a0a,#051505)','linear-gradient(160deg,#0d550d,#051a05)'],
+    videos: ['/cpkshawn-clip-1.mp4', '/cpkshawn-clip-2.mp4', '/cpkshawn-clip-3.mp4'],
   },
   {
     id: 'murda', cat: 'music', catLabel: 'Music', name: 'NHC Murda 60x', subtitle: '"Murdadale"',
@@ -38,6 +40,7 @@ const CAMPAIGNS = [
     img: '/cs-nhc-murda.png',
     gradient: 'linear-gradient(135deg,#0d0d1a,#05050a)',
     clips: ['linear-gradient(160deg,#0d0d4a,#05051a)','linear-gradient(160deg,#0a0a3a,#050515)','linear-gradient(160deg,#0d0d55,#05051a)'],
+    videos: ['/murda-clip-1.mp4', '/murda-clip-2.mp4', '/murda-clip-3.mp4'],
   },
   {
     id: 'bussin', cat: 'podcast', catLabel: 'Podcast', name: 'Growing Up Italian', subtitle: 'Comedy Podcast',
@@ -50,6 +53,7 @@ const CAMPAIGNS = [
     img: '/cs-growing-up-italian.png',
     gradient: 'linear-gradient(135deg,#1a0d0d,#0a0505)',
     clips: ['linear-gradient(160deg,#4a0d0d,#1a0505)','linear-gradient(160deg,#3a0a0a,#150505)','linear-gradient(160deg,#550d0d,#1a0505)'],
+    videos: ['/bussin-clip-1.mp4', '/bussin-clip-2.mp4', '/bussin-clip-3.mp4'],
   },
   {
     id: 'base', cat: 'health', catLabel: 'Health & Wellness', name: 'Based Bodyworks', subtitle: 'Sports Performance',
@@ -62,6 +66,7 @@ const CAMPAIGNS = [
     img: '/cs-base-body-works.png',
     gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
     clips: ['linear-gradient(160deg,#4a4a0d,#1a1a05)','linear-gradient(160deg,#3a3a0a,#151505)','linear-gradient(160deg,#55550d,#1a1a05)'],
+    videos: ['/base-clip-1.mp4', '/base-clip-2.mp4', '/base-clip-3.mp4'],
   },
   {
     id: 'qrunitup', cat: 'music', catLabel: 'Music', name: 'QRUNITUP', subtitle: '"DFWM"',
@@ -74,6 +79,7 @@ const CAMPAIGNS = [
     img: '/cs-qrunitup.png',
     gradient: 'linear-gradient(135deg,#1a0d1a,#0a050a)',
     clips: ['linear-gradient(160deg,#4a0d4a,#1a051a)','linear-gradient(160deg,#3a0a3a,#150515)','linear-gradient(160deg,#550d55,#1a051a)'],
+    videos: ['/qrunitup-clip-1.mp4', '/qrunitup-clip-2.mp4', '/qrunitup-clip-3.mp4'],
   },
 ]
 
@@ -238,6 +244,26 @@ export default function CaseStudies() {
               <div className="csm-highlight">{modalData.highlight}</div>
               {modalData.quote && (
                 <blockquote className="csm-quote">"{modalData.quote}"</blockquote>
+              )}
+              {modalData.videos?.length > 0 && (
+                <div className="cs-modal-clips">
+                  <div className="cs-modal-clips-label">Creator clips from this campaign</div>
+                  <div className="cs-modal-clips-row">
+                    {modalData.videos.map((src, i) => (
+                      <div key={i} className="cs-modal-clip-wrap">
+                        <video
+                          src={src}
+                          className="cs-modal-clip-video"
+                          controls
+                          muted
+                          playsInline
+                          preload="none"
+                          onError={e => { e.target.closest('.cs-modal-clip-wrap').style.display = 'none' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
               <a
                 href="https://calendly.com/esaanwar/partner-with-clipsmart"
