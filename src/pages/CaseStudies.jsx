@@ -59,6 +59,7 @@ const CAMPAIGNS = [
       { v: '$0.36', l: 'Effective CPM' }, { v: '203', l: 'Creator clips' },
     ],
     highlight: '2.1M organic views targeting gym and fitness audiences.',
+    img: '/cs-base-body-works.png',
     gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
     clips: ['linear-gradient(160deg,#4a4a0d,#1a1a05)','linear-gradient(160deg,#3a3a0a,#151505)','linear-gradient(160deg,#55550d,#1a1a05)'],
   },
