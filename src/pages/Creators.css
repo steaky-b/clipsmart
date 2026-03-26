@@ -127,26 +127,82 @@
 }
 
 /* ═══════════════ CREATORS FAQ ═══════════════ */
-.creators-faq-section { max-width: 780px; margin: 0 auto; }
-.creators-faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; }
-.creators-faq-item {
-  background: var(--s1);
+.creators-faq-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 80px;
+  align-items: start;
+}
+.creators-faq-left {
+  position: sticky;
+  top: calc(var(--nav-h) + 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.creators-faq-heading {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(28px, 2.6vw, 40px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin: 0;
+}
+.creators-faq-heading em { font-style: normal; color: var(--g); }
+.creators-faq-sub {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--t2);
+  max-width: 340px;
+}
+.creators-faq-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   border: 1px solid var(--bd);
   border-radius: 16px;
   overflow: hidden;
-  transition: border-color 0.2s;
+  margin-top: 4px;
 }
-.creators-faq-item.open { border-color: var(--g); }
+.cfs-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.cfs-item:last-child { border-bottom: none; }
+.cfs-val {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--g);
+}
+.cfs-lbl {
+  font-size: 13px;
+  color: var(--t2);
+  text-align: right;
+}
+.creators-faq-cta { width: fit-content; }
+
+/* Accordion */
+.creators-faq-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--bd); border-radius: 20px; overflow: hidden; }
+.creators-faq-item {
+  border-bottom: 1px solid var(--bd);
+  transition: background 0.15s;
+}
+.creators-faq-item:last-child { border-bottom: none; }
+.creators-faq-item.open { background: var(--s1); }
 .creators-faq-q {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   background: transparent;
   border: none;
   color: var(--white);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   text-align: left;
   padding: 22px 24px;
@@ -154,21 +210,61 @@
   font-family: 'Bricolage Grotesque', sans-serif;
   line-height: 1.4;
 }
+.creators-faq-num {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--g);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  min-width: 24px;
+}
+.creators-faq-qtext { flex: 1; }
 .creators-faq-icon {
-  font-size: 22px;
+  font-size: 20px;
   color: var(--g);
   flex-shrink: 0;
   line-height: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--g-glow);
+  border: 1px solid var(--g-bdr);
+  border-radius: 50%;
+  font-weight: 400;
 }
 .creators-faq-a {
   display: none;
-  padding: 16px 24px 22px;
-  font-size: 15px;
-  line-height: 1.75;
+  padding: 0 24px 22px 64px;
+  font-size: 14.5px;
+  line-height: 1.8;
   color: var(--t1);
-  border-top: 1px solid var(--bd);
 }
 .creators-faq-item.open .creators-faq-a { display: block; }
+
+@media (max-width: 1024px) {
+  .creators-faq-layout { gap: 48px; }
+}
+@media (max-width: 900px) {
+  .creators-faq-layout { grid-template-columns: 1fr; gap: 40px; }
+  .creators-faq-left { position: static; }
+  .creators-faq-sub { max-width: 100%; }
+  .creators-faq-stats { flex-direction: row; border-radius: 12px; }
+  .cfs-item { flex-direction: column; align-items: flex-start; border-bottom: none; border-right: 1px solid var(--bd); padding: 14px 16px; flex: 1; gap: 4px; }
+  .cfs-item:last-child { border-right: none; }
+  .cfs-lbl { text-align: left; font-size: 11px; }
+  .creators-faq-cta { width: 100%; justify-content: center; }
+}
+@media (max-width: 600px) {
+  .creators-faq-a { padding-left: 24px !important; }
+  .creators-faq-stats { flex-direction: column; }
+  .cfs-item { border-right: none !important; border-bottom: 1px solid var(--bd) !important; flex-direction: row; align-items: center; justify-content: space-between; }
+  .cfs-item:last-child { border-bottom: none !important; }
+  .cfs-lbl { text-align: right !important; }
+}
 
 @media (max-width: 480px) {
   /* Stat strip — 4 across, compact */

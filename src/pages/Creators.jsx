@@ -180,22 +180,48 @@ export default function Creators() {
 
       {/* FAQ */}
       <div className="section creators-faq-section" style={{ paddingTop: 0 }}>
-        <div className="section-eyebrow fade-up">Creator FAQ</div>
-        <h2 className="section-h2 fade-up">Questions before <em>you join?</em></h2>
-        <div className="creators-faq-list">
-          {FAQ_CREATORS.map(({ q, a }, i) => (
-            <div key={i} className={`creators-faq-item${openFaq === i ? ' open' : ''}`}>
-              <button
-                className="creators-faq-q"
-                onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                aria-expanded={openFaq === i}
-              >
-                {q}
-                <span className="creators-faq-icon">{openFaq === i ? '−' : '+'}</span>
-              </button>
-              <div className="creators-faq-a">{a}</div>
+        <div className="creators-faq-layout">
+          {/* Left — sticky header */}
+          <div className="creators-faq-left">
+            <div className="section-eyebrow fade-up">FAQ</div>
+            <h2 className="creators-faq-heading fade-up">Everything brands ask <em>before they start.</em></h2>
+            <p className="creators-faq-sub fade-up">We've answered the most common questions about how our creator network works, how campaigns are managed, and what to expect.</p>
+            <div className="creators-faq-stats fade-up">
+              <div className="cfs-item">
+                <div className="cfs-val">80K+</div>
+                <div className="cfs-lbl">Active creators</div>
+              </div>
+              <div className="cfs-item">
+                <div className="cfs-val">16hrs</div>
+                <div className="cfs-lbl">Avg. time to first clip</div>
+              </div>
+              <div className="cfs-item">
+                <div className="cfs-val">100%</div>
+                <div className="cfs-lbl">Manual content review</div>
+              </div>
             </div>
-          ))}
+            <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary creators-faq-cta fade-up">
+              Book a free call →
+            </a>
+          </div>
+
+          {/* Right — accordion */}
+          <div className="creators-faq-list">
+            {FAQ_CREATORS.map(({ q, a }, i) => (
+              <div key={i} className={`creators-faq-item${openFaq === i ? ' open' : ''}`}>
+                <button
+                  className="creators-faq-q"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  aria-expanded={openFaq === i}
+                >
+                  <span className="creators-faq-num">0{i + 1}</span>
+                  <span className="creators-faq-qtext">{q}</span>
+                  <span className="creators-faq-icon">{openFaq === i ? '−' : '+'}</span>
+                </button>
+                <div className="creators-faq-a">{a}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
