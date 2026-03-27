@@ -83,6 +83,8 @@ const CAMPAIGNS = [
   },
 ]
 
+export { CAMPAIGNS }
+
 const CATS = [
   { id: 'all', label: 'All' },
   { id: 'ecommerce', label: 'E-Commerce' },

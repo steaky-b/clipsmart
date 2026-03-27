@@ -10,6 +10,7 @@ import CaseStudies from './pages/CaseStudies'
 import WorkWithUs from './pages/WorkWithUs'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
+import PreCallDeck from './pages/PreCallDeck'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="work-with-us" element={<WorkWithUs />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
+          <Route path="precall" element={<PreCallDeck />} />
         </Route>
       </Routes>
     </BrowserRouter>
