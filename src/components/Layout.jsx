@@ -37,15 +37,14 @@ export default function Layout() {
   }, [pathname])
 
   const hideFooter = pathname === '/how-it-works'
-  const deckMode = pathname === '/precall'
 
   return (
     <>
-      {!deckMode && <Nav />}
+      <Nav />
       <main>
         <Outlet />
       </main>
-      {!hideFooter && !deckMode && <Footer />}
+      {!hideFooter && <Footer />}
     </>
   )
 }
