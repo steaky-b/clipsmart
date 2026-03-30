@@ -142,9 +142,11 @@ export default function Home() {
             You only pay when it performs.
           </p>
           <div className="hero-platforms fade-up">
-            <span className="hero-platform-chip"><IconTikTok />TikTok</span>
-            <span className="hero-platform-chip"><IconInstagram />Instagram</span>
-            <span className="hero-platform-chip"><IconYouTube />YouTube</span>
+            <span className="hero-reviews-chip">
+              <span className="hero-reviews-stars">★★★★★</span>
+              <span className="hero-reviews-score">4.8</span>
+              <span className="hero-reviews-meta">· 1,074 reviews</span>
+            </span>
           </div>
           <div className="hero-actions fade-up">
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">

@@ -68,6 +68,36 @@
 }
 .hero-platform-chip svg { width: 14px; height: 14px; opacity: .7; }
 
+/* Reviews tag (replaces platform chips) */
+.hero-reviews-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--bd2);
+  background: var(--s2);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--t2);
+}
+.hero-reviews-stars {
+  color: #FFD54A; /* yellow star pop */
+  letter-spacing: 1px;
+  font-weight: 900;
+}
+.hero-reviews-score {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--g);
+}
+.hero-reviews-meta {
+  color: var(--t2);
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
 .hero-actions {
   display: flex; gap: 14px; align-items: center;
   flex-wrap: wrap; justify-content: center;
@@ -396,6 +426,7 @@
   .hero-sub { font-size: 14px !important; margin-bottom: 20px !important; }
   .hero-platforms { margin-bottom: 24px !important; gap: 8px !important; }
   .hero-platform-chip { font-size: 11px !important; padding: 5px 10px !important; }
+  .hero-reviews-chip { font-size: 11px !important; padding: 5px 10px !important; gap: 8px !important; }
   .hero-actions { gap: 10px !important; }
   .hero-hint { font-size: 11px !important; margin-bottom: 32px !important; }
   .hero-proof { font-size: 11px !important; padding: 6px 12px !important; margin-bottom: 16px !important; }
