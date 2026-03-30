@@ -260,11 +260,26 @@ export default function CaseStudies() {
               </div>
               <div className="cs-card-body">
                 <div className="cs-card-clips">
-                  {c.clips.map((bg, i) => (
-                    <div key={i} className="cs-clip" style={{ background: bg }}>
-                      <div className="cs-clip-play">▶</div>
-                    </div>
-                  ))}
+                  {[0, 1, 2].map((i) => {
+                    const bg = c.clips?.[i]
+                    const src = c.videos?.[i]
+
+                    return (
+                      <div key={i} className="cs-clip" style={{ background: bg }}>
+                        {src ? (
+                          <video
+                            className="cs-clip-video-thumb"
+                            muted
+                            playsInline
+                            preload="metadata"
+                          >
+                            <source src={src} type="video/mp4" />
+                          </video>
+                        ) : null}
+                        <div className="cs-clip-play">▶</div>
+                      </div>
+                    )
+                  })}
                 </div>
                 <div className="cs-card-metrics">
                   {c.results.slice(0, 2).map(({ v, l }) => (
@@ -322,14 +337,18 @@ export default function CaseStudies() {
                     {modalData.videos.map((src, i) => (
                       <div key={i} className="cs-modal-clip-wrap">
                         <video
-                          src={src}
                           className="cs-modal-clip-video"
                           controls
                           muted
                           playsInline
-                          preload="none"
-                          onError={e => { e.target.closest('.cs-modal-clip-wrap').style.display = 'none' }}
+                          preload="metadata"
+                          onError={(e) => {
+                            const wrap = e.currentTarget.closest('.cs-modal-clip-wrap')
+                            if (wrap) wrap.classList.add('error')
+                          }}
                         />
+                        <source src={src} type="video/mp4" />
+                        <div className="cs-modal-clip-fallback" aria-hidden="true">▶</div>
                       </div>
                     ))}
                   </div>
