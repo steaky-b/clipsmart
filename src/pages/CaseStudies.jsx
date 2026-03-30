@@ -327,7 +327,6 @@ export default function CaseStudies() {
                         <video
                           className="cs-modal-clip-video"
                           controls
-                          muted
                           playsInline
                           preload="metadata"
                           onError={(e) => {
