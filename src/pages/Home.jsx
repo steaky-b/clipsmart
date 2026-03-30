@@ -80,28 +80,28 @@ const RFY_ITEMS = [
 
 const CREATOR_POSTS = [
   {
-    video: '/murda-clip-1.mp4#t=3',
+    video: '/murda-clip-1.mp4#t=1',
     username: '@nhcmurda60x',
     caption: 'bro went from 7 posts to 12 million views 🔥 this is crazy',
     likes: '92.1K',
     niche: 'Music',
   },
   {
-    video: '/cpkshawn-clip-2.mp4#t=3',
+    video: '/cpkshawn-clip-2.mp4#t=1',
     username: '@musiclovers',
     caption: 'this beat has been stuck in my head for 3 days straight 🎵',
     likes: '48.2K',
     niche: 'Music',
   },
   {
-    video: '/bussin-clip-1.mp4#t=3',
+    video: '/bussin-clip-1.mp4#t=1',
     username: '@podcastclips',
     caption: 'They said THIS on the podcast and I can\'t stop replaying it',
     likes: '67.4K',
     niche: 'Podcast',
   },
   {
-    video: '/base-clip-2.mp4#t=3',
+    video: '/base-clip-2.mp4#t=1',
     username: '@fitnesscreator',
     caption: 'Not sponsored — just actually obsessed with this brand 💪',
     likes: '31.7K',

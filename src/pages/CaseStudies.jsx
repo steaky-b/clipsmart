@@ -255,10 +255,13 @@ export default function CaseStudies() {
                           <video
                             className="cs-clip-video-thumb"
                             muted
+                            autoPlay
+                            loop
                             playsInline
-                            preload="metadata"
+                            preload="auto"
+                            onLoadedMetadata={(e) => { e.currentTarget.currentTime = 1 }}
                           >
-                            <source src={`${src}#t=3`} type="video/mp4" />
+                            <source src={`${src}#t=1`} type="video/mp4" />
                           </video>
                         ) : null}
                         <div className="cs-clip-play">▶</div>
@@ -332,7 +335,7 @@ export default function CaseStudies() {
                             if (wrap) wrap.classList.add('error')
                           }}
                         >
-                          <source src={`${src}#t=3`} type="video/mp4" />
+                          <source src={`${src}#t=1`} type="video/mp4" />
                         </video>
                         <div className="cs-modal-clip-fallback" aria-hidden="true">▶</div>
                       </div>
