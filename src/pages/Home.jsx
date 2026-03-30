@@ -81,32 +81,32 @@ const RFY_ITEMS = [
 
 const CREATOR_POSTS = [
   {
-    gradient: 'linear-gradient(160deg,#0d2a1a,#050a07)',
-    username: '@fitnesscreator',
-    caption: 'This supplement actually works 🔥 not sponsored, just obsessed',
-    likes: '48.2K',
-    niche: 'Health & Fitness',
-  },
-  {
-    gradient: 'linear-gradient(160deg,#0a0d2a,#05070a)',
-    username: '@musiclovers',
-    caption: 'this beat has been stuck in my head for 3 days straight 🎵',
+    video: '/murda-clip-1.mp4',
+    username: '@nhcmurda60x',
+    caption: 'bro went from 7 posts to 12 million views 🔥 this is crazy',
     likes: '92.1K',
     niche: 'Music',
   },
   {
-    gradient: 'linear-gradient(160deg,#2a1a0a,#0a0705)',
-    username: '@dailyreviews',
-    caption: 'POV: you finally found a brand that delivers 📦',
-    likes: '31.7K',
-    niche: 'E-Commerce',
+    video: '/cpkshawn-clip-2.mp4',
+    username: '@musiclovers',
+    caption: 'this beat has been stuck in my head for 3 days straight 🎵',
+    likes: '48.2K',
+    niche: 'Music',
   },
   {
-    gradient: 'linear-gradient(160deg,#1a0a2a,#07050a)',
+    video: '/bussin-clip-1.mp4',
     username: '@podcastclips',
     caption: 'They said THIS on the podcast and I can\'t stop replaying it',
     likes: '67.4K',
     niche: 'Podcast',
+  },
+  {
+    video: '/base-clip-2.mp4',
+    username: '@fitnesscreator',
+    caption: 'Not sponsored — just actually obsessed with this brand 💪',
+    likes: '31.7K',
+    niche: 'Health & Fitness',
   },
 ]
 
@@ -239,11 +239,19 @@ export default function Home() {
             {CREATOR_POSTS.map((post, i) => (
               <div key={i} className="phone-card fade-up">
                 <div className="phone-frame">
-                  <div className="phone-screen" style={{ background: post.gradient }}>
+                  <div className="phone-screen">
+                    {post.video && (
+                      <video
+                        className="phone-video"
+                        src={post.video}
+                        muted
+                        loop
+                        playsInline
+                        controls
+                        preload="metadata"
+                      />
+                    )}
                     <div className="phone-niche">{post.niche}</div>
-                    <div className="phone-content-area">
-                      <div className="phone-play">▶</div>
-                    </div>
                     <div className="phone-overlay">
                       <div className="phone-sidebar">
                         <div className="phone-likes">
