@@ -342,7 +342,8 @@ export default function Home() {
       </div>
 
       {/* IS THIS RIGHT FOR YOU? */}
-      <div className="section rfy-section">
+      <div className="rfy-section">
+        <div className="section" style={{ paddingTop: '88px', paddingBottom: '88px' }}>
         <div className="rfy-inner">
           <div className="rfy-left fade-up">
             <div className="section-eyebrow">Is This Right For You?</div>
@@ -376,6 +377,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
 
