@@ -44,13 +44,13 @@ const STATS = [
 const CASES = [
   { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', subs: '1,456 creator posts', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
   { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', subs: '1,062 creator posts', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
-  { cat: 'Music', name: 'Loudpac Glady', views: '3.2M views', subs: '198 creator posts', img: null, gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)' },
+  { cat: 'Music', name: 'Loudpac Glady', views: '3.2M views', subs: '198 creator posts', img: '/cs-glady.png', gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)' },
   { cat: 'E-Commerce', name: 'Epigenetics Supplements', views: '4.2M views', subs: '487 creator posts', img: '/cs-epigenetics.png', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
   { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', subs: '312 creator posts', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
   { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', subs: '203 creator posts', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
   { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', subs: '178 creator posts', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
-  { cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: null, gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
-  { cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: null, gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
+  { cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: '/cs-oscen.webp', gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
+  { cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: '/cs-brysonlee.png', gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
   { cat: 'Crypto & Finance', name: 'Cryptorians', views: '209K views', subs: '209 creator posts', img: null, gradient: 'linear-gradient(135deg,#0a1a0a,#051005)' },
 ]
 
@@ -163,27 +163,6 @@ export default function Home() {
               </video>
               <div className="video-glow" />
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* LOGO BAR */}
-      <div className="logo-bar">
-        <div className="logo-bar-inner">
-          <span className="logo-bar-label">Brands we've worked with</span>
-          <div className="logo-bar-sep" />
-          <div className="logo-items">
-            {['Epigenetics Supplements', 'Based Bodyworks', 'NHC Murda 60x', 'ProdByCPKShawn', 'Growing Up Italian', 'QRUNITUP', 'Loudpac Glady', 'Oscen', 'Bryson Lee', 'Cryptorians'].map((name) => (
-              <div key={name} className="logo-item">
-                <span className="logo-item-text">{name}</span>
-              </div>
-            ))}
-          </div>
-          <div className="logo-bar-sep" />
-          <div className="logo-platforms">
-            <span className="logo-platform"><IconTikTok /></span>
-            <span className="logo-platform"><IconInstagram /></span>
-            <span className="logo-platform"><IconYouTube /></span>
           </div>
         </div>
       </div>

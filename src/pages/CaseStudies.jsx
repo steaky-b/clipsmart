@@ -96,7 +96,7 @@ const CAMPAIGNS = [
       { v: '198', l: 'Creator submissions' },
     ],
     highlight: '3.2M views on a debut single. 198 creators brought the audio to life.',
-    img: null,
+    img: '/cs-glady.png',
     gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)',
     clips: ['linear-gradient(160deg,#3a0d5a,#15052a)','linear-gradient(160deg,#2a0a4a,#10051f)','linear-gradient(160deg,#4a0d6a,#1a0535)'],
     // Placeholder for now — upload and set these paths once you have them
@@ -111,7 +111,7 @@ const CAMPAIGNS = [
       { v: '252', l: 'Creator submissions' },
     ],
     highlight: '1.2M views and 252 posts driving discovery for an emerging electronic artist.',
-    img: null,
+    img: '/cs-oscen.webp',
     gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)',
     clips: ['linear-gradient(160deg,#0d3a5a,#05152a)','linear-gradient(160deg,#0a2a4a,#050f1f)','linear-gradient(160deg,#0d4a6a,#051a35)'],
     // Placeholder for now — upload and set these paths once you have them
@@ -126,7 +126,7 @@ const CAMPAIGNS = [
       { v: '116', l: 'Creator submissions' },
     ],
     highlight: '906K targeted views directly inside the fitness community.',
-    img: null,
+    img: '/cs-brysonlee.png',
     gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)',
     clips: ['linear-gradient(160deg,#3a3a0d,#15150a)','linear-gradient(160deg,#2a2a0a,#101005)','linear-gradient(160deg,#4a4a0d,#1a1a05)'],
     // Placeholder for now — upload and set these paths once you have them
