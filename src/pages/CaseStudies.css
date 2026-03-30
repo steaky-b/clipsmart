@@ -229,6 +229,13 @@
 .cs-modal-clip-wrap.error .cs-modal-clip-video { display: none; }
 .cs-modal-clip-wrap.error .cs-modal-clip-fallback { display: flex; }
 
+/* ═══════════════ Desktop spacing tweak ═══════════════ */
+@media (min-width: 901px) {
+  /* Pull the "Most Talked About" block closer to the hero title on desktop. */
+  .page-hero { padding-bottom: 36px !important; }
+  .cs-featured-section { padding-top: 64px !important; }
+}
+
 @media (max-width: 480px) {
   .cs-modal-overlay { padding: 0; align-items: flex-end; }
   .cs-modal {
