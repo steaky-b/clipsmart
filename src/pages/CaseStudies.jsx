@@ -99,7 +99,8 @@ const CAMPAIGNS = [
     img: null,
     gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)',
     clips: ['linear-gradient(160deg,#3a0d5a,#15052a)','linear-gradient(160deg,#2a0a4a,#10051f)','linear-gradient(160deg,#4a0d6a,#1a0535)'],
-    videos: ['/glady-clip-1.mp4', '/glady-clip-2.mp4', '/glady-clip-3.mp4'],
+    // Placeholder for now — upload and set these paths once you have them
+    videos: [],
   },
   {
     id: 'oscen', cat: 'music', catLabel: 'Music', name: 'Oscen', subtitle: '"Worship"',
@@ -113,7 +114,8 @@ const CAMPAIGNS = [
     img: null,
     gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)',
     clips: ['linear-gradient(160deg,#0d3a5a,#05152a)','linear-gradient(160deg,#0a2a4a,#050f1f)','linear-gradient(160deg,#0d4a6a,#051a35)'],
-    videos: ['/oscen-clip-1.mp4', '/oscen-clip-2.mp4', '/oscen-clip-3.mp4'],
+    // Placeholder for now — upload and set these paths once you have them
+    videos: [],
   },
   {
     id: 'brysonlee', cat: 'health', catLabel: 'Health & Wellness', name: 'Bryson Lee', subtitle: '"L22 Fitness Bae"',
@@ -127,7 +129,8 @@ const CAMPAIGNS = [
     img: null,
     gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)',
     clips: ['linear-gradient(160deg,#3a3a0d,#15150a)','linear-gradient(160deg,#2a2a0a,#101005)','linear-gradient(160deg,#4a4a0d,#1a1a05)'],
-    videos: ['/brysonlee-clip-1.mp4', '/brysonlee-clip-2.mp4', '/brysonlee-clip-3.mp4'],
+    // Placeholder for now — upload and set these paths once you have them
+    videos: [],
   },
   {
     id: 'cryptorians', cat: 'crypto', catLabel: 'Crypto & Finance', name: 'Cryptorians', subtitle: 'Clipping Campaign',
@@ -141,7 +144,8 @@ const CAMPAIGNS = [
     img: null,
     gradient: 'linear-gradient(135deg,#0a1a0a,#051005)',
     clips: ['linear-gradient(160deg,#0d4a0d,#051a05)','linear-gradient(160deg,#0a3a0a,#051505)','linear-gradient(160deg,#0d550d,#051a05)'],
-    videos: ['/cryptorians-clip-1.mp4', '/cryptorians-clip-2.mp4', '/cryptorians-clip-3.mp4'],
+    // Placeholder for now — upload and set these paths once you have them
+    videos: [],
   },
 ]
 

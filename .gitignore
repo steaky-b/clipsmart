@@ -31,3 +31,6 @@ work-with-us.html
 *.njsproj
 *.sln
 *.sw?
+
+# Local upload staging folder (do not commit large MP4s)
+Clispmart videos/
