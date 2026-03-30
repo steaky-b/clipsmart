@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="footer-brand">
             <Link to="/" className="nav-logo">
               <img src="/logo.png" alt="ClipSmart" className="nav-logo-img" />
-              clip smart
+              ClipSmart
             </Link>
             <p>Performance UGC campaigns that pay for themselves. You only pay when your content performs.</p>
           </div>

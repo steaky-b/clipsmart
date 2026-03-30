@@ -4,12 +4,13 @@ import './CaseStudies.css'
 const CAMPAIGNS = [
   {
     id: 'gains', cat: 'ecommerce', catLabel: 'E-Commerce', name: 'Epigenetics Supplements', subtitle: 'GLP-1 Plus',
-    brief: 'Supplement brand needing authentic product awareness without relying on influencer flat fees or traditional ads. Goal was DTC sales through organic creator content.',
+    direction: 'Supplement brand needing authentic product awareness without relying on influencer flat fees or traditional ads. Creators were briefed to speak personally about the product — no "sponsored" energy, no scripts.',
+    outcome: '4.2M organic views generated across TikTok and Instagram. Product reached audiences who had never heard of it through creators they already trusted.',
     results: [
-      { v: '4.2M', l: 'Total views' }, { v: '$1,500', l: 'Total spend' },
-      { v: '$0.36', l: 'Effective CPM' }, { v: '487', l: 'Creator clips' },
+      { v: '4.2M', l: 'Total views' },
+      { v: '487', l: 'Creator submissions' },
     ],
-    highlight: '4.2M organic views at a fraction of paid ad cost.',
+    highlight: '4.2M organic views. 487 creators. Zero ad account.',
     img: '/cs-epigenetics.png',
     gradient: 'linear-gradient(135deg,#0d1a1a,#050a0a)',
     clips: ['linear-gradient(160deg,#0d4a4a,#051a1a)','linear-gradient(160deg,#0a3a3a,#051515)','linear-gradient(160deg,#0d5555,#051a1a)'],
@@ -17,12 +18,13 @@ const CAMPAIGNS = [
   },
   {
     id: 'cpkshawn', cat: 'music', catLabel: 'Music', name: 'ProdByCPKShawn', subtitle: '"Yo Bunny"',
-    brief: 'Music producer promoting a new track. Goal: mass TikTok reach to drive streams and discovery — no ad spend, no product to ship.',
+    direction: 'Music producer promoting a new track. Goal: maximum TikTok reach to drive streams and organic discovery — no ad spend, no product to ship. Creators were briefed to use the audio natively in content they\'d post anyway.',
+    outcome: '11.3M views across 1,062 creator posts. The track broke into TikTok discovery feeds and drove a significant uplift in streaming numbers — all from creator-led organic content.',
     results: [
-      { v: '11.3M', l: 'Total views' }, { v: '$1,000', l: 'Total spend' },
-      { v: '$0.09', l: 'Effective CPM' }, { v: '1,062', l: 'Creator clips' },
+      { v: '11.3M', l: 'Total views' },
+      { v: '1,062', l: 'Creator submissions' },
     ],
-    highlight: '$0.09 effective CPM — the lowest we\'ve ever achieved.',
+    highlight: '11.3M views and 1,062 clips — the most-submitted campaign in our history.',
     img: '/cs-cpkshawn.png',
     gradient: 'linear-gradient(135deg,#0d1a0d,#050a05)',
     clips: ['linear-gradient(160deg,#0d4a0d,#051a05)','linear-gradient(160deg,#0a3a0a,#051505)','linear-gradient(160deg,#0d550d,#051a05)'],
@@ -30,12 +32,13 @@ const CAMPAIGNS = [
   },
   {
     id: 'murda', cat: 'music', catLabel: 'Music', name: 'NHC Murda 60x', subtitle: '"Murdadale"',
-    brief: 'Indie hip-hop artist with a debut single. Started with 7 posts on TikTok. No label backing, no product, no ad budget — just performance UGC.',
+    direction: 'Indie hip-hop artist with a debut single. Started with 7 posts on TikTok. No label backing, no product — just an artist who needed ears on their music. Campaign launched with a tight brief focused on authentic street/lifestyle content.',
+    outcome: 'Went from 7 TikTok posts to 1,456. Under 1,000 organic views to over 12 million. Campaign ended before the full budget was even used — the results came in fast.',
     results: [
-      { v: '12M+', l: 'Total views' }, { v: '$2,500', l: 'Total spend' },
-      { v: '1,456', l: 'Creator posts' }, { v: '60%', l: 'Budget used' },
+      { v: '12M+', l: 'Total views' },
+      { v: '1,456', l: 'Creator posts' },
     ],
-    highlight: 'Campaign hit 12M views using only 60% of the budget.',
+    highlight: '12M+ views. Campaign closed at 60% budget — results came early.',
     quote: 'Went from 7 posts on TikTok to 1,456. From under 1,000 organic views to over 12 million — and we\'d only spent 60% of the budget.',
     img: '/cs-nhc-murda.png',
     gradient: 'linear-gradient(135deg,#0d0d1a,#05050a)',
@@ -44,12 +47,13 @@ const CAMPAIGNS = [
   },
   {
     id: 'bussin', cat: 'podcast', catLabel: 'Podcast', name: 'Growing Up Italian', subtitle: 'Comedy Podcast',
-    brief: 'High-profile comedy podcast looking to grow short-form clip virality on TikTok and YouTube Shorts without a large production budget.',
+    direction: 'High-profile comedy podcast looking to grow short-form clip virality on TikTok and YouTube Shorts. Brief focused on repurposing the best moments into shareable clips that felt native to each platform.',
+    outcome: '3.8M views from a small initial test budget. The clips generated significant new subscribers and introduced the podcast to a younger short-form audience who hadn\'t found it through traditional means.',
     results: [
-      { v: '3.8M', l: 'Total views' }, { v: '$500', l: 'Total spend' },
-      { v: '$0.13', l: 'Effective CPM' }, { v: '312', l: 'Creator clips' },
+      { v: '3.8M', l: 'Total views' },
+      { v: '312', l: 'Creator submissions' },
     ],
-    highlight: '3.8M views from a $500 test budget.',
+    highlight: '3.8M views and 312 clips from a compact test campaign.',
     img: '/cs-growing-up-italian.png',
     gradient: 'linear-gradient(135deg,#1a0d0d,#0a0505)',
     clips: ['linear-gradient(160deg,#4a0d0d,#1a0505)','linear-gradient(160deg,#3a0a0a,#150505)','linear-gradient(160deg,#550d0d,#1a0505)'],
@@ -57,12 +61,13 @@ const CAMPAIGNS = [
   },
   {
     id: 'base', cat: 'health', catLabel: 'Health & Wellness', name: 'Based Bodyworks', subtitle: 'Sports Performance',
-    brief: 'Sports performance brand targeting gym-goers and athletes across TikTok and Instagram. Needed authentic fitness content, not traditional influencer posts.',
+    direction: 'Sports performance brand targeting gym-goers and athletes across TikTok and Instagram. Needed authentic fitness content that felt earned, not advertised — creators briefed to feature the brand naturally within their workout and training content.',
+    outcome: '2.1M organic views directly in front of the fitness-obsessed audience. 203 pieces of creator content generated, all from people who already lived the lifestyle the brand was selling.',
     results: [
-      { v: '2.1M', l: 'Total views' }, { v: '$750', l: 'Total spend' },
-      { v: '$0.36', l: 'Effective CPM' }, { v: '203', l: 'Creator clips' },
+      { v: '2.1M', l: 'Total views' },
+      { v: '203', l: 'Creator submissions' },
     ],
-    highlight: '2.1M organic views targeting gym and fitness audiences.',
+    highlight: '2.1M views direct to a targeted gym and fitness audience.',
     img: '/cs-base-body-works.png',
     gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
     clips: ['linear-gradient(160deg,#4a4a0d,#1a1a05)','linear-gradient(160deg,#3a3a0a,#151505)','linear-gradient(160deg,#55550d,#1a1a05)'],
@@ -70,33 +75,90 @@ const CAMPAIGNS = [
   },
   {
     id: 'qrunitup', cat: 'music', catLabel: 'Music', name: 'QRUNITUP', subtitle: '"DFWM"',
-    brief: 'Music artist promoting a new single. Goal: mass TikTok reach to drive streams and chart discovery — zero ad spend, purely performance-based UGC.',
+    direction: 'Music artist promoting a debut single. Brief focused on TikTok-first distribution — getting the audio into the hands of creators whose audiences already consumed similar music content.',
+    outcome: '1.9M views from 178 creator posts, driving meaningful streaming uplift and new followers for the artist\'s profile across multiple platforms.',
     results: [
-      { v: '1.9M', l: 'Total views' }, { v: '$500', l: 'Total spend' },
-      { v: '$0.26', l: 'Effective CPM' }, { v: '178', l: 'Creator clips' },
+      { v: '1.9M', l: 'Total views' },
+      { v: '178', l: 'Creator submissions' },
     ],
-    highlight: '1.9M views driving streams and artist discovery.',
+    highlight: '1.9M views. Artist profile grew across every platform.',
     img: '/cs-qrunitup.png',
     gradient: 'linear-gradient(135deg,#1a0d1a,#0a050a)',
     clips: ['linear-gradient(160deg,#4a0d4a,#1a051a)','linear-gradient(160deg,#3a0a3a,#150515)','linear-gradient(160deg,#550d55,#1a051a)'],
     videos: ['/qrunitup-clip-1.mp4', '/qrunitup-clip-2.mp4', '/qrunitup-clip-3.mp4'],
   },
+  {
+    id: 'glady', cat: 'music', catLabel: 'Music', name: 'Loudpac Glady', subtitle: '"Quit Callin"',
+    direction: 'Emerging artist promoting debut single "Quit Callin". Campaign strategy centred on TikTok audio placement — briefing creators to use the track in trending, relatable, and emotional content formats to push the audio into FYP discovery.',
+    outcome: '3.2M views across 198 creator submissions. The track gained significant organic traction on TikTok with audio saves and shares extending reach well beyond the initial campaign posts.',
+    results: [
+      { v: '3.2M', l: 'Total views' },
+      { v: '198', l: 'Creator submissions' },
+    ],
+    highlight: '3.2M views on a debut single. 198 creators brought the audio to life.',
+    img: null,
+    gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)',
+    clips: ['linear-gradient(160deg,#3a0d5a,#15052a)','linear-gradient(160deg,#2a0a4a,#10051f)','linear-gradient(160deg,#4a0d6a,#1a0535)'],
+    videos: ['/glady-clip-1.mp4', '/glady-clip-2.mp4', '/glady-clip-3.mp4'],
+  },
+  {
+    id: 'oscen', cat: 'music', catLabel: 'Music', name: 'Oscen', subtitle: '"Worship"',
+    direction: 'Electronic artist seeking broader audience discovery for "Worship". Creators were briefed to integrate the track into cinematic, emotional, and late-night aesthetic content — formats that naturally drive audio saves on TikTok and Reels.',
+    outcome: '1.2M views generated from 252 creator posts. The track built a consistent listener base in the electronic and ambient music community, with strong retention on streaming platforms post-campaign.',
+    results: [
+      { v: '1.2M', l: 'Total views' },
+      { v: '252', l: 'Creator submissions' },
+    ],
+    highlight: '1.2M views and 252 posts driving discovery for an emerging electronic artist.',
+    img: null,
+    gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)',
+    clips: ['linear-gradient(160deg,#0d3a5a,#05152a)','linear-gradient(160deg,#0a2a4a,#050f1f)','linear-gradient(160deg,#0d4a6a,#051a35)'],
+    videos: ['/oscen-clip-1.mp4', '/oscen-clip-2.mp4', '/oscen-clip-3.mp4'],
+  },
+  {
+    id: 'brysonlee', cat: 'health', catLabel: 'Health & Wellness', name: 'Bryson Lee', subtitle: '"L22 Fitness Bae"',
+    direction: 'Fitness-themed music track by Bryson Lee. Campaign matched the audio directly to gym, workout, and body transformation creators — a natural fit between the music\'s energy and the content these creators already made every day.',
+    outcome: '906K views through niche fitness creator content. Despite being a tighter niche campaign, the views were highly targeted — every impression landed in front of a fitness-engaged audience.',
+    results: [
+      { v: '906K', l: 'Total views' },
+      { v: '116', l: 'Creator submissions' },
+    ],
+    highlight: '906K targeted views directly inside the fitness community.',
+    img: null,
+    gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)',
+    clips: ['linear-gradient(160deg,#3a3a0d,#15150a)','linear-gradient(160deg,#2a2a0a,#101005)','linear-gradient(160deg,#4a4a0d,#1a1a05)'],
+    videos: ['/brysonlee-clip-1.mp4', '/brysonlee-clip-2.mp4', '/brysonlee-clip-3.mp4'],
+  },
+  {
+    id: 'cryptorians', cat: 'crypto', catLabel: 'Crypto & Finance', name: 'Cryptorians', subtitle: 'Clipping Campaign',
+    direction: 'Crypto content brand looking to grow their TikTok and YouTube audience through short-form clip distribution. Brief focused on repurposing their best educational and entertainment moments into platform-native clips that drove follows and channel discovery.',
+    outcome: '209K views from 209 creator submissions. The campaign consistently drove new followers and subscribers to Cryptorians\' own channels — exactly the compounding growth a content brand needs.',
+    results: [
+      { v: '209K', l: 'Total views' },
+      { v: '209', l: 'Creator submissions' },
+    ],
+    highlight: '209 creators. 209K views. Consistent channel growth in the crypto niche.',
+    img: null,
+    gradient: 'linear-gradient(135deg,#0a1a0a,#051005)',
+    clips: ['linear-gradient(160deg,#0d4a0d,#051a05)','linear-gradient(160deg,#0a3a0a,#051505)','linear-gradient(160deg,#0d550d,#051a05)'],
+    videos: ['/cryptorians-clip-1.mp4', '/cryptorians-clip-2.mp4', '/cryptorians-clip-3.mp4'],
+  },
 ]
 
 const CATS = [
   { id: 'all', label: 'All' },
-  { id: 'ecommerce', label: 'E-Commerce' },
   { id: 'music', label: 'Music' },
-  { id: 'podcast', label: 'Podcast' },
-  { id: 'sports', label: 'Sports' },
+  { id: 'ecommerce', label: 'E-Commerce' },
   { id: 'health', label: 'Health & Wellness' },
+  { id: 'podcast', label: 'Podcast' },
+  { id: 'crypto', label: 'Crypto & Finance' },
 ]
 
 const OVERVIEW_STATS = [
   { v: '2.3B+', l: 'Combined views generated', s: 'Across all campaigns' },
-  { v: '$0.09', l: 'Lowest CPM achieved', s: 'ProdByCPKShawn campaign' },
-  { v: '3,699', l: 'Creator clips approved', s: 'Manually reviewed' },
-  { v: '6', l: 'Different niches', s: 'Music · Podcast · E-com · Sports' },
+  { v: '4,400+', l: 'Creator clips approved', s: 'Manually reviewed across all brands' },
+  { v: '10', l: 'Campaigns completed', s: 'Music · E-Com · Podcast · Crypto' },
+  { v: '5', l: 'Different niches', s: 'And growing every month' },
 ]
 
 export default function CaseStudies() {
@@ -131,8 +193,8 @@ export default function CaseStudies() {
             <div className="csf-name">{featured.name}</div>
             <div className="csf-sub">Music Artist · {featured.subtitle}</div>
             <p className="csf-desc">
-              Indie hip-hop artist with a new single. Started with 7 posts on TikTok.
-              Wanted organic growth — no product to ship, no ads.
+              Indie hip-hop artist with a debut single. Started with 7 posts on TikTok.
+              No label, no ad budget — just performance UGC and a creator network.
             </p>
           </div>
           <div className="csf-right">
@@ -233,7 +295,8 @@ export default function CaseStudies() {
               <div className="csm-sub">{modalData.subtitle}</div>
             </div>
             <div className="cs-modal-body">
-              <p className="csm-brief">{modalData.brief}</p>
+              <div className="csm-section-label">Campaign Direction</div>
+              <p className="csm-brief">{modalData.direction}</p>
               <div className="csm-results">
                 {modalData.results.map(({ v, l }) => (
                   <div key={l} className="csm-result">
@@ -242,6 +305,8 @@ export default function CaseStudies() {
                   </div>
                 ))}
               </div>
+              <div className="csm-section-label">Outcome</div>
+              <p className="csm-brief">{modalData.outcome}</p>
               <div className="csm-highlight">{modalData.highlight}</div>
               {modalData.quote && (
                 <blockquote className="csm-quote">"{modalData.quote}"</blockquote>

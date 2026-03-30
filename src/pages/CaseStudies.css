@@ -143,8 +143,9 @@
 .csm-cat { font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--g); margin-bottom: 10px; }
 .csm-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; margin-bottom: 4px; }
 .csm-sub { font-size: 14px; color: var(--t2); }
-.cs-modal-body { padding: 28px 36px 36px; display: flex; flex-direction: column; gap: 20px; }
-.csm-brief { font-size: 15px; line-height: 1.75; color: var(--t1); }
+.cs-modal-body { padding: 28px 36px 36px; display: flex; flex-direction: column; gap: 16px; }
+.csm-section-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--g); opacity: 0.8; }
+.csm-brief { font-size: 14.5px; line-height: 1.8; color: var(--t1); margin-top: -4px; }
 .csm-results { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
 .csm-result { background: var(--s2); border: 1px solid var(--bd); border-radius: 12px; padding: 18px; text-align: center; }
 .csm-result-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 800; color: var(--g); }

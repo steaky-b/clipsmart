@@ -22,7 +22,7 @@ export default function Nav() {
       <nav className="nav">
         <Link to="/" className="nav-logo">
           <img src="/logo.png" alt="ClipSmart" className="nav-logo-img" />
-          clip smart
+          ClipSmart
         </Link>
 
         <div className="nav-links">

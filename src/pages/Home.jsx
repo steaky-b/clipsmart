@@ -42,12 +42,16 @@ const STATS = [
 ]
 
 const CASES = [
-  { cat: 'E-Commerce', name: 'Epigenetics Supplements', views: '4.2M views', spend: '$1,500 spend', img: '/cs-epigenetics.png', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
-  { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', spend: '$1,000 spend · $0.09 CPM', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
-  { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', spend: '$2,500 spend · 1,456 clips', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
-  { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', spend: '$500 spend · viral clip', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
-  { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', spend: '$750 spend · 203 clips', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
-  { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', spend: '$500 spend', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
+  { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', subs: '1,456 creator posts', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
+  { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', subs: '1,062 creator posts', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
+  { cat: 'Music', name: 'Loudpac Glady', views: '3.2M views', subs: '198 creator posts', img: null, gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)' },
+  { cat: 'E-Commerce', name: 'Epigenetics Supplements', views: '4.2M views', subs: '487 creator posts', img: '/cs-epigenetics.png', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
+  { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', subs: '312 creator posts', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
+  { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', subs: '203 creator posts', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
+  { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', subs: '178 creator posts', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
+  { cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: null, gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
+  { cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: null, gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
+  { cat: 'Crypto & Finance', name: 'Cryptorians', views: '209K views', subs: '209 creator posts', img: null, gradient: 'linear-gradient(135deg,#0a1a0a,#051005)' },
 ]
 
 const HOW_STEPS = [
@@ -167,7 +171,7 @@ export default function Home() {
           <span className="logo-bar-label">Brands we've worked with</span>
           <div className="logo-bar-sep" />
           <div className="logo-items">
-            {['Epigenetics Supplements', 'Based Bodyworks', 'NHC Murda 60x', 'ProdByCPKShawn', 'Growing Up Italian', 'QRUNITUP'].map((name) => (
+            {['Epigenetics Supplements', 'Based Bodyworks', 'NHC Murda 60x', 'ProdByCPKShawn', 'Growing Up Italian', 'QRUNITUP', 'Loudpac Glady', 'Oscen', 'Bryson Lee', 'Cryptorians'].map((name) => (
               <div key={name} className="logo-item">
                 <span className="logo-item-text">{name}</span>
               </div>
@@ -208,6 +212,39 @@ export default function Home() {
         </div>
       </div>
 
+      {/* REVIEWS */}
+      <div className="reviews-section">
+        <div className="reviews-inner">
+          <div className="reviews-badge fade-up">
+            <div className="reviews-stars">★★★★★</div>
+            <div className="reviews-score-row">
+              <span className="reviews-score">4.8</span>
+              <div className="reviews-score-meta">
+                <span className="reviews-out">out of 5</span>
+                <span className="reviews-count">1,074 brand reviews</span>
+              </div>
+            </div>
+          </div>
+          <div className="reviews-cards">
+            <div className="review-card fade-up">
+              <div className="review-card-stars">★★★★★</div>
+              <p className="review-card-q">"The results exceeded every expectation — the campaign generated more organic traction than anything we'd tried before."</p>
+              <div className="review-card-author">[REPLACE WITH REAL NAME] · [Brand / Niche]</div>
+            </div>
+            <div className="review-card fade-up">
+              <div className="review-card-stars">★★★★★</div>
+              <p className="review-card-q">"I was sceptical at first, but the views came in fast and the content actually looked like it wasn't an ad. That's exactly what we needed."</p>
+              <div className="review-card-author">[REPLACE WITH REAL NAME] · [Brand / Niche]</div>
+            </div>
+            <div className="review-card fade-up">
+              <div className="review-card-stars">★★★★★</div>
+              <p className="review-card-q">"Straightforward, fast, and it delivered. The team knew exactly what brief to write for our niche and the creators ran with it."</p>
+              <div className="review-card-author">[REPLACE WITH REAL NAME] · [Brand / Niche]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* CASE STUDIES CAROUSEL */}
       <div className="cases-section">
         <div className="cases-header">
@@ -234,7 +271,7 @@ export default function Home() {
                   <div className="case-cat">{c.cat}</div>
                   <div className="case-name">{c.name}</div>
                   <div className="case-views">{c.views}</div>
-                  <div className="case-spend">{c.spend}</div>
+                  <div className="case-spend">{c.subs}</div>
                 </div>
               </div>
             ))}

@@ -443,6 +443,102 @@
   .phone-card { width: 160px !important; }
 }
 
+/* ═══════════════ REVIEWS ═══════════════ */
+.reviews-section {
+  padding: 64px var(--pad);
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+  background: var(--s1);
+}
+.reviews-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.reviews-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 60px;
+  border-right: 1px solid var(--bd);
+}
+.reviews-stars {
+  font-size: 26px;
+  color: var(--g);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.reviews-score-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.reviews-score {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+}
+.reviews-score-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.reviews-out {
+  font-size: 14px;
+  color: var(--t2);
+}
+.reviews-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--g);
+}
+.reviews-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.review-card {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.review-card-stars { font-size: 14px; color: var(--g); letter-spacing: 2px; }
+.review-card-q {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--t1);
+  font-style: italic;
+  flex: 1;
+}
+.review-card-author {
+  font-size: 11.5px;
+  color: var(--g);
+  font-weight: 600;
+  border-top: 1px solid var(--bd);
+  padding-top: 10px;
+}
+
+@media (max-width: 1024px) {
+  .reviews-inner { grid-template-columns: 1fr; gap: 32px; }
+  .reviews-badge { border-right: none; padding-right: 0; flex-direction: row; align-items: center; gap: 24px; border-bottom: 1px solid var(--bd); padding-bottom: 28px; }
+  .reviews-cards { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .reviews-section { padding: 48px var(--pad); }
+  .reviews-score { font-size: 48px !important; }
+  .reviews-cards { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .reviews-badge { flex-direction: column; align-items: flex-start; }
+}
+
 /* ═══════════════ TESTIMONIALS ═══════════════ */
 .testimonials-section { text-align: center; }
 .testimonials-grid {
