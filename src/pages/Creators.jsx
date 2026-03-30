@@ -103,14 +103,16 @@ export default function Creators() {
       </div>
 
       {/* STAT STRIP */}
-      <div className="creators-stat-strip stagger">
-        {STATS.map(({ v, l, s }) => (
-          <div key={l} className="cstat">
-            <div className="cstat-v">{v}</div>
-            <div className="cstat-l">{l}</div>
-            <div className="cstat-s">{s}</div>
-          </div>
-        ))}
+      <div className="creators-stat-strip">
+        <div className="creators-stat-inner stagger">
+          {STATS.map(({ v, l, s }) => (
+            <div key={l} className="cstat">
+              <div className="cstat-v">{v}</div>
+              <div className="cstat-l">{l}</div>
+              <div className="cstat-s">{s}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* NICHES */}

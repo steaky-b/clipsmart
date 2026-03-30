@@ -122,8 +122,6 @@ export default function Home() {
   document.title = 'ClipSmart — Performance UGC Campaigns That Actually Convert'
   return (
     <>
-      <div className="home-glow-tl" />
-      <div className="home-glow-br" />
 
       {/* HERO */}
       <div className="hero">
