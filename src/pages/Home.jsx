@@ -250,23 +250,7 @@ export default function Home() {
                         preload="metadata"
                       />
                     )}
-                    <div className="phone-niche">{post.niche}</div>
-                    <div className="phone-overlay">
-                      <div className="phone-sidebar">
-                        <div className="phone-likes">
-                          <span className="phone-heart">♥</span>
-                          <span>{post.likes}</span>
-                        </div>
-                        <div className="phone-share">↗</div>
-                      </div>
-                      <div className="phone-bottom">
-                        <div className="phone-user">{post.username}</div>
-                        <div className="phone-caption">{post.caption}</div>
-                        <div className="phone-platforms-row">
-                          <IconTikTok /><IconInstagram /><IconYouTube />
-                        </div>
-                      </div>
-                    </div>
+                    <div className="phone-username-tag">{post.username}</div>
                   </div>
                 </div>
               </div>
