@@ -123,6 +123,9 @@ export default function Home() {
   return (
     <>
 
+      <div className="home-glow-tl" />
+      <div className="home-glow-br" />
+
       {/* HERO */}
       <div className="hero">
         <div className="hero-inner">
