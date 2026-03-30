@@ -346,8 +346,9 @@ export default function CaseStudies() {
                             const wrap = e.currentTarget.closest('.cs-modal-clip-wrap')
                             if (wrap) wrap.classList.add('error')
                           }}
-                        />
-                        <source src={src} type="video/mp4" />
+                        >
+                          <source src={src} type="video/mp4" />
+                        </video>
                         <div className="cs-modal-clip-fallback" aria-hidden="true">▶</div>
                       </div>
                     ))}
