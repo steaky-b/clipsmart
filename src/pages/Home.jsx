@@ -193,39 +193,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* REVIEWS */}
-      <div className="reviews-section">
-        <div className="reviews-inner">
-          <div className="reviews-badge fade-up">
-            <div className="reviews-stars">★★★★★</div>
-            <div className="reviews-score-row">
-              <span className="reviews-score">4.8</span>
-              <div className="reviews-score-meta">
-                <span className="reviews-out">out of 5</span>
-                <span className="reviews-count">1,074 brand reviews</span>
-              </div>
-            </div>
-          </div>
-          <div className="reviews-cards">
-            <div className="review-card fade-up">
-              <div className="review-card-stars">★★★★★</div>
-              <p className="review-card-q">"The results exceeded every expectation — the campaign generated more organic traction than anything we'd tried before."</p>
-              <div className="review-card-author">[REPLACE WITH REAL NAME] · [Brand / Niche]</div>
-            </div>
-            <div className="review-card fade-up">
-              <div className="review-card-stars">★★★★★</div>
-              <p className="review-card-q">"I was sceptical at first, but the views came in fast and the content actually looked like it wasn't an ad. That's exactly what we needed."</p>
-              <div className="review-card-author">[REPLACE WITH REAL NAME] · [Brand / Niche]</div>
-            </div>
-            <div className="review-card fade-up">
-              <div className="review-card-stars">★★★★★</div>
-              <p className="review-card-q">"Straightforward, fast, and it delivered. The team knew exactly what brief to write for our niche and the creators ran with it."</p>
-              <div className="review-card-author">[REPLACE WITH REAL NAME] · [Brand / Niche]</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* CASE STUDIES CAROUSEL */}
       <div className="cases-section">
         <div className="cases-header">
