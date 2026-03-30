@@ -3,18 +3,32 @@ import './CaseStudies.css'
 
 const CAMPAIGNS = [
   {
-    id: 'gains', cat: 'ecommerce', catLabel: 'E-Commerce', name: 'Epigenetics Supplements', subtitle: 'GLP-1 Plus',
-    direction: 'Supplement brand needing authentic product awareness without relying on influencer flat fees or traditional ads. Creators were briefed to speak personally about the product — no "sponsored" energy, no scripts.',
-    outcome: '4.2M organic views generated across TikTok and Instagram. Product reached audiences who had never heard of it through creators they already trusted.',
+    id: 'base', cat: 'health', catLabel: 'Health & Wellness', name: 'Based Bodyworks', subtitle: 'Sports Performance',
+    direction: 'Sports performance brand targeting gym-goers and athletes across TikTok and Instagram. Needed authentic fitness content that felt earned, not advertised — creators briefed to feature the brand naturally within their workout and training content.',
+    outcome: '2.1M organic views directly in front of the fitness-obsessed audience. 203 pieces of creator content generated, all from people who already lived the lifestyle the brand was selling.',
     results: [
-      { v: '4.2M', l: 'Total views' },
-      { v: '487', l: 'Creator submissions' },
+      { v: '2.1M', l: 'Total views' },
+      { v: '203', l: 'Creator submissions' },
     ],
-    highlight: '4.2M organic views. 487 creators. Zero ad account.',
-    img: '/cs-epigenetics.png',
-    gradient: 'linear-gradient(135deg,#0d1a1a,#050a0a)',
-    clips: ['linear-gradient(160deg,#0d4a4a,#051a1a)','linear-gradient(160deg,#0a3a3a,#051515)','linear-gradient(160deg,#0d5555,#051a1a)'],
-    videos: ['/gains-clip-1.mp4', '/gains-clip-2.mp4', '/gains-clip-3.mp4'],
+    highlight: '2.1M views direct to a targeted gym and fitness audience.',
+    img: '/cs-base-body-works.png',
+    gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
+    clips: ['linear-gradient(160deg,#4a4a0d,#1a1a05)','linear-gradient(160deg,#3a3a0a,#151505)','linear-gradient(160deg,#55550d,#1a1a05)'],
+    videos: ['/base-clip-1.mp4', '/base-clip-2.mp4', '/base-clip-3.mp4'],
+  },
+  {
+    id: 'bussin', cat: 'podcast', catLabel: 'Podcast', name: 'Growing Up Italian', subtitle: 'Comedy Podcast',
+    direction: 'High-profile comedy podcast looking to grow short-form clip virality on TikTok and YouTube Shorts. Brief focused on repurposing the best moments into shareable clips that felt native to each platform.',
+    outcome: '3.8M views from a small initial test budget. The clips generated significant new subscribers and introduced the podcast to a younger short-form audience who hadn\'t found it through traditional means.',
+    results: [
+      { v: '3.8M', l: 'Total views' },
+      { v: '312', l: 'Creator submissions' },
+    ],
+    highlight: '3.8M views and 312 clips from a compact test campaign.',
+    img: '/cs-growing-up-italian.png',
+    gradient: 'linear-gradient(135deg,#1a0d0d,#0a0505)',
+    clips: ['linear-gradient(160deg,#4a0d0d,#1a0505)','linear-gradient(160deg,#3a0a0a,#150505)','linear-gradient(160deg,#550d0d,#1a0505)'],
+    videos: ['/bussin-clip-1.mp4', '/bussin-clip-2.mp4', '/bussin-clip-3.mp4'],
   },
   {
     id: 'cpkshawn', cat: 'music', catLabel: 'Music', name: 'ProdByCPKShawn', subtitle: '"Yo Bunny"',
@@ -44,34 +58,6 @@ const CAMPAIGNS = [
     gradient: 'linear-gradient(135deg,#0d0d1a,#05050a)',
     clips: ['linear-gradient(160deg,#0d0d4a,#05051a)','linear-gradient(160deg,#0a0a3a,#050515)','linear-gradient(160deg,#0d0d55,#05051a)'],
     videos: ['/murda-clip-1.mp4', '/murda-clip-2.mp4', '/murda-clip-3.mp4'],
-  },
-  {
-    id: 'bussin', cat: 'podcast', catLabel: 'Podcast', name: 'Growing Up Italian', subtitle: 'Comedy Podcast',
-    direction: 'High-profile comedy podcast looking to grow short-form clip virality on TikTok and YouTube Shorts. Brief focused on repurposing the best moments into shareable clips that felt native to each platform.',
-    outcome: '3.8M views from a small initial test budget. The clips generated significant new subscribers and introduced the podcast to a younger short-form audience who hadn\'t found it through traditional means.',
-    results: [
-      { v: '3.8M', l: 'Total views' },
-      { v: '312', l: 'Creator submissions' },
-    ],
-    highlight: '3.8M views and 312 clips from a compact test campaign.',
-    img: '/cs-growing-up-italian.png',
-    gradient: 'linear-gradient(135deg,#1a0d0d,#0a0505)',
-    clips: ['linear-gradient(160deg,#4a0d0d,#1a0505)','linear-gradient(160deg,#3a0a0a,#150505)','linear-gradient(160deg,#550d0d,#1a0505)'],
-    videos: ['/bussin-clip-1.mp4', '/bussin-clip-2.mp4', '/bussin-clip-3.mp4'],
-  },
-  {
-    id: 'base', cat: 'health', catLabel: 'Health & Wellness', name: 'Based Bodyworks', subtitle: 'Sports Performance',
-    direction: 'Sports performance brand targeting gym-goers and athletes across TikTok and Instagram. Needed authentic fitness content that felt earned, not advertised — creators briefed to feature the brand naturally within their workout and training content.',
-    outcome: '2.1M organic views directly in front of the fitness-obsessed audience. 203 pieces of creator content generated, all from people who already lived the lifestyle the brand was selling.',
-    results: [
-      { v: '2.1M', l: 'Total views' },
-      { v: '203', l: 'Creator submissions' },
-    ],
-    highlight: '2.1M views direct to a targeted gym and fitness audience.',
-    img: '/cs-base-body-works.png',
-    gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
-    clips: ['linear-gradient(160deg,#4a4a0d,#1a1a05)','linear-gradient(160deg,#3a3a0a,#151505)','linear-gradient(160deg,#55550d,#1a1a05)'],
-    videos: ['/base-clip-1.mp4', '/base-clip-2.mp4', '/base-clip-3.mp4'],
   },
   {
     id: 'qrunitup', cat: 'music', catLabel: 'Music', name: 'QRUNITUP', subtitle: '"DFWM"',
@@ -152,7 +138,6 @@ const CAMPAIGNS = [
 const CATS = [
   { id: 'all', label: 'All' },
   { id: 'music', label: 'Music' },
-  { id: 'ecommerce', label: 'E-Commerce' },
   { id: 'health', label: 'Health & Wellness' },
   { id: 'podcast', label: 'Podcast' },
   { id: 'crypto', label: 'Crypto & Finance' },
@@ -161,8 +146,8 @@ const CATS = [
 const OVERVIEW_STATS = [
   { v: '2.3B+', l: 'Combined views generated', s: 'Across all campaigns' },
   { v: '4,400+', l: 'Creator clips approved', s: 'Manually reviewed across all brands' },
-  { v: '10', l: 'Campaigns completed', s: 'Music · E-Com · Podcast · Crypto' },
-  { v: '5', l: 'Different niches', s: 'And growing every month' },
+  { v: '9', l: 'Campaigns completed', s: 'Music · Health · Podcast · Crypto' },
+  { v: '4', l: 'Different niches', s: 'And growing every month' },
 ]
 
 export default function CaseStudies() {
@@ -273,7 +258,7 @@ export default function CaseStudies() {
                             playsInline
                             preload="metadata"
                           >
-                            <source src={src} type="video/mp4" />
+                            <source src={`${src}#t=3`} type="video/mp4" />
                           </video>
                         ) : null}
                         <div className="cs-clip-play">▶</div>
@@ -347,7 +332,7 @@ export default function CaseStudies() {
                             if (wrap) wrap.classList.add('error')
                           }}
                         >
-                          <source src={src} type="video/mp4" />
+                          <source src={`${src}#t=3`} type="video/mp4" />
                         </video>
                         <div className="cs-modal-clip-fallback" aria-hidden="true">▶</div>
                       </div>

@@ -45,9 +45,8 @@ const CASES = [
   { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', subs: '1,456 creator posts', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
   { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', subs: '1,062 creator posts', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
   { cat: 'Music', name: 'Loudpac Glady', views: '3.2M views', subs: '198 creator posts', img: '/cs-glady.png', gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)' },
-  { cat: 'E-Commerce', name: 'Epigenetics Supplements', views: '4.2M views', subs: '487 creator posts', img: '/cs-epigenetics.png', gradient: 'linear-gradient(135deg,#1a2a2a,#0a1a1a)' },
-  { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', subs: '312 creator posts', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
   { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', subs: '203 creator posts', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
+  { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', subs: '312 creator posts', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
   { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', subs: '178 creator posts', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
   { cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: '/cs-oscen.webp', gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
   { cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: '/cs-brysonlee.png', gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
@@ -81,28 +80,28 @@ const RFY_ITEMS = [
 
 const CREATOR_POSTS = [
   {
-    video: '/murda-clip-1.mp4',
+    video: '/murda-clip-1.mp4#t=3',
     username: '@nhcmurda60x',
     caption: 'bro went from 7 posts to 12 million views 🔥 this is crazy',
     likes: '92.1K',
     niche: 'Music',
   },
   {
-    video: '/cpkshawn-clip-2.mp4',
+    video: '/cpkshawn-clip-2.mp4#t=3',
     username: '@musiclovers',
     caption: 'this beat has been stuck in my head for 3 days straight 🎵',
     likes: '48.2K',
     niche: 'Music',
   },
   {
-    video: '/bussin-clip-1.mp4',
+    video: '/bussin-clip-1.mp4#t=3',
     username: '@podcastclips',
     caption: 'They said THIS on the podcast and I can\'t stop replaying it',
     likes: '67.4K',
     niche: 'Podcast',
   },
   {
-    video: '/base-clip-2.mp4',
+    video: '/base-clip-2.mp4#t=3',
     username: '@fitnesscreator',
     caption: 'Not sponsored — just actually obsessed with this brand 💪',
     likes: '31.7K',
@@ -409,10 +408,10 @@ export default function Home() {
             </div>
           </div>
           <div className="testimonial-card fade-up">
-            <div className="testimonial-quote">"[REPLACE WITH REAL QUOTE — client name: Epigenetics Supplements contact]"</div>
+            <div className="testimonial-quote">"[REPLACE WITH REAL QUOTE — Based Bodyworks contact]"</div>
             <div className="testimonial-author">
               <div className="testimonial-name">[CLIENT FIRST NAME LAST NAME]</div>
-              <div className="testimonial-role">Epigenetics Supplements</div>
+              <div className="testimonial-role">Based Bodyworks</div>
             </div>
           </div>
           <div className="testimonial-card fade-up">
