@@ -97,6 +97,13 @@
   font-weight: 700;
   font-size: 11.5px;
 }
+.hero-whop-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 100px;
+  border: 1px solid var(--bd2); background: var(--s2);
+  font-size: 12px; font-weight: 600; color: var(--t2);
+}
+.hero-whop-icon { width: 16px; height: 16px; border-radius: 4px; }
 
 .hero-actions {
   display: flex; gap: 14px; align-items: center;

@@ -146,6 +146,10 @@ export default function Home() {
               <span className="hero-reviews-score">4.8</span>
               <span className="hero-reviews-meta">· 1,074 reviews</span>
             </span>
+            <span className="hero-whop-badge">
+              <img src="https://whop.com/favicon-32x32.png" alt="Whop" className="hero-whop-icon" />
+              <span>on Whop</span>
+            </span>
           </div>
           <div className="hero-actions fade-up">
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">

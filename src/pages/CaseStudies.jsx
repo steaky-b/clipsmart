@@ -85,8 +85,7 @@ const CAMPAIGNS = [
     img: '/cs-glady.png',
     gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)',
     clips: ['linear-gradient(160deg,#3a0d5a,#15052a)','linear-gradient(160deg,#2a0a4a,#10051f)','linear-gradient(160deg,#4a0d6a,#1a0535)'],
-    // Placeholder for now — upload and set these paths once you have them
-    videos: [],
+    videos: ['/Loudpac Glady.mp4', '/Loudpac Glady(1).mp4', '/Loudpac Glady(2).mp4'],
   },
   {
     id: 'oscen', cat: 'music', catLabel: 'Music', name: 'Oscen', subtitle: '"Worship"',
@@ -100,8 +99,7 @@ const CAMPAIGNS = [
     img: '/cs-oscen.webp',
     gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)',
     clips: ['linear-gradient(160deg,#0d3a5a,#05152a)','linear-gradient(160deg,#0a2a4a,#050f1f)','linear-gradient(160deg,#0d4a6a,#051a35)'],
-    // Placeholder for now — upload and set these paths once you have them
-    videos: [],
+    videos: ['/Oscen.mp4', '/Oscen(1).mp4', '/Oscen(2).mp4'],
   },
   {
     id: 'brysonlee', cat: 'health', catLabel: 'Health & Wellness', name: 'Bryson Lee', subtitle: '"L22 Fitness Bae"',
@@ -115,8 +113,7 @@ const CAMPAIGNS = [
     img: '/cs-brysonlee.png',
     gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)',
     clips: ['linear-gradient(160deg,#3a3a0d,#15150a)','linear-gradient(160deg,#2a2a0a,#101005)','linear-gradient(160deg,#4a4a0d,#1a1a05)'],
-    // Placeholder for now — upload and set these paths once you have them
-    videos: [],
+    videos: ['/Bryson Lee.mp4', '/Bryson Lee(1).mp4', '/Bryson Lee(2).mp4'],
   },
   {
     id: 'cryptorians', cat: 'crypto', catLabel: 'Crypto & Finance', name: 'Cryptorians', subtitle: 'Clipping Campaign',
@@ -127,11 +124,10 @@ const CAMPAIGNS = [
       { v: '209', l: 'Creator submissions' },
     ],
     highlight: '209 creators. 209K views. Consistent channel growth in the crypto niche.',
-    img: null,
+    img: '/cs-cryptorians.png',
     gradient: 'linear-gradient(135deg,#0a1a0a,#051005)',
     clips: ['linear-gradient(160deg,#0d4a0d,#051a05)','linear-gradient(160deg,#0a3a0a,#051505)','linear-gradient(160deg,#0d550d,#051a05)'],
-    // Placeholder for now — upload and set these paths once you have them
-    videos: [],
+    videos: ['/Cryptorians.mp4', '/Cryptorians(1).mp4', '/Cryptorians(2).mp4'],
   },
 ]
 
@@ -256,6 +252,7 @@ export default function CaseStudies() {
                             controls
                             playsInline
                             preload="metadata"
+                            onClick={(e) => e.stopPropagation()}
                             onLoadedMetadata={(e) => { e.currentTarget.currentTime = 1 }}
                             onPlay={(e) => { e.currentTarget.muted = false }}
                             onMouseLeave={(e) => { e.currentTarget.pause() }}
