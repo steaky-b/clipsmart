@@ -64,7 +64,6 @@ const REJECTED = [
 ]
 
 export default function Creators() {
-  document.title = 'Creator Network — 80,000+ Verified Creators | ClipSmart'
   const [openFaq, setOpenFaq] = useState(null)
 
   return (

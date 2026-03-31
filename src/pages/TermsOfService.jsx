@@ -1,7 +1,6 @@
 import './LegalPages.css'
 
 export default function TermsOfService() {
-  document.title = 'Terms of Service — ClipSmart'
   return (
     <>
       <div className="page-hero">

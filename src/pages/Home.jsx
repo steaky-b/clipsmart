@@ -119,7 +119,6 @@ const FAQS = [
 ]
 
 export default function Home() {
-  document.title = 'ClipSmart — Performance UGC Campaigns That Actually Convert'
   return (
     <>
 

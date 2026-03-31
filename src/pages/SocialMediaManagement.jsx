@@ -48,7 +48,6 @@ const PROCESS = [
 ]
 
 export default function SocialMediaManagement() {
-  document.title = 'Social Media Management — Managed Growth | ClipSmart'
   return (
     <>
       <div className="page-hero">

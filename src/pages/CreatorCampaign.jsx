@@ -53,7 +53,6 @@ const COMPARE = [
 ]
 
 export default function CreatorCampaign() {
-  document.title = 'Creator Campaigns — Performance UGC at Scale | ClipSmart'
   return (
     <>
       <div className="page-hero">

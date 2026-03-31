@@ -49,7 +49,6 @@ const PRESETS = [
 ]
 
 export default function ROICalculator() {
-  document.title = 'ROI Calculator — See Your Projected Returns | ClipSmart'
   const [budget, setBudget] = useState(2500)
   const [customBudget, setCustomBudget] = useState('')
   const [activePreset, setActivePreset] = useState(1)

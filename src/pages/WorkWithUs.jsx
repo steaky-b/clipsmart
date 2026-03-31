@@ -15,7 +15,6 @@ function encode(data) {
 }
 
 export default function WorkWithUs() {
-  document.title = 'Work With Us — Start a Campaign | ClipSmart'
   const [form, setForm] = useState({ fname: '', lname: '', email: '', brand: '', campType: '', budget: '', details: '' })
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
