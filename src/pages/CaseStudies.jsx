@@ -164,7 +164,7 @@ export default function CaseStudies() {
       {/* HERO */}
       <div className="page-hero">
         <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Case Studies</div>
-        <h1>Not projections.<br /><em>Real campaigns.</em></h1>
+        <h1>Stop funding content<br /><em>that doesn't work.</em></h1>
         <p>Every number below is verified. Real money, real creators, real views.</p>
       </div>
 
@@ -254,12 +254,11 @@ export default function CaseStudies() {
                         {src ? (
                           <video
                             className="cs-clip-video-thumb"
-                            muted
-                            autoPlay
-                            loop
+                            controls
                             playsInline
-                            preload="auto"
-                            onLoadedMetadata={(e) => { e.currentTarget.currentTime = 1 }}
+                            preload="none"
+                            onPlay={(e) => { e.currentTarget.muted = false }}
+                            onMouseLeave={(e) => { e.currentTarget.pause() }}
                           >
                             <source src={`${src}#t=1`} type="video/mp4" />
                           </video>

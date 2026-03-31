@@ -191,14 +191,13 @@
 
 .cs-card-clips { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
 .cs-clip { aspect-ratio: 9/16; border-radius: 8px; position: relative; overflow: hidden; }
-.cs-clip-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; color: rgba(255,255,255,.7); z-index: 2; }
+.cs-clip-play { display: none; }
 .cs-clip-video-thumb {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  pointer-events: none;
   display: block;
 }
 
