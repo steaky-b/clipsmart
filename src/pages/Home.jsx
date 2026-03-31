@@ -249,6 +249,7 @@ export default function Home() {
                         playsInline
                         controls
                         preload="metadata"
+                        onPlay={(e) => { e.currentTarget.muted = false }}
                       />
                     )}
                     <div className="phone-username-tag">{post.username}</div>

@@ -329,6 +329,7 @@ export default function CaseStudies() {
                           controls
                           playsInline
                           preload="metadata"
+                          onPlay={(e) => { e.currentTarget.muted = false }}
                           onError={(e) => {
                             const wrap = e.currentTarget.closest('.cs-modal-clip-wrap')
                             if (wrap) wrap.classList.add('error')
