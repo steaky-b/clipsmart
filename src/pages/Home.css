@@ -294,7 +294,7 @@
 /* ═══════════════ GUARANTEE STRIP ═══════════════ */
 .guarantee-strip {
   position: relative; z-index: 1;
-  padding: 20px var(--pad) 52px;
+  padding: 52px var(--pad);
   max-width: var(--max);
   margin: 0 auto;
 }

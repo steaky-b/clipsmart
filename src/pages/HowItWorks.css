@@ -25,7 +25,7 @@
 }
 .hiw-h1 {
   font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: clamp(32px, 4vw, 56px);
+  font-size: clamp(36px, 4.5vw, 64px);
   font-weight: 800;
   line-height: 1.06;
   letter-spacing: -2px;
@@ -93,7 +93,7 @@
 .hiw-hub-tag::before { content: ''; width: 20px; height: 2px; background: var(--g); }
 .hiw-hub-h {
   font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: clamp(22px, 2vw, 30px);
+  font-size: clamp(24px, 2.6vw, 36px);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1px;
@@ -160,7 +160,7 @@
 
 @media (max-width: 768px) {
   .hiw-viewport { padding: calc(var(--nav-h) + 20px) var(--pad) 28px !important; gap: 20px; }
-  .hiw-h1 { font-size: clamp(22px, 6vw, 32px) !important; letter-spacing: -1px; }
+  .hiw-h1 { font-size: clamp(24px, 6.5vw, 36px) !important; letter-spacing: -1px; }
   .hiw-sub { font-size: 14px; }
   .hiw-hub-card { padding: 22px 18px !important; }
   .hiw-hub-h { font-size: clamp(18px, 5.5vw, 26px) !important; margin-bottom: 10px !important; }

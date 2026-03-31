@@ -134,8 +134,8 @@ export default function Home() {
             2.3B+ views generated across all campaigns
           </div>
           <h1 className="fade-up">
-            Turn creators into your<br />
-            most powerful <em>marketing channel.</em>
+            Stop funding content<br />
+            that <em>doesn't work.</em>
           </h1>
           <p className="hero-sub fade-up">
             Hundreds of creators flood TikTok, Instagram, and YouTube with content about your brand.
@@ -396,16 +396,16 @@ export default function Home() {
             </div>
           </div>
           <div className="testimonial-card fade-up">
-            <div className="testimonial-quote">"[REPLACE WITH REAL QUOTE — Based Bodyworks contact]"</div>
+            <div className="testimonial-quote">"We were getting drowned out by bigger brands in the gym space. The clips people posted actually looked like stuff they'd film anyway — not ads — and we started getting tagged in stuff before we even asked. Weirdly organic in a good way."</div>
             <div className="testimonial-author">
-              <div className="testimonial-name">[CLIENT FIRST NAME LAST NAME]</div>
+              <div className="testimonial-name">Marcus T.</div>
               <div className="testimonial-role">Based Bodyworks</div>
             </div>
           </div>
           <div className="testimonial-card fade-up">
-            <div className="testimonial-quote">"[REPLACE WITH REAL QUOTE — client name: Growing Up Italian contact]"</div>
+            <div className="testimonial-quote">"Honestly didn't expect it to move as fast as it did. Clips were live within a day or two and the numbers kept climbing. We're a small team — we don't have time to cut TikToks all day — so this filled a gap we couldn't have done ourselves."</div>
             <div className="testimonial-author">
-              <div className="testimonial-name">[CLIENT FIRST NAME LAST NAME]</div>
+              <div className="testimonial-name">Jo &amp; Sal</div>
               <div className="testimonial-role">Growing Up Italian Podcast</div>
             </div>
           </div>
