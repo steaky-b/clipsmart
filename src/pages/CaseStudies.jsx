@@ -96,7 +96,7 @@ const CAMPAIGNS = [
       { v: '252', l: 'Creator submissions' },
     ],
     highlight: '1.2M views and 252 posts driving discovery for an emerging electronic artist.',
-    img: '/cs-oscen.webp',
+    img: '/cs-oscen.jpg',
     gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)',
     clips: ['linear-gradient(160deg,#0d3a5a,#05152a)','linear-gradient(160deg,#0a2a4a,#050f1f)','linear-gradient(160deg,#0d4a6a,#051a35)'],
     videos: ['/Oscen.mp4', '/Oscen(1).mp4', '/Oscen(2).mp4'],
