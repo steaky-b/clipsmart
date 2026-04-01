@@ -345,7 +345,7 @@ export default function CaseStudies() {
                 rel="noopener noreferrer"
                 className="btn-primary csm-cta"
               >
-                Book a call like this →
+                Start a campaign →
               </a>
             </div>
           </div>
