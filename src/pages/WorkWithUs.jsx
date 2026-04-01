@@ -5,7 +5,7 @@ const STEPS = [
   { n: '01', t: 'Fill in the form', b: 'Tell us about your brand and goals. Takes 3 minutes.' },
   { n: '02', t: 'We reach out within 24 hours', b: 'We\'ll review your submission and come back with initial thoughts and a time to speak.' },
   { n: '03', t: '30-minute call — no prep needed', b: 'We ask about your brand, your goals, and your current marketing. Just show up.' },
-  { n: '04', t: 'Campaign live in 48–72 hours', b: 'Once you\'re in, we brief the creator network and your campaign goes live within 2–3 days.' },
+  { n: '04', t: 'Campaign live in 48 hours', b: 'Once you\'re in, we brief the creator network and your campaign goes live within 48 hours.' },
 ]
 
 function encode(data) {

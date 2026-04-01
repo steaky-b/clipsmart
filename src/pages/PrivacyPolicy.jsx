@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
       <div className="page-hero">
         <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Legal</div>
         <h1>Privacy <em>Policy</em></h1>
-        <p>Last updated: March 2025</p>
+        <p>Last updated: April 2026</p>
       </div>
 
       <div className="section legal-section">

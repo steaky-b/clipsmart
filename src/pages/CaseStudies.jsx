@@ -166,7 +166,7 @@ export default function CaseStudies() {
       {/* FEATURED */}
       <div className="section cs-featured-section">
         <div className="section-eyebrow fade-up">Most Talked About</div>
-        <h2 className="section-h2 fade-up">Our most talked-about <em>result.</em></h2>
+        <h2 className="section-h2 fade-up">Our biggest campaign <em>to date.</em></h2>
           <div className="cs-featured fade-up">
           <div className="csf-left">
             <div className="csf-tag">Music · Featured Campaign</div>
