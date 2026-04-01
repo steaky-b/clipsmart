@@ -285,20 +285,11 @@ export default function Home() {
             </Link>
           </div>
           <div className="how-right">
-            <div className="how-callout fade-up">
-              <div className="hc-label">Guaranteed Minimum</div>
-              <div className="hc-val">1M+</div>
-              <div className="hc-desc">Views per $1,000 budget — before you spend a single cent over your cap</div>
-            </div>
-            <div className="how-callout fade-up">
-              <div className="hc-label">Effective CPM Achieved</div>
-              <div className="hc-val">$0.09</div>
-              <div className="hc-desc">vs. $8–$15 on paid ads — same audience, fraction of the cost</div>
-            </div>
-            <div className="how-callout fade-up">
-              <div className="hc-label">Campaign Live In</div>
-              <div className="hc-val">48hrs</div>
-              <div className="hc-desc">From sign-off to first creator posts — no lengthy onboarding</div>
+            <div className="hiw-img-grid">
+              <img src="/hiw-piggybank.png" alt="" className="hiw-img" />
+              <img src="/hiw-phone.png"     alt="" className="hiw-img" />
+              <img src="/hiw-clipboard.png" alt="" className="hiw-img" />
+              <img src="/hiw-graph.png"     alt="" className="hiw-img" />
             </div>
           </div>
         </div>
