@@ -71,7 +71,7 @@ const CAMPAIGNS = [
     img: '/cs-qrunitup.png',
     gradient: 'linear-gradient(135deg,#1a0d1a,#0a050a)',
     clips: ['linear-gradient(160deg,#4a0d4a,#1a051a)','linear-gradient(160deg,#3a0a3a,#150515)','linear-gradient(160deg,#550d55,#1a051a)'],
-    videos: ['/qrunitup-clip-1.mp4', '/qrunitup-clip-2.mp4', '/qrunitup-clip-3.mp4'],
+    videos: ['/QRUNITUIP - DFWM.mp4', '/QRUNITUIP - DFWM(1).mp4', '/QRUNITUIP - DFWM(2).mp4'],
   },
   {
     id: 'glady', cat: 'music', catLabel: 'Music', name: 'Loudpac Glady', subtitle: '"Quit Callin"',

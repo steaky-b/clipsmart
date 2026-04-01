@@ -48,7 +48,7 @@ const CASES = [
   { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', subs: '203 creator posts', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
   { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', subs: '312 creator posts', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
   { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', subs: '178 creator posts', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
-  { cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: '/cs-oscen.webp', gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
+  { cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: '/cs-oscen.jpg', gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
   { cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: '/cs-brysonlee.png', gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
   { cat: 'Crypto & Finance', name: 'Cryptorians', views: '209K views', subs: '209 creator posts', img: null, gradient: 'linear-gradient(135deg,#0a1a0a,#051005)' },
 ]
@@ -147,7 +147,10 @@ export default function Home() {
               <span className="hero-reviews-meta">· 1,074 reviews</span>
             </span>
             <span className="hero-whop-badge">
-              <img src="https://whop.com/favicon-32x32.png" alt="Whop" className="hero-whop-icon" />
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-whop-icon">
+                <rect width="32" height="32" rx="6" fill="#FA4616"/>
+                <text x="16" y="23" textAnchor="middle" fontSize="20" fontWeight="800" fill="white" fontFamily="Arial, sans-serif">W</text>
+              </svg>
               <span>on Whop</span>
             </span>
           </div>
