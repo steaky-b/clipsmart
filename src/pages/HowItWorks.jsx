@@ -6,7 +6,7 @@ export default function HowItWorks() {
     <div className="hiw-viewport">
       <div className="hiw-title-block">
         <div className="section-eyebrow hiw-eyebrow">How It Works</div>
-        <h1 className="hiw-h1">Simple process.<br /><em>Zero guesswork.</em></h1>
+        <h1 className="hiw-h1">Awareness<br /><em>leads to sales.</em></h1>
         <p className="hiw-sub">Choose your path — performance-based creator campaigns or managed social media growth.</p>
       </div>
 

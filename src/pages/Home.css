@@ -1,16 +1,3 @@
-/* ═══════════════ AMBIENT GLOWS ═══════════════ */
-.home-glow-tl {
-  position: fixed; width: 700px; height: 700px; border-radius: 50%;
-  top: -200px; right: -200px;
-  background: radial-gradient(circle, rgba(46,204,113,.04) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
-}
-.home-glow-br {
-  position: fixed; width: 900px; height: 900px; border-radius: 50%;
-  bottom: -400px; left: -300px;
-  background: radial-gradient(circle, rgba(46,204,113,.05) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
-}
 
 /* ═══════════════ HERO — centred column ═══════════════ */
 .hero {
@@ -97,20 +84,14 @@
   font-weight: 700;
   font-size: 11.5px;
 }
-.hero-whop-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 14px; border-radius: 100px;
-  border: 1px solid var(--bd2); background: var(--s2);
-  font-size: 12px; font-weight: 600; color: var(--t2);
-}
-.hero-whop-icon { width: 16px; height: 16px; border-radius: 4px; }
+.hero-whop-icon { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
 
 .hero-actions {
   display: flex; gap: 14px; align-items: center;
   flex-wrap: wrap; justify-content: center;
   margin-bottom: 14px;
 }
-.hero-hint { font-size: 12px; color: var(--t3); margin-bottom: 48px; }
+.hero-hint { font-size: 12px; color: var(--t2); margin-bottom: 48px; }
 
 /* Video below text */
 .hero-video {

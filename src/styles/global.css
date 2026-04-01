@@ -27,7 +27,11 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 95% -10%, rgba(46,204,113,.04) 0%, transparent 45%),
+    radial-gradient(circle at -15% 105%, rgba(46,204,113,.05) 0%, transparent 50%),
+    var(--bg);
+  background-attachment: fixed;
   color: var(--white);
   font-family: 'Instrument Sans', sans-serif;
   -webkit-font-smoothing: antialiased;

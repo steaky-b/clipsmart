@@ -122,9 +122,6 @@ export default function Home() {
   return (
     <>
 
-      <div className="home-glow-tl" />
-      <div className="home-glow-br" />
-
       {/* HERO */}
       <div className="hero">
         <div className="hero-inner">
@@ -142,16 +139,13 @@ export default function Home() {
           </p>
           <div className="hero-platforms fade-up">
             <span className="hero-reviews-chip">
-              <span className="hero-reviews-stars">★★★★★</span>
-              <span className="hero-reviews-score">4.8</span>
-              <span className="hero-reviews-meta">· 1,074 reviews</span>
-            </span>
-            <span className="hero-whop-badge">
               <svg width="16" height="16" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-whop-icon">
                 <rect width="32" height="32" rx="6" fill="#FA4616"/>
                 <text x="16" y="23" textAnchor="middle" fontSize="20" fontWeight="800" fill="white" fontFamily="Arial, sans-serif">W</text>
               </svg>
-              <span>on Whop</span>
+              <span className="hero-reviews-score">4.8</span>
+              <span className="hero-reviews-stars">★★★★★</span>
+              <span className="hero-reviews-meta">· 1,074 reviews</span>
             </span>
           </div>
           <div className="hero-actions fade-up">
