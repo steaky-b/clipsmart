@@ -238,7 +238,7 @@ export default function CaseStudies() {
               <div
                 className={'cs-card-visual' + (c.img ? ' has-img' : '')}
                 style={c.img
-                  ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
+                  ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center center' }
                   : { background: c.gradient }
                 }
               >

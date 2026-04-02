@@ -384,7 +384,7 @@ body::before {
 .cta-h em { font-style: normal; color: var(--g); }
 .cta-p { font-size: 16px; color: var(--t2); max-width: 420px; }
 .cta-actions { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; flex-shrink: 0; }
-.cta-note { font-size: 12px; color: var(--t3); text-align: center; }
+.cta-note { font-size: 12px; color: var(--t2); text-align: center; }
 
 /* ═══════════════════════════════
    FOOTER
