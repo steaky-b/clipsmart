@@ -77,18 +77,6 @@
 }
 .hiw-hub-card:hover { border-color: var(--g-bdr); transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,.4), 0 0 0 1px var(--g-bdr); }
 .hiw-hub-card:hover::before { transform: scaleX(1); }
-.hiw-hub-icon-imgs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-  flex-shrink: 0;
-}
-.hiw-card-img {
-  height: 100px;
-  width: auto;
-  object-fit: contain;
-  flex: 1;
-}
 .hiw-hub-tag {
   font-size: 10px;
   font-weight: 600;
@@ -172,7 +160,6 @@
   .hiw-sub { font-size: 14px; }
   .hiw-hub-card { padding: 22px 18px !important; }
   .hiw-hub-h { font-size: clamp(18px, 5.5vw, 26px) !important; margin-bottom: 10px !important; }
-  .hiw-card-img { height: 80px !important; }
   .hiw-hub-tag { margin-bottom: 10px !important; }
   .hiw-hub-p { font-size: 13px !important; margin-bottom: 16px !important; line-height: 1.6 !important; }
   .hiw-hub-stats { gap: 8px !important; margin-bottom: 16px !important; }
@@ -183,7 +170,6 @@
 @media (max-height: 760px) {
   .hiw-viewport { padding-top: calc(var(--nav-h) + 16px); gap: 12px; padding-bottom: 16px; }
   .hiw-hub-card { padding: 16px 18px; }
-  .hiw-card-img { height: 70px !important; }
   .hiw-hub-tag { margin-bottom: 6px !important; }
   .hiw-hub-h { font-size: clamp(18px, 2vw, 26px) !important; margin-bottom: 6px !important; }
   .hiw-hub-p { font-size: 12.5px !important; margin-bottom: 8px !important; }

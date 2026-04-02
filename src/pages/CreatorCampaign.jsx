@@ -6,25 +6,25 @@ const STEPS = [
     n: '01', title: 'You fund a campaign budget',
     body: 'Set your budget — that\'s your hard cap. Every $1,000 guarantees a minimum of 1,000,000 views. You will not spend a cent over your cap without approval.',
     stat: { v: '1M+', l: '$1,000 = 1M+ guaranteed views' },
-    img: '/how-it-works-step-1.png',
+    img: '/hiw-piggybank.png',
   },
   {
     n: '02', title: 'Creators post content about your brand',
     body: 'Your campaign launches inside our community of 80,000+ creators. They produce original short-form videos on TikTok, Instagram, and YouTube — from their own accounts, organically. No ad accounts. No "Sponsored" labels.',
     stat: { v: '80K+', l: 'Active creators briefed instantly' },
-    img: '/how-it-works-step-2.png',
+    img: '/hiw-phone.png',
   },
   {
     n: '03', title: 'We manually review every submission',
     body: 'Before any clip counts toward your budget, our team reviews it. Wrong tone, wrong audience, off-brand, low quality — rejected instantly. You never pay for content that doesn\'t meet your standard.',
     stat: { v: '100%', l: 'Manual review on every clip' },
-    img: '/how-it-works-step-3.png',
+    img: '/hiw-clipboard.png',
   },
   {
     n: '04', title: 'You pay only for views that happened',
     body: 'Deducted from your budget as views roll in. Track every clip, every view, every penny in real time. When the budget is spent, the campaign ends.',
     stat: { v: '$1', l: 'Per 1,000 organic views — nothing more' },
-    img: '/how-it-works-step-4.png',
+    img: '/hiw-graph.png',
   },
 ]
 

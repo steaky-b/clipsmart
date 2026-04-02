@@ -12,10 +12,6 @@ export default function HowItWorks() {
 
       <div className="hiw-hub-inner">
         <Link to="/how-it-works/creator-campaign" className="hiw-hub-card">
-          <div className="hiw-hub-icon-imgs">
-            <img src="/hiw-graph.png" alt="" className="hiw-card-img" />
-            <img src="/hiw-phone.png" alt="" className="hiw-card-img" />
-          </div>
           <div className="hiw-hub-tag">Campaign Growth</div>
           <h2 className="hiw-hub-h">Creator Campaign<br />Growth</h2>
           <p className="hiw-hub-p">
@@ -40,10 +36,6 @@ export default function HowItWorks() {
         </Link>
 
         <Link to="/how-it-works/social-media" className="hiw-hub-card">
-          <div className="hiw-hub-icon-imgs">
-            <img src="/hiw-clipboard.png" alt="" className="hiw-card-img" />
-            <img src="/hiw-piggybank.png" alt="" className="hiw-card-img" />
-          </div>
           <div className="hiw-hub-tag">Profile Growth</div>
           <h2 className="hiw-hub-h">Social Media<br />Management</h2>
           <p className="hiw-hub-p">
