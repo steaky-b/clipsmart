@@ -148,6 +148,7 @@
   width: 320px; flex-shrink: 0;
   background: var(--s1); border: 1px solid var(--bd);
   border-radius: 16px; overflow: hidden; transition: all .25s;
+  text-decoration: none; color: inherit; display: block; cursor: pointer;
 }
 .case-thumb:hover { border-color: var(--g-dark); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.5); }
 .case-img { width: 100%; aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; font-size: 40px; position: relative; }
@@ -407,7 +408,8 @@
 
   .cases-section { padding: 40px 0 !important; }
   .cases-header { padding: 0 var(--pad) 24px !important; flex-direction: column; align-items: flex-start; gap: 12px !important; }
-  .cases-header h2 { font-size: clamp(20px,5vw,28px) !important; }
+  .cases-header h2 { font-size: clamp(26px, 6.5vw, 36px) !important; }
+  .how-steps-col .section-h2 { font-size: clamp(24px, 6vw, 32px) !important; }
   .case-thumb { width: 280px !important; }
 
   .how-inner { padding: 40px var(--pad) !important; gap: 24px !important; }
@@ -430,6 +432,7 @@
   .rfy-card-h { font-size: clamp(20px,5vw,28px) !important; }
   .rfy-card-p { font-size: 13.5px !important; margin-bottom: 20px !important; }
 
+  .guarantee-strip { padding: 16px var(--pad) !important; }
   .guarantee-strip-inner { flex-direction: column; text-align: center; padding: 24px 20px !important; align-items: center !important; }
   .guarantee-btn { width: 100%; justify-content: center; }
   .guarantee-p { max-width: 100% !important; }

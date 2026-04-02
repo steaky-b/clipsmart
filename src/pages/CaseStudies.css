@@ -175,7 +175,8 @@
 
   /* Card grid: 2 across stays — just tighten */
   .cs-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .cs-card-visual { padding: 16px 14px 12px !important; min-height: 90px !important; }
+  .cs-card-visual { padding: 16px 14px 12px !important; min-height: 160px !important; }
+  .cs-card-visual.has-img { min-height: 160px !important; }
   .cs-card-name { font-size: 14px !important; }
   .cs-card-body { padding: 12px 14px 14px !important; gap: 8px !important; }
   .cs-card-metrics { gap: 6px !important; }
@@ -250,4 +251,11 @@
   .csm-name { font-size: 24px; }
   .csm-brief { font-size: 14px; }
   .cs-modal-close { margin: 8px 10px 0 0; width: 32px; height: 32px; font-size: 18px; }
+}
+
+@media (max-width: 768px) {
+  .cs-overview-stats .stats-inner { grid-template-columns: 1fr 1fr !important; }
+  .cs-overview-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; }
+  .cs-overview-stats .stat-block:nth-child(odd) { border-right: 1px solid var(--bd) !important; }
+  .cs-overview-stats .stat-block:last-child { border-bottom: none !important; }
 }

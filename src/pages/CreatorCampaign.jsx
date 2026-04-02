@@ -141,7 +141,7 @@ export default function CreatorCampaign() {
           </div>
           <div className="cta-actions">
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
-              Book a free call →
+              Start a campaign →
             </a>
             <span className="cta-note">Full refund if we don't hit your guaranteed views</span>
           </div>

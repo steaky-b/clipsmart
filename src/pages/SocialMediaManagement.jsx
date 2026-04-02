@@ -145,7 +145,7 @@ export default function SocialMediaManagement() {
           </div>
           <div className="cta-actions">
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
-              Book a free call →
+              Get in touch →
             </a>
             <span className="cta-note">No commitment · No agency fees</span>
           </div>

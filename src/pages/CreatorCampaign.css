@@ -79,6 +79,7 @@
 }
 
 @media (max-width: 768px) {
+  .cc-step-visual { display: none; }
   .cc-step { padding: 36px var(--pad) !important; gap: 20px !important; }
   .cc-step-label { margin-bottom: 12px !important; }
   .cc-step-h { font-size: clamp(20px,5vw,28px) !important; margin-bottom: 10px !important; }

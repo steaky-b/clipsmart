@@ -42,15 +42,15 @@ const STATS = [
 ]
 
 const CASES = [
-  { cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', subs: '1,456 creator posts', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
-  { cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', subs: '1,062 creator posts', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
-  { cat: 'Music', name: 'Loudpac Glady', views: '3.2M views', subs: '198 creator posts', img: '/cs-glady.png', gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)' },
-  { cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', subs: '203 creator posts', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
-  { cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', subs: '312 creator posts', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
-  { cat: 'Music', name: 'QRUNITUP', views: '1.9M views', subs: '178 creator posts', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
-  { cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: '/cs-oscen.jpg', gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
-  { cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: '/cs-brysonlee.png', gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
-  { cat: 'Crypto & Finance', name: 'Cryptorians', views: '209K views', subs: '209 creator posts', img: null, gradient: 'linear-gradient(135deg,#0a1a0a,#051005)' },
+  { id: 'murda', cat: 'Music', name: 'NHC Murda 60x', views: '12M+ views', subs: '1,456 creator posts', img: '/cs-nhc-murda.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a1a)' },
+  { id: 'cpkshawn', cat: 'Music', name: 'ProdByCPKShawn', views: '11.3M views', subs: '1,062 creator posts', img: '/cs-cpkshawn.png', gradient: 'linear-gradient(135deg,#1a2a1a,#0a1a0a)' },
+  { id: 'glady', cat: 'Music', name: 'Loudpac Glady', views: '3.2M views', subs: '198 creator posts', img: '/cs-glady.png', gradient: 'linear-gradient(135deg,#1a0a2a,#0a050f)' },
+  { id: 'base', cat: 'Health & Wellness', name: 'Based Bodyworks', views: '2.1M views', subs: '203 creator posts', img: '/cs-base-body-works.png', gradient: 'linear-gradient(135deg,#2a2a1a,#1a1a0a)' },
+  { id: 'bussin', cat: 'Podcast', name: 'Growing Up Italian', views: '3.8M views', subs: '312 creator posts', img: '/cs-growing-up-italian.png', gradient: 'linear-gradient(135deg,#2a1a1a,#1a0a0a)' },
+  { id: 'qrunitup', cat: 'Music', name: 'QRUNITUP', views: '1.9M views', subs: '178 creator posts', img: '/cs-qrunitup.png', gradient: 'linear-gradient(135deg,#1a1a2a,#0a0a2a)' },
+  { id: 'oscen', cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: '/cs-oscen.jpg', gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
+  { id: 'brysonlee', cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: '/cs-brysonlee.png', gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
+  { id: 'cryptorians', cat: 'Crypto & Finance', name: 'Cryptorians', views: '209K views', subs: '209 creator posts', img: '/cs-cryptorians.png', gradient: 'linear-gradient(135deg,#0a1a0a,#051005)' },
 ]
 
 const HOW_STEPS = [
@@ -202,7 +202,7 @@ export default function Home() {
         <div className="cases-track-wrap">
           <div className="cases-track">
             {[...CASES, ...CASES].map((c, i) => (
-              <div key={i} className="case-thumb">
+              <Link key={i} to="/case-studies" state={{ modalId: c.id }} className="case-thumb">
                 <div
                   className="case-img"
                   style={c.img
@@ -218,7 +218,7 @@ export default function Home() {
                   <div className="case-views">{c.views}</div>
                   <div className="case-spend">{c.subs}</div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -368,7 +368,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="btn-primary rfy-btn"
               >
-                Book a free call →
+                Let's talk →
               </a>
               <div className="rfy-guarantee">
                 <span className="rfy-guarantee-icon">✓</span>
@@ -417,7 +417,7 @@ export default function Home() {
             <h2 className="section-h2 fade-up">Questions we <em>always get.</em></h2>
             <p className="section-lead fade-up">If yours isn't here, book a call — we answer everything in 30 minutes.</p>
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary fade-up">
-              Book a free call →
+              Schedule a call →
             </a>
           </div>
           <div className="faq-list fade-up">

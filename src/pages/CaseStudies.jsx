@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import './CaseStudies.css'
 
 const CAMPAIGNS = [
@@ -149,6 +150,13 @@ const OVERVIEW_STATS = [
 export default function CaseStudies() {
   const [activeCat, setActiveCat] = useState('all')
   const [activeModal, setActiveModal] = useState(null)
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.modalId) {
+      setActiveModal(location.state.modalId)
+    }
+  }, [])
 
   const featured = CAMPAIGNS.find(c => c.id === 'murda')
   const filtered = activeCat === 'all' ? CAMPAIGNS : CAMPAIGNS.filter(c => c.cat === activeCat)
@@ -201,7 +209,7 @@ export default function CaseStudies() {
       </div>
 
       {/* OVERVIEW STATS */}
-      <div className="stats-section">
+      <div className="cs-overview-stats stats-section">
         <div className="stats-inner stagger">
           {OVERVIEW_STATS.map(({ v, l, s }) => (
             <div key={l} className="stat-block">

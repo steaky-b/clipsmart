@@ -6,12 +6,12 @@
   --g-dark:   #1B7A43;
   --g-glow:   rgba(46,204,113,0.10);
   --g-bdr:    rgba(46,204,113,0.26);
-  --bg:       #070E08;
-  --s1:       #0C1410;
-  --s2:       #111A13;
-  --s3:       #182019;
-  --bd:       #182019;
-  --bd2:      #233028;
+  --bg:       #060C07;
+  --s1:       #0B120E;
+  --s2:       #101812;
+  --s3:       #161D17;
+  --bd:       #161D17;
+  --bd2:      #1F2822;
   --white:    #FFFFFF;
   --t1:       #DEDEDE;
   --t2:       #888;
@@ -28,8 +28,8 @@
 html { scroll-behavior: smooth; }
 body {
   background:
-    radial-gradient(circle at 95% -10%, rgba(46,204,113,.07) 0%, transparent 45%),
-    radial-gradient(circle at -15% 105%, rgba(46,204,113,.08) 0%, transparent 50%),
+    radial-gradient(circle at 95% -10%, rgba(46,204,113,.05) 0%, transparent 45%),
+    radial-gradient(circle at -15% 105%, rgba(46,204,113,.06) 0%, transparent 50%),
     var(--bg);
   background-attachment: fixed;
   color: var(--white);
