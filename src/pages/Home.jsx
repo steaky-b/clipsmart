@@ -178,7 +178,7 @@ export default function Home() {
       </div>
 
       {/* STATS */}
-      <div className="stats-section">
+      <div className="home-stats stats-section">
         <div className="stats-inner stagger">
           {STATS.map(({ v, l, s }) => (
             <div key={l} className="stat-block">

@@ -1,11 +1,12 @@
 /* ═══════════════ STEPS ═══════════════ */
 .cc-steps { position: relative; z-index: 1; }
 .cc-step {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  display: grid; grid-template-columns: 1fr; gap: 0;
   align-items: center;
   padding: 80px var(--pad); max-width: var(--max); margin: 0 auto;
   border-bottom: 1px solid var(--bd);
 }
+.cc-step-visual { display: none; }
 .cc-step.even .cc-step-visual { order: -1; }
 .cc-step-label {
   display: flex; align-items: center; gap: 14px;

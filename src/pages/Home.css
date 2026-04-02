@@ -432,6 +432,13 @@
   .rfy-card-h { font-size: clamp(20px,5vw,28px) !important; }
   .rfy-card-p { font-size: 13.5px !important; margin-bottom: 20px !important; }
 
+  .home-stats .stats-inner { grid-template-columns: 1fr 1fr !important; }
+  .home-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; padding: 20px 18px !important; }
+  .home-stats .stat-block:nth-child(odd) { border-right: 1px solid var(--bd) !important; }
+  .home-stats .stat-block:last-child { border-bottom: none !important; }
+  .home-stats .stat-v { font-size: 32px !important; }
+  .home-stats .stat-l { font-size: 13px !important; }
+
   .guarantee-strip { padding: 16px var(--pad) !important; }
   .guarantee-strip-inner { flex-direction: column; text-align: center; padding: 24px 20px !important; align-items: center !important; }
   .guarantee-btn { width: 100%; justify-content: center; }
