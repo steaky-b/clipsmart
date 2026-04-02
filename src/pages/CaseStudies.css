@@ -255,7 +255,10 @@
 
 @media (max-width: 768px) {
   .cs-overview-stats .stats-inner { grid-template-columns: 1fr 1fr !important; }
-  .cs-overview-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; }
+  .cs-overview-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; padding: 24px 20px !important; }
   .cs-overview-stats .stat-block:nth-child(odd) { border-right: 1px solid var(--bd) !important; }
   .cs-overview-stats .stat-block:last-child { border-bottom: none !important; }
+  .cs-overview-stats .stat-v { font-size: 36px !important; }
+  .cs-overview-stats .stat-l { font-size: 13px !important; }
+  .cs-overview-stats .stat-s { font-size: 12px !important; }
 }
