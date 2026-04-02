@@ -386,23 +386,23 @@ export default function Home() {
         <h2 className="section-h2 fade-up" style={{ textAlign: 'center' }}>Don't take our word <em>for it.</em></h2>
         <div className="testimonials-grid">
           <div className="testimonial-card fade-up">
-            <div className="testimonial-quote">"Went from 7 posts on TikTok to 1,456. From under 1,000 organic views to over 12 million — and we'd only spent 60% of the budget."</div>
+            <div className="testimonial-quote">"its honestly crazy… we went from like 7 posts to over 1.5k and ended up hitting 12 million views. didn't even use the full budget either which makes it even crazier"</div>
             <div className="testimonial-author">
               <div className="testimonial-name">NHC Murda 60x</div>
-              <div className="testimonial-role">Music Artist · "Murdadale"</div>
+              <div className="testimonial-role">Music Artist</div>
             </div>
           </div>
           <div className="testimonial-card fade-up">
-            <div className="testimonial-quote">"We were getting drowned out by bigger brands in the gym space. The clips people posted actually looked like stuff they'd film anyway — not ads — and we started getting tagged in stuff before we even asked. Weirdly organic in a good way."</div>
+            <div className="testimonial-quote">"We heard about clipping and decided to try ClipSmart for our first campaign… honestly the video submissions were great and it really pushed BASED out there on tiktok"</div>
             <div className="testimonial-author">
-              <div className="testimonial-name">Marcus T.</div>
-              <div className="testimonial-role">Based Bodyworks</div>
+              <div className="testimonial-name">Max</div>
+              <div className="testimonial-role">BASED BodyWorks</div>
             </div>
           </div>
           <div className="testimonial-card fade-up">
-            <div className="testimonial-quote">"Honestly didn't expect it to move as fast as it did. Clips were live within a day or two and the numbers kept climbing. We're a small team — we don't have time to cut TikToks all day — so this filled a gap we couldn't have done ourselves."</div>
+            <div className="testimonial-quote">"Didn't expect it to move this fast at all. clips were going live within a day or two and the views just kept going up. we're a small team so this saved us a ton of time we didn't have"</div>
             <div className="testimonial-author">
-              <div className="testimonial-name">Jo &amp; Sal</div>
+              <div className="testimonial-name">Joe &amp; Sal</div>
               <div className="testimonial-role">Growing Up Italian Podcast</div>
             </div>
           </div>
