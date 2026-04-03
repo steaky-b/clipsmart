@@ -88,22 +88,6 @@
   .cc-stat-v { font-size: 22px !important; }
   .cc-stat-l { font-size: 12px !important; }
 
-  /* Step images: transparent PNGs — contain, centered, no harsh crop */
-  .cc-step-visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .cc-step-img {
-    width: auto !important;
-    max-width: 200px !important;
-    max-height: 200px !important;
-    object-fit: contain !important;
-    border: none !important;
-    border-radius: 0 !important;
-    margin: 0 auto !important;
-  }
-
   /* Mechanics: 2-across stays */
   .cc-mechanics-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
   .cc-mechanic-card { padding: 18px 14px !important; }
@@ -114,7 +98,6 @@
 }
 
 @media (max-width: 480px) {
-  .cc-step-img { max-width: 160px !important; max-height: 160px !important; }
   .cc-step { padding: 28px var(--pad) !important; }
   .cc-stat { flex-direction: column; gap: 4px !important; padding: 8px 12px !important; }
   .cc-stat-v { font-size: 20px !important; }

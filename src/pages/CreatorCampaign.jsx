@@ -85,6 +85,8 @@ export default function CreatorCampaign() {
                 src={img}
                 alt={title}
                 className="cc-step-img"
+                loading="lazy"
+                decoding="async"
                 onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex' }}
               />
               <div className="cc-visual-placeholder" style={{ display: 'none' }}>{n}</div>
