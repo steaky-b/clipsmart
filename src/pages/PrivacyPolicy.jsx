@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
 
           <div className="legal-block">
             <h2>1. Who We Are</h2>
-            <p>ClipSmart ("we", "us", "our") is a performance UGC agency. Our website is <strong>clipsmart.co</strong>. If you have any questions about this policy, contact us at <a href="mailto:Contact@clipsmart.co.uk">Contact@clipsmart.co.uk</a>.</p>
+            <p>ClipSmart ("we", "us", "our") is a performance UGC agency. Our website is <strong>clipsmart.co</strong>. If you have any questions about this policy, contact us at <a href="mailto:contact@clipsmart.co.uk">contact@clipsmart.co.uk</a>.</p>
           </div>
 
           <div className="legal-block">
@@ -57,12 +57,12 @@ export default function PrivacyPolicy() {
 
           <div className="legal-block">
             <h2>6. Data Retention</h2>
-            <p>Form submission data is retained in Netlify for as long as needed to handle your enquiry and maintain records of our correspondence. You may request deletion at any time by emailing <a href="mailto:Contact@clipsmart.co.uk">Contact@clipsmart.co.uk</a>.</p>
+            <p>Form submission data is retained in Netlify for as long as needed to handle your enquiry and maintain records of our correspondence. You may request deletion at any time by emailing <a href="mailto:contact@clipsmart.co.uk">contact@clipsmart.co.uk</a>.</p>
           </div>
 
           <div className="legal-block">
             <h2>7. Your Rights</h2>
-            <p>Depending on your location, you may have the right to access, correct, or delete the personal data we hold about you. To exercise any of these rights, email us at <a href="mailto:Contact@clipsmart.co.uk">Contact@clipsmart.co.uk</a> and we will respond within 30 days.</p>
+            <p>Depending on your location, you may have the right to access, correct, or delete the personal data we hold about you. To exercise any of these rights, email us at <a href="mailto:contact@clipsmart.co.uk">contact@clipsmart.co.uk</a> and we will respond within 30 days.</p>
           </div>
 
           <div className="legal-block">

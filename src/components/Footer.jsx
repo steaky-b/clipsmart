@@ -36,6 +36,15 @@ export default function Footer() {
             <div className="footer-col-h">Get Started</div>
             <nav className="footer-links">
               <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer">Book a Free Call</a>
+              <a href="mailto:contact@clipsmart.co.uk">contact@clipsmart.co.uk</a>
+            </nav>
+          </div>
+
+          <div>
+            <div className="footer-col-h">Follow Us</div>
+            <nav className="footer-links">
+              <a href="https://www.tiktok.com/@clipsmart" target="_blank" rel="noopener noreferrer">TikTok</a>
+              <a href="https://www.instagram.com/clipsmart" target="_blank" rel="noopener noreferrer">Instagram</a>
             </nav>
           </div>
         </div>

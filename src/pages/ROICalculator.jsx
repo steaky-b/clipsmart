@@ -119,8 +119,8 @@ export default function ROICalculator() {
               )}
               <div className="calc-slider-wrap">
                 <div className="calc-slider-labels">
-                  <span>RPM Rate</span>
-                  <span className="calc-rpm-val">${rpm} RPM</span>
+                  <span>Cost per 1,000 views</span>
+                  <span className="calc-rpm-val">${rpm} per 1K views</span>
                 </div>
                 <input
                   type="range"
@@ -131,7 +131,7 @@ export default function ROICalculator() {
                   onChange={(e) => setRpm(Number(e.target.value))}
                   className="calc-slider"
                 />
-                <div className="calc-slider-note">Standard rate is $1 RPM. Higher RPM = more creator incentive = more content.</div>
+                <div className="calc-slider-note">Standard rate is $1 per 1,000 views. A higher rate incentivises more creators to post.</div>
               </div>
             </div>
           </div>

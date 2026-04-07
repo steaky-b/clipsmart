@@ -79,7 +79,7 @@ export default function WorkWithUs() {
               ))}
             </div>
             <div className="wwu-stats stagger">
-              {[['1M+','Views per $1,000'],['$0.09','Effective CPM achieved'],['16hrs','First clip live']].map(([v,l]) => (
+              {[['1M+','Views per $1,000'],['from $0.09','Effective CPM achieved'],['16hrs','First clip live']].map(([v,l]) => (
                 <div key={l} className="ms">
                   <div className="ms-v">{v}</div>
                   <div className="ms-l">{l}</div>
@@ -114,11 +114,11 @@ export default function WorkWithUs() {
                   <div className="form-row">
                     <div className="form-group">
                       <label>First name</label>
-                      <input type="text" placeholder="Aston" value={form.fname} onChange={e => update('fname', e.target.value)} />
+                      <input type="text" placeholder="John" value={form.fname} onChange={e => update('fname', e.target.value)} />
                     </div>
                     <div className="form-group">
                       <label>Last name</label>
-                      <input type="text" placeholder="Baker" value={form.lname} onChange={e => update('lname', e.target.value)} />
+                      <input type="text" placeholder="Smith" value={form.lname} onChange={e => update('lname', e.target.value)} />
                     </div>
                   </div>
                   <div className="form-group">

@@ -28,7 +28,7 @@ function IconYouTube() {
 const TICKER_ITEMS = [
   { value: '2.3B+', label: 'Total Views Generated' },
   { value: '80K+', label: 'Active Creators' },
-  { value: '$0.09', label: 'Effective CPM Achieved' },
+  { value: 'from $0.09', label: 'Effective CPM Achieved' },
   { value: '100%', label: 'Organic — Zero Ad Account Risk' },
   { value: '48hrs', label: 'Campaign Goes Live' },
   { label: 'Performance-Based · Pay Only For Results' },
@@ -142,7 +142,7 @@ export default function Home() {
               <img src="/whop-logo.png" alt="Whop" className="hero-whop-icon" />
               <span className="hero-reviews-score">4.8</span>
               <span className="hero-reviews-stars">★★★★★</span>
-              <span className="hero-reviews-meta">· 1,074 reviews</span>
+              <span className="hero-reviews-meta">· 1,000+ reviews</span>
             </span>
           </div>
           <div className="hero-actions fade-up">
@@ -155,7 +155,7 @@ export default function Home() {
 
           <div className="hero-video fade-up">
             <div className="video-frame">
-              <video controls autoPlay muted loop playsInline>
+              <video controls autoPlay muted loop playsInline preload="auto">
                 <source src="/hero-video.mp4" type="video/mp4" />
               </video>
               <div className="video-glow" />
@@ -289,7 +289,7 @@ export default function Home() {
             </div>
             <div className="how-callout fade-up">
               <div className="hc-label">Effective CPM Achieved</div>
-              <div className="hc-val">$0.09</div>
+              <div className="hc-val">from $0.09</div>
               <div className="hc-desc">vs. $8–$15 on paid ads — same audience, fraction of the cost</div>
             </div>
             <div className="how-callout fade-up">
