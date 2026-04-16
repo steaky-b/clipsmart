@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClipSmart — Before Your Call</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #060606;
+  --green: #00e676;
+  --green-dim: rgba(0,230,118,0.09);
+  --green-border: rgba(0,230,118,0.18);
+  --text: #f0f0f0;
+  --muted: #666;
+  --muted-light: #999;
+  --surface: #0d0d0d;
+  --surface2: #131313;
+  --border: #181818;
+  --border-light: #222;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* GRAIN OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* -------- NAVBAR -------- */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(6,6,6,0.92);
+  backdrop-filter: blur(12px);
+}
+
+.nav-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.4px;
+  color: var(--text);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--green); }
+
+.nav-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--bg);
+  background: var(--green);
+  border: none;
+  padding: 10px 22px;
+  cursor: pointer;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* -------- SECTIONS -------- */
+section { position: relative; }
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* -------- HERO -------- */
+.hero {
+  padding-top: 140px;
+  padding-bottom: 80px;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--green);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.1s ease forwards;
+  text-align: center;
+}
+
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(52px, 7.5vw, 108px);
+  line-height: 0.97;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.2s ease forwards;
+  text-align: center;
+}
+
+.hero-title .green { color: var(--green); }
+
+.hero-title .outline {
+  -webkit-text-stroke: 1px rgba(240,240,240,0.3);
+  color: transparent;
+}
+
+.hero-sub {
+  font-size: 18px;
+  color: var(--muted-light);
+  font-weight: 300;
+  max-width: 520px;
+  line-height: 1.65;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.32s ease forwards;
+}
+
+.hero-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.42s ease forwards;
+}
+
+.pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* VIDEO BLOCK */
+.video-block {
+  opacity: 0;
+  animation: fadeUp 0.7s 0.5s ease forwards;
+}
+
+.video-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.video-frame {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.video-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Video placeholder (before embed is added) */
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  gap: 16px;
+}
+
+.video-placeholder-icon {
+  width: 72px; height: 72px;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  color: var(--green);
+}
+
+.video-placeholder-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-align: center;
+}
+
+/* -------- STATS BAR -------- */
+.stats-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0;
+}
+
+.stats-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.stat-item {
+  padding: 36px 28px;
+  border-right: 1px solid var(--border);
+}
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 42px;
+  color: var(--green);
+  line-height: 1;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.stat-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+/* -------- HOW IT WORKS -------- */
+.section-pad { padding: 96px 0; }
+
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--green);
+  margin-bottom: 16px;
+}
+
+.section-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 4vw, 52px);
+  letter-spacing: 0.3px;
+  line-height: 1.05;
+  margin-bottom: 56px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border-light);
+  border: 1px solid var(--border-light);
+}
+
+.step {
+  background: var(--surface);
+  padding: 32px 24px;
+  position: relative;
+}
+
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+}
+
+.step-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.step-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* -------- GUARANTEE -------- */
+.guarantee-section {
+  padding: 96px 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.guarantee-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.guarantee-left {}
+
+.guarantee-kicker {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--green);
+  margin-bottom: 20px;
+}
+
+.guarantee-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 4vw, 56px);
+  letter-spacing: 0.3px;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.guarantee-title span { color: var(--green); }
+
+.guarantee-body {
+  font-size: 15px;
+  color: var(--muted-light);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.guarantee-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 12px 20px;
+  font-size: 14px;
+  color: var(--green);
+  font-weight: 500;
+}
+
+.guarantee-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.g-point {
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  padding: 20px 22px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.g-icon {
+  width: 32px; height: 32px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.g-point-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.g-point-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* -------- RESULTS -------- */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border-light);
+}
+
+.result-card {
+  background: var(--surface);
+  padding: 36px 32px;
+}
+
+.result-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--green);
+  margin-bottom: 20px;
+}
+
+.result-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.result-number span { color: var(--green); }
+
+.result-desc {
+  font-size: 14px;
+  color: var(--muted-light);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.result-meta {
+  display: flex;
+  gap: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-light);
+  margin-bottom: 20px;
+}
+
+.result-meta-item { font-size: 12px; color: var(--muted); }
+.result-meta-item strong {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.result-quote {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.65;
+  border-left: 2px solid var(--green);
+  padding-left: 14px;
+}
+
+/* -------- WHO -------- */
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border-light);
+}
+
+.who-card {
+  background: var(--surface);
+  padding: 32px 28px;
+}
+
+.who-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+.who-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 16px;
+}
+
+.who-list { list-style: none; }
+.who-item {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.5;
+  display: flex;
+  gap: 8px;
+}
+.who-item:last-child { border-bottom: none; }
+.who-item::before {
+  content: '→';
+  color: var(--green);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* -------- COMPARISON -------- */
+.compare-section { padding: 96px 0; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border-light);
+  margin-top: 0;
+}
+
+.compare-table th {
+  padding: 16px 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-align: left;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.compare-table th:nth-child(2) { color: var(--muted); }
+.compare-table th:nth-child(3) { color: var(--green); }
+
+.compare-table td {
+  padding: 14px 24px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table td:first-child { color: var(--muted-light); }
+
+.vs-no { color: #ff5252 !important; font-family: 'DM Mono', monospace; font-size: 12px; }
+.vs-yes { color: var(--green) !important; font-family: 'DM Mono', monospace; font-size: 12px; }
+.alt-row td { background: rgba(255,255,255,0.012); }
+
+/* -------- CTA SECTION -------- */
+.cta-section {
+  padding: 112px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,230,118,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(40px, 5.5vw, 76px);
+  letter-spacing: 0.5px;
+  line-height: 1.02;
+  margin-bottom: 20px;
+}
+
+.cta-title span { color: var(--green); }
+
+.cta-body {
+  font-size: 17px;
+  color: var(--muted-light);
+  max-width: 480px;
+  margin: 0 auto 44px;
+  font-weight: 300;
+  line-height: 1.65;
+}
+
+.cta-btn {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--bg);
+  background: var(--green);
+  padding: 18px 48px;
+  text-decoration: none;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  transition: opacity 0.15s, transform 0.15s;
+  font-weight: 500;
+}
+.cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.cta-note {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+/* -------- FOOTER -------- */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+}
+
+.footer-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--muted);
+  text-decoration: none;
+}
+.footer-logo span { color: var(--green); }
+
+.footer-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: color 0.15s;
+}
+.footer-link:hover { color: var(--green); }
+
+/* -------- PERSONAL NOTE -------- */
+.personal-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-left: 2px solid var(--green);
+}
+
+.personal-note-avatar {
+  width: 36px; height: 36px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.personal-note p {
+  font-size: 14px;
+  color: var(--muted-light);
+  line-height: 1.7;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* -------- PREP SECTIONS -------- */
+.prep-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border-light);
+  border: 1px solid var(--border-light);
+}
+
+.prep-card {
+  background: var(--surface);
+  padding: 40px 36px;
+}
+
+.call-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.call-step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.call-step:last-child { border-bottom: none; }
+
+.call-step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+  margin-top: 2px;
+  min-width: 24px;
+}
+
+.call-step-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.call-step-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.ready-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ready-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ready-item:last-child { border-bottom: none; }
+
+.ready-check {
+  color: var(--green);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ready-item strong {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.ready-item span {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* -------- DIVIDER LINE -------- */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+/* -------- ANIMATIONS -------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -------- RESPONSIVE -------- */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .container { padding: 0 24px; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); padding: 0 24px; }
+  .stat-item:nth-child(2) { border-right: none; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  .guarantee-inner { grid-template-columns: 1fr; gap: 40px; padding: 0 24px; }
+  .results-grid, .who-grid { grid-template-columns: 1fr; }
+  .prep-grid { grid-template-columns: 1fr; }
+  .prep-card { padding: 32px 24px; }
+  footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding-top: 100px; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .hero-title { letter-spacing: 0.3px; }
+  .section-heading { letter-spacing: 0.3px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Clip<span>Smart</span></a>
+  <a class="nav-cta" href="https://clipsmart.co.uk" target="_blank">CLIPSMART.CO.UK</a>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">BEFORE YOUR CALL — WATCH THIS FIRST</div>
+    <h1 class="hero-title">
+      Performance UGC That<br>
+      <span class="green">Pays For Itself.</span>
+    </h1>
+    <p class="hero-sub">Watch the video below to understand exactly how ClipSmart works before your call. 3 minutes. Everything you need to know.</p>
+    <div class="hero-pills">
+      <span class="pill">PAY PER VIEW</span>
+      <span class="pill">VIEWS GUARANTEED</span>
+      <span class="pill">80,000+ CREATORS</span>
+      <span class="pill">FULL REFUND IF WE MISS</span>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="video-block">
+      <div class="video-label">WATCH BEFORE YOUR CALL</div>
+      <div class="video-frame">
+        <!-- REPLACE src WITH YOUR LOOM / YOUTUBE / VIMEO EMBED URL -->
+        <!-- Example Loom: <iframe src="https://www.loom.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+        <!-- Example YouTube: <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+        <div class="video-placeholder">
+          <div class="video-placeholder-icon">▶</div>
+          <div class="video-placeholder-text">REPLACE WITH YOUR VIDEO EMBED<br>LOOM · YOUTUBE · VIMEO</div>
+        </div>
+      </div>
+      <div class="personal-note">
+        <div class="personal-note-avatar">B</div>
+        <p>I made this so we can skip the basics on the call and get straight to your brand. If anything's unclear, just bring it up — that's what the call is for.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== STATS BAR ====== -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-num">80K+</div>
+      <div class="stat-label">Vetted creators across TikTok & Instagram</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">12M</div>
+      <div class="stat-label">Views delivered in a single campaign</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">60×</div>
+      <div class="stat-label">ROI on best-performing campaign to date</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Content manually reviewed before going live</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== HOW IT WORKS ====== -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-tag reveal">HOW IT WORKS</div>
+    <h2 class="section-heading reveal">From brief to<br>views in days.</h2>
+    <div class="steps-grid reveal">
+      <div class="step">
+        <div class="step-num">STEP 01</div>
+        <div class="step-title">You brief us</div>
+        <div class="step-text">Tell us your brand, goals, and target audience. We write the campaign brief — you approve it before anything goes out.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 02</div>
+        <div class="step-title">Creators apply</div>
+        <div class="step-text">80,000+ creators across TikTok and Instagram are briefed. We manually review every piece of content before it goes live. Nothing off-brand ever posts.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 03</div>
+        <div class="step-title">Content goes live</div>
+        <div class="step-text">Hundreds of organic posts launch simultaneously. Real creators. Real audiences. No "Sponsored" labels. No algorithm penalties.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 04</div>
+        <div class="step-title">You pay per view</div>
+        <div class="step-text">You're billed on a per-view RPM model. If the agreed view target isn't hit, you get a full refund. No exceptions, no small print.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== GUARANTEE ====== -->
+<section class="guarantee-section">
+  <div class="guarantee-inner">
+    <div class="guarantee-left reveal">
+      <div class="guarantee-kicker">THE GUARANTEE</div>
+      <h2 class="guarantee-title">Views delivered.<br>Or you get<br><span>your money back.</span></h2>
+      <p class="guarantee-body">No other UGC agency in the UK offers this. We can make this guarantee because we know our model works — and we're putting our own money on the line to prove it.</p>
+      <div class="guarantee-badge">🔒 &nbsp;Full refund if view targets aren't hit. No questions.</div>
+    </div>
+    <div class="guarantee-right reveal">
+      <div class="g-point">
+        <div class="g-icon">👁</div>
+        <div>
+          <div class="g-point-title">Pay per view — not per post</div>
+          <div class="g-point-text">Your budget only moves when views are actually delivered. You're not paying for effort — you're paying for results.</div>
+        </div>
+      </div>
+      <div class="g-point">
+        <div class="g-icon">✅</div>
+        <div>
+          <div class="g-point-title">100% content review</div>
+          <div class="g-point-text">Every piece of content is manually reviewed by our team before going live. Nothing posts without your brief being followed exactly.</div>
+        </div>
+      </div>
+      <div class="g-point">
+        <div class="g-icon">🔁</div>
+        <div>
+          <div class="g-point-title">Full refund, no friction</div>
+          <div class="g-point-text">Miss the target and the refund happens. No drawn-out dispute process, no negotiating. We either deliver or we don't charge.</div>
+        </div>
+      </div>
+      <div class="g-point">
+        <div class="g-icon">📊</div>
+        <div>
+          <div class="g-point-title">Full reporting on every campaign</div>
+          <div class="g-point-text">Views, creator post count, engagement breakdown, ROI. You see exactly what the budget delivered.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== RESULTS ====== -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-tag reveal">REAL RESULTS</div>
+    <h2 class="section-heading reveal">Numbers that<br>speak for themselves.</h2>
+    <div class="results-grid reveal">
+      <div class="result-card">
+        <div class="result-tag">NHC MURDA — MUSIC ARTIST</div>
+        <div class="result-number">12<span>M</span></div>
+        <div class="result-desc">organic TikTok views from a single £1,000 campaign</div>
+        <div class="result-meta">
+          <div class="result-meta-item"><strong>1,456</strong>creator posts live</div>
+          <div class="result-meta-item"><strong>60×</strong>return on spend</div>
+          <div class="result-meta-item"><strong>£1,000</strong>total budget</div>
+        </div>
+        <div class="result-quote">"Didn't even use the full budget and hit 12 million views. This is the best thing I've ever spent money on."</div>
+      </div>
+      <div class="result-card">
+        <div class="result-tag">GROWING UP ITALIAN — PODCAST</div>
+        <div class="result-number">3.8<span>M</span></div>
+        <div class="result-desc">TikTok views — taken from zero presence to viral</div>
+        <div class="result-meta">
+          <div class="result-meta-item"><strong>800+</strong>creator posts</div>
+          <div class="result-meta-item"><strong>0 → viral</strong>in 2 weeks</div>
+          <div class="result-meta-item"><strong>Organic</strong>no paid ads</div>
+        </div>
+        <div class="result-quote">"ClipSmart took our podcast from no TikTok presence to 3.8 million views. Completely organic, completely authentic."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== COMPARISON ====== -->
+<section class="compare-section">
+  <div class="container" style="max-width:1080px; margin:0 auto; padding:0 48px;">
+    <div class="section-tag reveal">VS THE ALTERNATIVES</div>
+    <h2 class="section-heading reveal">Why the old model<br>is losing ground.</h2>
+    <div class="reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:34%">What you're comparing</th>
+            <th style="width:33%">PAID ADS / INFLUENCERS</th>
+            <th style="width:33%">✦ CLIPSMART</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Pay model</td><td class="vs-no">Upfront — no guarantee</td><td class="vs-yes">Pay per view delivered</td></tr>
+          <tr class="alt-row"><td>If it doesn't perform</td><td class="vs-no">You lose the budget</td><td class="vs-yes">Full refund</td></tr>
+          <tr><td>Content authenticity</td><td class="vs-no">Branded / scripted</td><td class="vs-yes">Real creator content</td></tr>
+          <tr class="alt-row"><td>Volume of posts</td><td class="vs-no">1–10 posts per campaign</td><td class="vs-yes">Hundreds simultaneously</td></tr>
+          <tr><td>Audience trust</td><td class="vs-no">Low — Sponsored tag kills it</td><td class="vs-yes">High — fully organic</td></tr>
+          <tr class="alt-row"><td>Content review</td><td class="vs-no">None or very limited</td><td class="vs-yes">100% manually reviewed</td></tr>
+          <tr><td>Cost to scale</td><td class="vs-no">Rises as CPMs increase</td><td class="vs-yes">Flat RPM — predictable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PREP SECTIONS ====== -->
+<section class="section-pad">
+  <div class="container">
+    <div class="prep-grid">
+
+      <!-- What to expect -->
+      <div class="prep-card reveal">
+        <div class="section-tag" style="margin-bottom:20px">WHAT TO EXPECT ON THE CALL</div>
+        <div class="call-steps">
+          <div class="call-step">
+            <div class="call-step-num">01</div>
+            <div>
+              <div class="call-step-title">We review your brand and goals</div>
+              <div class="call-step-text">~10 minutes. Tell us who you are, who you're trying to reach, and what success looks like for you.</div>
+            </div>
+          </div>
+          <div class="call-step">
+            <div class="call-step-num">02</div>
+            <div>
+              <div class="call-step-title">We walk through a campaign plan with real numbers</div>
+              <div class="call-step-text">~10 minutes. Based on what you share, we'll map out a campaign — views, creators, timeline, cost. Concrete, not vague.</div>
+            </div>
+          </div>
+          <div class="call-step">
+            <div class="call-step-num">03</div>
+            <div>
+              <div class="call-step-title">We agree next steps — no pressure</div>
+              <div class="call-step-text">~10 minutes. If it makes sense for both sides, we talk onboarding. If it doesn't, no hard sell — we'll tell you honestly.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What to have ready -->
+      <div class="prep-card reveal">
+        <div class="section-tag" style="margin-bottom:20px">WHAT TO HAVE READY</div>
+        <p style="font-size:14px; color:var(--muted); margin-bottom:24px; line-height:1.65;">You don't need to prepare a deck or do any homework. Just have a rough sense of these:</p>
+        <ul class="ready-list">
+          <li class="ready-item">
+            <span class="ready-check">✦</span>
+            <div>
+              <strong>Your budget range</strong>
+              <span>Even a ballpark — £500, £2,000, £10,000+. Helps us size the campaign correctly.</span>
+            </div>
+          </li>
+          <li class="ready-item">
+            <span class="ready-check">✦</span>
+            <div>
+              <strong>Your target audience</strong>
+              <span>Who are you trying to reach? Age, interests, platform — anything you know.</span>
+            </div>
+          </li>
+          <li class="ready-item">
+            <span class="ready-check">✦</span>
+            <div>
+              <strong>Whether you have existing content</strong>
+              <span>If you have clips, posts, or footage we can repurpose, that speeds things up.</span>
+            </div>
+          </li>
+          <li class="ready-item">
+            <span class="ready-check">✦</span>
+            <div>
+              <strong>Your main goal for this campaign</strong>
+              <span>Views? Streams? Downloads? Sales? Knowing your priority shapes everything.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====== CTA ====== -->
+<section class="cta-section">
+  <div class="container" style="display:flex; flex-direction:column; align-items:center;">
+    <div class="section-tag reveal" style="text-align:center">SEE YOU SOON</div>
+    <h2 class="cta-title reveal">You're ready.<br><span>We'll take it from here.</span></h2>
+    <p class="cta-body reveal">You've seen the model, the results, and the guarantee. The call is just us working out the details for your brand specifically.</p>
+    <div class="cta-btn reveal" style="cursor:default; opacity:0.9;">YOU'RE ALL SET — SEE YOU ON THE CALL</div>
+    <p class="cta-note reveal">Views guaranteed or your money back · clipsmart.co.uk</p>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <a class="footer-logo" href="https://clipsmart.co.uk">Clip<span>Smart</span></a>
+  <a class="footer-link" href="https://clipsmart.co.uk" target="_blank">clipsmart.co.uk</a>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
