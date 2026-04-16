@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ClipSmart — Before Your Call</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Bricolage+Grotesque:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -61,29 +61,45 @@ nav {
 }
 
 .nav-logo {
-  font-family: 'Barlow Condensed', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px;
   font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.3px;
   color: var(--text);
   text-decoration: none;
 }
-.nav-logo span { color: var(--green); }
+
+.nav-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  display: block;
+  object-fit: cover;
+}
 
 .nav-cta {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--bg);
-  background: var(--green);
-  border: none;
-  padding: 10px 22px;
-  cursor: pointer;
-  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #2ECC71;
+  color: #000;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 10px;
   text-decoration: none;
-  transition: opacity 0.15s;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.nav-cta:hover { opacity: 0.85; }
+.nav-cta:hover {
+  background: #27ae60;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(46,204,113,0.3);
+}
 
 /* -------- SECTIONS -------- */
 section { position: relative; }
@@ -808,8 +824,11 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">Clip<span>Smart</span></a>
-  <a class="nav-cta" href="https://clipsmart.co.uk" target="_blank">CLIPSMART.CO.UK</a>
+  <a class="nav-logo" href="https://clipsmart.co.uk">
+    <img class="nav-logo-img" src="/logo.png" alt="ClipSmart" />
+    ClipSmart
+  </a>
+  <a class="nav-cta" href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer">Book a Call →</a>
 </nav>
 
 <!-- ====== HERO ====== -->
@@ -832,7 +851,7 @@ footer {
     <div class="video-block">
       <div class="video-label">WATCH BEFORE YOUR CALL</div>
       <div class="video-frame">
-        <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;">
+        <video controls playsinline style="width:100%;height:100%;display:block;background:#000;">
           <source src="/clipsmart-video-updated.mp4" type="video/mp4" />
         </video>
       </div>
