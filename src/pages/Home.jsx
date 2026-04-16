@@ -156,7 +156,7 @@ export default function Home() {
           <div className="hero-video fade-up">
             <div className="video-frame">
               <video controls autoPlay muted loop playsInline preload="auto">
-                <source src="/hero-video.mp4" type="video/mp4" />
+                <source src="/clipsmart-video-updated.mp4" type="video/mp4" />
               </video>
               <div className="video-glow" />
             </div>
