@@ -37,9 +37,8 @@ Clispmart videos/
 
 # Large/unwanted root files
 *.exe
-*.mp4
-*.pdf
-*.py
+/*.mp4
+/*.pdf
 hf_*.png
 clipsmart-howitworks-carousels.html
 clipsmart-landing.html
