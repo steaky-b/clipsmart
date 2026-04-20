@@ -34,3 +34,21 @@ work-with-us.html
 
 # Local upload staging folder (do not commit large MP4s)
 Clispmart videos/
+
+# Large/unwanted root files
+*.exe
+*.mp4
+*.pdf
+*.py
+hf_*.png
+clipsmart-howitworks-carousels.html
+clipsmart-landing.html
+thailand_content_strategy.html
+creator_bot.py
+
+# Source slide deck folder (served via public/intro/)
+Clipsmart Slide Deck/
+
+# Generated carousel images in root / public root (not needed in repo)
+public/clipsmart-carousel-posts-30pages-*.png
+clipsmart-carousel-posts-30pages.pdf

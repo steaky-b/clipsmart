@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClipSmart — Performance UGC That Pays For Itself</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #050505;
+  --green: #00e676;
+  --green-dim: rgba(0,230,118,0.1);
+  --text: #f2f2f2;
+  --muted: #777;
+  --muted2: #2e2e2e;
+  --border: #1a1a1a;
+  --surface: #0e0e0e;
+  --nav-h: 72px; /* nav bar height — slide content avoids this */
+}
+
+html, body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ===== DECK ===== */
+.deck {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* ===== SLIDE ===== */
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 56px 56px calc(var(--nav-h) + 28px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+
+
+.slide::-webkit-scrollbar { width: 4px; }
+.slide::-webkit-scrollbar-track { background: transparent; }
+.slide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* slides with lots of content start at top */
+.slide.top { justify-content: flex-start; padding-top: 68px; }
+
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* grid background */
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 45% at 50% 46%, rgba(0,230,118,0.03) 0%, transparent 65%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.012) 39px, rgba(255,255,255,0.012) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.012) 39px, rgba(255,255,255,0.012) 40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(5,5,5,0.97);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  z-index: 200;
+  backdrop-filter: blur(10px);
+}
+
+.nav-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.nav-btn:hover { border-color: var(--green); color: var(--green); }
+
+.slide-counter {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 46px;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--muted2);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.dot.active { background: var(--green); width: 16px; border-radius: 3px; }
+
+/* PROGRESS */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--green);
+  transition: width 0.4s ease;
+  z-index: 300;
+}
+
+/* LOGO + LABEL */
+.logo-mark {
+  position: absolute;
+  top: 24px; left: 40px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  color: var(--muted2);
+  z-index: 5;
+}
+.logo-mark span { color: var(--green); }
+
+.slide-label {
+  position: absolute;
+  top: 26px; right: 40px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 0.2em;
+  z-index: 5;
+}
+
+/* ===== SHARED TYPOGRAPHY ===== */
+/* All headings use Barlow Condensed — narrow, tall, punchy */
+.s1-title,
+.s-title,
+.model-statement,
+.guarantee-big,
+.network-big,
+.cta-title,
+.result-stat,
+.g-num,
+.ns-num,
+.ss-num,
+.p-price,
+.network-big {
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+.s-eyebrow, .s1-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--green);
+  margin-bottom: 14px;
+}
+
+.s-title {
+  font-weight: 800;
+  font-size: clamp(40px, 4.5vw, 62px);
+  line-height: 1.0;
+  letter-spacing: 0px;
+  margin-bottom: 28px;
+  max-width: 100%;
+}
+
+/* sub-titles for cards */
+.problem-title,
+.step-title,
+.who-title,
+.ss-title,
+.g-point-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ===== SLIDE 1 — HERO ===== */
+.s1-eyebrow {
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.1s forwards;
+}
+
+.s1-title {
+  font-weight: 800;
+  font-size: clamp(54px, 7.5vw, 100px);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.22s forwards;
+}
+.s1-title .green { color: var(--green); }
+
+.s1-sub {
+  font-size: 16px;
+  color: var(--muted);
+  text-align: center;
+  max-width: 500px;
+  line-height: 1.6;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.38s forwards;
+}
+
+.s1-pill {
+  margin-top: 28px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(0,230,118,0.22);
+  padding: 7px 18px;
+  border-radius: 20px;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.5s forwards;
+}
+
+/* ===== SLIDE 2 — PROBLEM ===== */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.problem-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 36px 28px;
+  flex: 1;
+}
+
+.problem-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+.problem-title { font-size: 18px; margin-bottom: 10px; line-height: 1.2; }
+.problem-text { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+/* ===== SLIDE 3 — MODEL ===== */
+.model-wrap { width: 100%; max-width: 100%; }
+
+.model-statement {
+  font-weight: 700;
+  font-size: clamp(28px, 3.2vw, 46px);
+  line-height: 1.15;
+  letter-spacing: 0.2px;
+  margin-bottom: 28px;
+}
+.model-statement .green { color: var(--green); }
+
+.model-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+.model-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px 22px;
+  position: relative;
+}
+
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.14em;
+  margin-bottom: 14px;
+}
+
+.step-title { font-size: 16px; margin-bottom: 10px; line-height: 1.2; }
+.step-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.model-arrow {
+  position: absolute;
+  right: -13px; top: 50%;
+  transform: translateY(-50%);
+  width: 26px; height: 26px;
+  background: var(--black);
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: var(--green);
+  z-index: 10;
+}
+.model-step:last-child .model-arrow { display: none; }
+
+/* ===== SLIDE 4 — GUARANTEE ===== */
+.guarantee-wrap {
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guarantee-big {
+  font-weight: 800;
+  font-size: clamp(56px, 8vw, 112px);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+.guarantee-big .green { color: var(--green); }
+
+.guarantee-sub {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 560px;
+  line-height: 1.65;
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+
+.guarantee-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 100%;
+}
+
+.g-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px 24px;
+}
+
+.g-num {
+  font-weight: 800;
+  font-size: 44px;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.g-label { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+/* ===== SLIDE 5 — RESULTS ===== */
+.results-wrap { width: 100%; max-width: 100%; }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 36px 32px;
+}
+
+.result-client {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.18em;
+  margin-bottom: 16px;
+}
+
+.result-stat {
+  font-weight: 800;
+  font-size: 80px;
+  color: var(--text);
+  line-height: 1;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.result-stat span { color: var(--green); }
+
+.result-sub { font-size: 14px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+
+.result-details {
+  display: flex;
+  gap: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-bottom: 18px;
+}
+
+.result-detail { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.result-detail strong { display: block; font-family: 'DM Mono', monospace; color: var(--text); font-size: 14px; margin-bottom: 2px; }
+
+.result-quote {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  font-style: italic;
+  border-left: 2px solid var(--green);
+  padding-left: 14px;
+}
+
+/* ===== SLIDE 6 — WHO ===== */
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.who-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px 26px;
+}
+
+.who-icon { font-size: 30px; margin-bottom: 14px; display: block; }
+.who-title { font-size: 18px; margin-bottom: 14px; line-height: 1.2; }
+.who-list { list-style: none; }
+.who-item {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.5;
+}
+.who-item:last-child { border-bottom: none; }
+.who-item::before { content: '→ '; color: var(--green); font-family: 'DM Mono', monospace; font-size: 10px; }
+
+/* ===== SLIDE 7 — NETWORK ===== */
+.network-wrap {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.network-big {
+  font-weight: 800;
+  font-size: clamp(96px, 14vw, 180px);
+  line-height: 1;
+  letter-spacing: 2px;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.network-label {
+  font-size: 20px;
+  color: var(--muted);
+  font-weight: 300;
+  margin-bottom: 48px;
+  letter-spacing: 0.02em;
+}
+
+.network-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  width: 100%;
+}
+
+.ns-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px 18px;
+  text-align: center;
+}
+
+.ns-num {
+  font-weight: 800;
+  font-size: 36px;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.ns-label { font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+/* ===== SLIDE 8 — VS ===== */
+.vs-wrap { width: 100%; max-width: 100%; }
+
+.vs-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+}
+
+.vs-table th {
+  padding: 16px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-align: left;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.vs-table th:nth-child(2) { color: var(--text); }
+.vs-table th:nth-child(3) { color: var(--text); }
+
+.vs-table td {
+  padding: 14px 20px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+.vs-table tr:last-child td { border-bottom: none; }
+.vs-table td:first-child { color: var(--muted); }
+.vs-table td:nth-child(2) { color: var(--muted); }
+
+.vs-no { color: #ff5252 !important; font-family: 'DM Mono', monospace; font-size: 12px; }
+.vs-yes { color: var(--green) !important; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; }
+.vs-row-alt { background: rgba(255,255,255,0.012); }
+
+/* ===== SLIDE 9 — START ===== */
+.start-wrap { width: 100%; max-width: 100%; }
+
+.start-steps { display: flex; flex-direction: column; gap: 2px; }
+
+.start-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 22px 28px;
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
+
+.ss-num {
+  font-weight: 800;
+  font-size: 40px;
+  color: var(--green);
+  opacity: 0.15;
+  line-height: 1;
+}
+
+.ss-title { font-size: 17px; margin-bottom: 5px; line-height: 1.2; }
+.ss-text { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+.ss-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(0,230,118,0.2);
+  padding: 6px 14px;
+  border-radius: 2px;
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+}
+
+/* ===== SLIDE 10 — PRICING ===== */
+.pricing-wrap { width: 100%; max-width: 100%; }
+
+.pricing-note {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 300;
+  margin-bottom: 24px;
+  line-height: 1.6;
+  max-width: 720px;
+}
+
+.pricing-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.p-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+}
+.p-card.featured {
+  background: var(--green-dim);
+  border-color: rgba(0,230,118,0.2);
+}
+
+.p-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.14em;
+  margin-bottom: 14px;
+}
+
+.p-price {
+  font-weight: 800;
+  font-size: 52px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.p-price span { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400; color: var(--muted); }
+
+.p-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+
+.p-items { list-style: none; border-top: 1px solid var(--border); padding-top: 14px; }
+.p-item {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.5;
+}
+.p-item:last-child { border-bottom: none; }
+.p-item::before { content: '→ '; color: var(--green); font-family: 'DM Mono', monospace; }
+
+.p-guarantee {
+  background: var(--green-dim);
+  border: 1px solid rgba(0,230,118,0.2);
+  border-left: 3px solid var(--green);
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.p-guarantee strong { color: var(--green); }
+
+/* ===== SLIDE 11 — CTA ===== */
+.cta-wrap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cta-title {
+  font-weight: 800;
+  font-size: clamp(56px, 7vw, 96px);
+  line-height: 0.97;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.cta-title .green { color: var(--green); }
+
+.cta-sub {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.65;
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+
+.cta-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.cta-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.cta-check::before {
+  content: '✓';
+  width: 22px; height: 22px;
+  background: var(--green-dim);
+  border: 1px solid rgba(0,230,118,0.3);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  color: var(--green);
+  flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+}
+
+.cta-url {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--black);
+  background: var(--green);
+  padding: 16px 48px;
+  border-radius: 3px;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+.cta-url:hover { opacity: 0.85; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ========== SLIDE 1: HERO ========== -->
+  <div class="slide" data-slide="1" style="align-items:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="s1-eyebrow">PERFORMANCE UGC AGENCY — UK & US</div>
+    <div class="s1-title">Performance UGC<br>That <span class="green">Pays For Itself.</span></div>
+    <div class="s1-sub">ClipSmart is a performance UGC agency. We connect brands with real creators — and you only pay for views actually delivered.</div>
+    <div class="s1-pill">→ 3 minutes · everything you need to know</div>
+  </div>
+
+  <!-- ========== SLIDE 2: THE PROBLEM ========== -->
+  <div class="slide" data-slide="2" style="justify-content:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="slide-label">THE PROBLEM</div>
+    <div class="s-eyebrow">WHY TRADITIONAL MARKETING IS BROKEN</div>
+    <div class="s-title">You're spending money<br>on reach that doesn't convert.</div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <span class="problem-icon">📉</span>
+        <div class="problem-title">Paid ads are broken</div>
+        <div class="problem-text">TikTok and Meta CPMs rise every year. You pay upfront whether anyone watches or not. Returns keep getting worse — not better.</div>
+      </div>
+      <div class="problem-card">
+        <span class="problem-icon">🤳</span>
+        <div class="problem-title">Influencers are a gamble</div>
+        <div class="problem-text">One creator, one post, no guarantees. If it flops, your budget is gone with nothing to show for it. You carry all the risk.</div>
+      </div>
+      <div class="problem-card">
+        <span class="problem-icon">🏷️</span>
+        <div class="problem-title">Sponsored tags kill trust</div>
+        <div class="problem-text">The moment an audience sees "Sponsored", they scroll. Authentic content converts. Branded ads don't.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 3: THE SOLUTION ========== -->
+  <div class="slide" data-slide="3" style="justify-content:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="slide-label">THE SOLUTION</div>
+    <div class="model-wrap">
+      <div class="s-eyebrow">INTRODUCING PERFORMANCE UGC</div>
+      <div class="model-statement">Hundreds of real creators post about your brand.<br><span class="green">You only pay for the views they deliver.</span></div>
+      <div class="model-steps">
+        <div class="model-step">
+          <div class="step-num">WHAT IS IT</div>
+          <div class="step-title">Performance UGC</div>
+          <div class="step-text">UGC — User Generated Content — is short-form video made by real creators, not brands. It looks organic, feels authentic, and actually gets watched.</div>
+          <div class="model-arrow">→</div>
+        </div>
+        <div class="model-step">
+          <div class="step-num">HOW IT DIFFERS</div>
+          <div class="step-title">No "Sponsored" label</div>
+          <div class="step-text">Creators post as themselves, to their own audiences. No brand disclaimers. No ad tags. Just real people talking about your product naturally.</div>
+          <div class="model-arrow">→</div>
+        </div>
+        <div class="model-step">
+          <div class="step-num">THE SCALE</div>
+          <div class="step-title">Hundreds of posts at once</div>
+          <div class="step-text">Instead of betting on one creator, we deploy hundreds simultaneously — across TikTok and Instagram Reels.</div>
+          <div class="model-arrow">→</div>
+        </div>
+        <div class="model-step">
+          <div class="step-num">THE MODEL</div>
+          <div class="step-title">Pay per view only</div>
+          <div class="step-text">Your budget is tied directly to verified views delivered. If we don't hit the agreed target — full refund. No exceptions.</div>
+          <div class="model-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 4: HOW IT WORKS ========== -->
+  <div class="slide" data-slide="4" style="align-items:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="slide-label">HOW IT WORKS</div>
+    <div class="guarantee-wrap">
+      <div class="s-eyebrow">FROM BRIEF TO LIVE IN UNDER A WEEK</div>
+      <div class="guarantee-big">3 Steps.<br><span class="green">That's It.</span></div>
+      <div class="guarantee-sub">No complicated onboarding. No lengthy setup. Share your brief, we handle everything else — and your campaign can be live within days.</div>
+      <div class="guarantee-row">
+        <div class="g-card">
+          <div class="g-num">01</div>
+          <div class="g-point-title" style="font-size:16px; margin-bottom:8px;">Brief & match</div>
+          <div class="g-label">Tell us your brand, goals, and target audience. We write the campaign brief and hand-pick the right creators for you.</div>
+        </div>
+        <div class="g-card">
+          <div class="g-num">02</div>
+          <div class="g-point-title" style="font-size:16px; margin-bottom:8px;">Create & review</div>
+          <div class="g-label">Creators produce authentic short-form videos. Every single piece of content is manually reviewed by our team before it goes live.</div>
+        </div>
+        <div class="g-card">
+          <div class="g-num">03</div>
+          <div class="g-point-title" style="font-size:16px; margin-bottom:8px;">Launch & pay per view</div>
+          <div class="g-label">Hundreds of posts go live across TikTok and Instagram Reels. You're only billed for verified views delivered.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 5: THE MODEL ========== -->
+  <div class="slide" data-slide="5" style="justify-content:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="slide-label">THE MODEL</div>
+    <div class="results-wrap">
+      <div class="s-eyebrow">PAY-PER-VIEW — EXPLAINED</div>
+      <div class="s-title">Your budget only moves<br>when views are delivered.</div>
+      <div class="results-grid">
+        <div class="result-card">
+          <div class="result-client">HOW TRADITIONAL MARKETING WORKS</div>
+          <div class="result-stat" style="font-size:52px; line-height:1.1;">Pay<br>first.</div>
+          <div class="result-sub">With paid ads and influencer deals, you hand over budget upfront — before a single view is guaranteed. If it flops, you lose everything.</div>
+          <div class="result-details">
+            <div class="result-detail"><strong>Paid ads</strong>CPM rises, results fall</div>
+            <div class="result-detail"><strong>Influencers</strong>Flat fee, no guarantee</div>
+            <div class="result-detail"><strong>Your risk</strong>100% yours</div>
+          </div>
+          <div class="result-quote">You pay whether it works or not. That's the deal you're accepting every time.</div>
+        </div>
+        <div class="result-card">
+          <div class="result-client">HOW CLIPSMART WORKS</div>
+          <div class="result-stat" style="font-size:52px; line-height:1.1;">Pay<br><span>after.</span></div>
+          <div class="result-sub">ClipSmart uses an RPM model — Rate Per Mille. You agree a cost per 1,000 views upfront, and budget only burns when those views land.</div>
+          <div class="result-details">
+            <div class="result-detail"><strong>RPM model</strong>Fixed cost per 1,000 views</div>
+            <div class="result-detail"><strong>No views?</strong>Full refund guaranteed</div>
+            <div class="result-detail"><strong>Your risk</strong>Zero</div>
+          </div>
+          <div class="result-quote">"You set the budget, we deliver the views. If we don't hit target — you get every penny back."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 6: THE CREATORS ========== -->
+  <div class="slide" data-slide="6" style="justify-content:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="slide-label">THE CREATOR NETWORK</div>
+    <div class="s-eyebrow">80,000+ VETTED CREATORS AND GROWING</div>
+    <div class="s-title">Scale that no single influencer<br>can match.</div>
+    <div class="who-grid">
+      <div class="who-card">
+        <span class="who-icon">✅</span>
+        <div class="who-title">Vetted & Approved</div>
+        <ul class="who-list">
+          <li class="who-item">Every creator manually reviewed</li>
+          <li class="who-item">100% of content checked before posting</li>
+          <li class="who-item">Brand safety guaranteed on every post</li>
+          <li class="who-item">No bot accounts or inflated metrics</li>
+        </ul>
+      </div>
+      <div class="who-card">
+        <span class="who-icon">🎯</span>
+        <div class="who-title">Niche-Matched</div>
+        <ul class="who-list">
+          <li class="who-item">Music, lifestyle, food, fitness, tech & more</li>
+          <li class="who-item">Matched to your brand and audience profile</li>
+          <li class="who-item">400+ creator submissions per campaign</li>
+          <li class="who-item">Real engaged audiences — not just follower counts</li>
+        </ul>
+      </div>
+      <div class="who-card">
+        <span class="who-icon">⚡</span>
+        <div class="who-title">Fast & Scalable</div>
+        <ul class="who-list">
+          <li class="who-item">Campaign live within 48 hours of brief</li>
+          <li class="who-item">Hundreds of posts go live simultaneously</li>
+          <li class="who-item">TikTok and Instagram Reels</li>
+          <li class="who-item">Scale up without scaling your budget risk</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 7: RESULTS ========== -->
+  <div class="slide top" data-slide="7">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="slide-label">RESULTS</div>
+    <div class="network-wrap" style="flex-direction:column; align-items:center; text-align:center;">
+
+      <!-- Top: stats -->
+      <div class="s-eyebrow" style="margin-bottom:6px;">REAL CAMPAIGNS. REAL NUMBERS.</div>
+      <div class="network-big" style="font-size:clamp(64px,9vw,110px); margin-bottom:2px;">12M</div>
+      <div class="network-label" style="margin-bottom:20px;">organic views · NHC Murda · £1,000 budget</div>
+      <div class="network-stats" style="margin-bottom:24px;">
+        <div class="ns-card">
+          <div class="ns-num">3.8M</div>
+          <div class="ns-label">Views — Growing Up Italian podcast</div>
+        </div>
+        <div class="ns-card">
+          <div class="ns-num">60×</div>
+          <div class="ns-label">Return on spend — NHC Murda</div>
+        </div>
+        <div class="ns-card">
+          <div class="ns-num">1,456</div>
+          <div class="ns-label">Creator posts from one brief</div>
+        </div>
+        <div class="ns-card">
+          <div class="ns-num">100%</div>
+          <div class="ns-label">Organic — no paid amplification</div>
+        </div>
+      </div>
+
+      <!-- Bottom: video embeds -->
+      <div style="display:flex; gap:12px; justify-content:center; width:100%;">
+        <video
+          src="murda-clip-1.mp4"
+          style="width:160px; height:280px; border-radius:4px; object-fit:cover; background:#000; flex-shrink:0;"
+          controls playsinline loop>
+        </video>
+        <video
+          src="murda-clip-2.mp4"
+          style="width:160px; height:280px; border-radius:4px; object-fit:cover; background:#000; flex-shrink:0;"
+          controls playsinline loop
+          onloadedmetadata="this.currentTime=3">
+        </video>
+        <video
+          src="murda-clip-3.mp4"
+          style="width:160px; height:280px; border-radius:4px; object-fit:cover; background:#000; flex-shrink:0;"
+          controls playsinline loop>
+        </video>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 8: WHO IT'S FOR ========== -->
+  <div class="slide" data-slide="8" style="justify-content:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="slide-label">WHO IT'S FOR</div>
+    <div class="vs-wrap">
+      <div class="s-eyebrow">IS CLIPSMART RIGHT FOR YOU?</div>
+      <div class="s-title" style="margin-bottom:18px">Built for brands that need real reach.</div>
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th>Type of brand</th>
+            <th>WHAT YOU NEED</th>
+            <th>✦ WHAT CLIPSMART DELIVERS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>🎵 Music Artists & Labels</td><td class="vs-no">Streams, fans & organic discovery</td><td class="vs-yes">Hundreds of creators posting your track</td></tr>
+          <tr class="vs-row-alt"><td>🛍️ E-Commerce Brands</td><td class="vs-no">Product awareness & conversions</td><td class="vs-yes">UGC that outperforms paid ads</td></tr>
+          <tr><td>🎙️ Podcasters & Media</td><td class="vs-no">New listeners & audience growth</td><td class="vs-yes">Clip distribution across TikTok at scale</td></tr>
+          <tr class="vs-row-alt"><td>📱 Apps & SaaS</td><td class="vs-no">Downloads, sign-ups & brand awareness</td><td class="vs-yes">Authentic creator content driving installs</td></tr>
+          <tr><td>🏋️ Health & Lifestyle</td><td class="vs-no">Community, trust & product proof</td><td class="vs-yes">Real people showing real results organically</td></tr>
+          <tr class="vs-row-alt"><td>🏢 Any Brand</td><td class="vs-no">Reach a specific audience at scale</td><td class="vs-yes">Pay-per-view campaigns, zero upfront risk</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 9: CTA ========== -->
+  <div class="slide" data-slide="9" style="align-items:center;">
+    <div class="logo-mark">Clip<span>Smart</span></div>
+    <div class="cta-wrap">
+      <div class="s1-eyebrow" style="margin-bottom:14px; opacity:0; animation: fadeUp 0.6s 0.1s forwards;">READY TO GET STARTED?</div>
+      <div class="cta-title">Let's build<br>your campaign.<br><span class="green">Today.</span></div>
+      <div class="cta-sub">You've seen how the model works. The next step is simple — visit our site, tell us about your brand, and we'll show you exactly what a campaign looks like for you.</div>
+      <div class="cta-checklist">
+        <div class="cta-check">You only pay for views delivered</div>
+        <div class="cta-check">Full refund if targets aren't hit</div>
+        <div class="cta-check">Campaign live within days of briefing</div>
+        <div class="cta-check">80,000+ creators. 100% manually reviewed.</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:8px;">
+        <div style="font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:0.18em;">CLICK THE BUTTON ABOVE TO GET STARTED</div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; animation: bounceUp 1.4s ease-in-out infinite;">
+          <div style="width:1px; height:28px; background:var(--green); opacity:0.6;"></div>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" style="transform:rotate(180deg);">
+            <path d="M1 9L7 1L13 9" stroke="#00e676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" style="transform:rotate(180deg); margin-top:-4px; opacity:0.5;">
+            <path d="M1 9L7 1L13 9" stroke="#00e676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- NAV BAR -->
+<div class="nav">
+  <button class="nav-btn" onclick="changeSlide(-1)">←</button>
+  <div class="dots" id="dots"></div>
+  <span class="slide-counter" id="counter">1 / 9</span>
+  <button class="nav-btn" onclick="changeSlide(1)">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  const dotsEl = document.getElementById('dots');
+  const counterEl = document.getElementById('counter');
+  const progressEl = document.getElementById('progress');
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    slides[current].scrollTop = 0;
+    document.querySelectorAll('.dot')[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, total - 1));
+    slides[current].classList.add('active');
+    document.querySelectorAll('.dot')[current].classList.add('active');
+    counterEl.textContent = `${current + 1} / ${total}`;
+    progressEl.style.width = `${((current + 1) / total) * 100}%`;
+  }
+
+  function changeSlide(dir) { goTo(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); changeSlide(-1); }
+  });
+
+  let touchX = 0;
+  document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const diff = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+  });
+
+  goTo(0);
+</script>
+</body>
+</html>
