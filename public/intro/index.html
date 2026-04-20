@@ -513,6 +513,37 @@ html, body {
 
 .ns-label { font-size: 13px; color: var(--muted); line-height: 1.45; }
 
+/* ===== VIDEO ROW ===== */
+.video-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+}
+
+.result-video {
+  width: 240px;
+  height: 426px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: #000;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1200px) {
+  .result-video {
+    width: 300px;
+    height: 533px;
+  }
+}
+
+@media (max-width: 700px) {
+  .result-video {
+    width: 120px;
+    height: 213px;
+  }
+}
+
 /* ===== SLIDE 8 — VS ===== */
 .vs-wrap { width: 100%; max-width: 100%; }
 
@@ -946,23 +977,10 @@ html, body {
       </div>
 
       <!-- Bottom: video embeds -->
-      <div style="display:flex; gap:12px; justify-content:center; width:100%;">
-        <video
-          src="murda-clip-1.mp4"
-          style="width:160px; height:280px; border-radius:4px; object-fit:cover; background:#000; flex-shrink:0;"
-          controls playsinline loop>
-        </video>
-        <video
-          src="murda-clip-2.mp4"
-          style="width:160px; height:280px; border-radius:4px; object-fit:cover; background:#000; flex-shrink:0;"
-          controls playsinline loop
-          onloadedmetadata="this.currentTime=3">
-        </video>
-        <video
-          src="murda-clip-3.mp4"
-          style="width:160px; height:280px; border-radius:4px; object-fit:cover; background:#000; flex-shrink:0;"
-          controls playsinline loop>
-        </video>
+      <div class="video-row">
+        <video class="result-video" src="murda-clip-1.mp4" controls playsinline loop></video>
+        <video class="result-video" src="murda-clip-2.mp4" controls playsinline loop onloadedmetadata="this.currentTime=3"></video>
+        <video class="result-video" src="murda-clip-3.mp4" controls playsinline loop></video>
       </div>
 
     </div>
