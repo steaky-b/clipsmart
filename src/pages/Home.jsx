@@ -1,6 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import './Home.css'
+
+function useCountUp(target, duration = 1800) {
+  const [count, setCount] = useState(0)
+  const rafRef = useRef(null)
+  useEffect(() => {
+    const start = performance.now()
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.floor(eased * target))
+      if (progress < 1) rafRef.current = requestAnimationFrame(step)
+    }
+    rafRef.current = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [target, duration])
+  return count
+}
 
 /* ── Platform SVG icons ── */
 function IconTikTok() {
@@ -119,6 +136,7 @@ const FAQS = [
 ]
 
 export default function Home() {
+  const reviewCount = useCountUp(1074)
   return (
     <>
 
@@ -142,7 +160,8 @@ export default function Home() {
               <img src="/whop-logo.png" alt="Whop" className="hero-whop-icon" />
               <span className="hero-reviews-score">4.8</span>
               <span className="hero-reviews-stars">★★★★★</span>
-              <span className="hero-reviews-meta">· 1,000+ reviews</span>
+              <span className="hero-reviews-live-dot" aria-hidden="true" />
+              <span className="hero-reviews-meta">{reviewCount.toLocaleString()}+ reviews</span>
             </span>
           </div>
           <div className="hero-actions fade-up">
