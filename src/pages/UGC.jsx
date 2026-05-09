@@ -30,7 +30,7 @@ const SERVICES = [
   {
     icon: '🔄',
     title: 'Revision Rounds',
-    desc: 'Not quite right? We include revision rounds on every deliverable so you always end up with content you're proud to put spend behind.',
+    desc: "Not quite right? We include revision rounds on every deliverable so you always end up with content you're proud to put spend behind.",
   },
 ]
 
