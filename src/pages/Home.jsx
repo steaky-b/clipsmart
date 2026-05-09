@@ -19,6 +19,52 @@ function useCountUp(target, duration = 1800) {
   return count
 }
 
+function useCountUpOnView(target, duration = 1600) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const rafRef = useRef(null)
+  useEffect(() => {
+    if (target === 0) return
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
+      const start = performance.now()
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        setCount(eased * target)
+        if (progress < 1) rafRef.current = requestAnimationFrame(step)
+        else setCount(target)
+      }
+      rafRef.current = requestAnimationFrame(step)
+    }, { threshold: 0.3 })
+    observer.observe(el)
+    return () => { observer.disconnect(); cancelAnimationFrame(rafRef.current) }
+  }, [target, duration])
+  return [count, ref]
+}
+
+function StatBlock({ prefix, target, decimals, suffix, l, s }) {
+  const [count, ref] = useCountUpOnView(target)
+  let display
+  if (target === 0) {
+    display = `${prefix}0${suffix}`
+  } else if (decimals > 0) {
+    display = `${prefix}${parseFloat(count.toFixed(decimals))}${suffix}`
+  } else {
+    display = `${prefix}${Math.floor(count)}${suffix}`
+  }
+  return (
+    <div ref={ref} className="stat-block">
+      <div className="stat-v">{display}</div>
+      <div className="stat-l">{l}</div>
+      <div className="stat-s">{s}</div>
+    </div>
+  )
+}
+
 /* ── Platform SVG icons ── */
 function IconTikTok() {
   return (
@@ -52,10 +98,10 @@ const TICKER_ITEMS = [
 ]
 
 const STATS = [
-  { v: '2.3B+', l: 'Total views generated', s: 'Across all campaigns' },
-  { v: '80K+', l: 'Active creators', s: 'In our network' },
-  { v: '1M+', l: 'Guaranteed views', s: 'Per $1,000 — guaranteed' },
-  { v: '$0', l: 'Upfront creator fees', s: 'Pay only for performance' },
+  { prefix: '', target: 2.3, decimals: 1, suffix: 'B+', l: 'Total views generated', s: 'Across all campaigns' },
+  { prefix: '', target: 80, decimals: 0, suffix: 'K+', l: 'Active creators', s: 'In our network' },
+  { prefix: '', target: 1, decimals: 1, suffix: 'M+', l: 'Guaranteed views', s: 'Per $1,000 — guaranteed' },
+  { prefix: '$', target: 0, decimals: 0, suffix: '', l: 'Upfront creator fees', s: 'Pay only for performance' },
 ]
 
 const CASES = [
@@ -199,12 +245,8 @@ export default function Home() {
       {/* STATS */}
       <div className="home-stats stats-section">
         <div className="stats-inner stagger">
-          {STATS.map(({ v, l, s }) => (
-            <div key={l} className="stat-block">
-              <div className="stat-v">{v}</div>
-              <div className="stat-l">{l}</div>
-              <div className="stat-s">{s}</div>
-            </div>
+          {STATS.map((stat) => (
+            <StatBlock key={stat.l} {...stat} />
           ))}
         </div>
       </div>
