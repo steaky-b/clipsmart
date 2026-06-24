@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/copy-dashboard.mjs",
     "build": "vite build",
     "postbuild": "node scripts/copy-clips.mjs",
     "lint": "eslint .",
