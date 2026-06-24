@@ -33,6 +33,27 @@ body { font-family: 'Instrument Sans', sans-serif; }
 
 .cs-root { background: var(--cs-bg); color: #ECF2EE; font-family: 'Instrument Sans', sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .cs-display { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+.cs-nav-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: #ECF2EE;
+  text-decoration: none;
+  transition: opacity .15s ease;
+}
+.cs-nav-logo:hover { opacity: 0.88; }
+.cs-nav-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  display: block;
+  object-fit: cover;
+}
 .cs-eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cs-muted); font-weight: 600; }
 .cs-page-title { font-size: 1.5rem; line-height: 2rem; }
 .cs-section-title { font-size: 1rem; font-weight: 600; color: #ECF2EE; }
@@ -519,6 +540,9 @@ License: MIT
       }
     );
   }
+  function ClipSmartLogo({ href = "/", className = "" }) {
+    return /* @__PURE__ */ React.createElement("a", { href, className: "cs-nav-logo" + (className ? " " + className : "") }, /* @__PURE__ */ React.createElement("img", { src: "/logo.png", alt: "ClipSmart", className: "cs-nav-logo-img" }), "ClipSmart");
+  }
   const STORAGE_KEY = "clipsmart_data";
   const SAMPLE_DATA = {
     clients: [
@@ -810,7 +834,7 @@ License: MIT
         setError("No account found. Your ClipSmart login is created by our team \u2014 reach out if you\u2019re expecting access.");
       }
     }
-    return /* @__PURE__ */ React.createElement("div", { className: "cs-root flex items-center justify-center p-4" }, /* @__PURE__ */ React.createElement("div", { className: "w-full max-w-sm" }, /* @__PURE__ */ React.createElement("div", { className: "text-center mb-7" }, /* @__PURE__ */ React.createElement("div", { className: "cs-display text-2xl mb-1" }, "Clip", /* @__PURE__ */ React.createElement("span", { style: { color: "#2ECC71" } }, "Smart")), /* @__PURE__ */ React.createElement("div", { className: "text-sm", style: { color: "#7E9385" } }, "Performance UGC that pays for itself")), /* @__PURE__ */ React.createElement("div", { className: "cs-panel rounded-2xl p-5" }, /* @__PURE__ */ React.createElement("div", { className: "flex gap-1 mb-5 p-1 rounded-xl", style: { background: "#0A0D0A" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => {
+    return /* @__PURE__ */ React.createElement("div", { className: "cs-root flex items-center justify-center p-4" }, /* @__PURE__ */ React.createElement("div", { className: "w-full max-w-sm" }, /* @__PURE__ */ React.createElement("div", { className: "text-center mb-7" }, /* @__PURE__ */ React.createElement(ClipSmartLogo, { className: "justify-center" }), /* @__PURE__ */ React.createElement("div", { className: "text-sm mt-3", style: { color: "#7E9385" } }, "Performance UGC that pays for itself")), /* @__PURE__ */ React.createElement("div", { className: "cs-panel rounded-2xl p-5" }, /* @__PURE__ */ React.createElement("div", { className: "flex gap-1 mb-5 p-1 rounded-xl", style: { background: "#0A0D0A" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => {
       setMode("client");
       setError("");
     }, className: "flex-1 rounded-lg py-1.5 text-sm font-medium transition-colors", style: { background: mode === "client" ? "#003D1A" : "transparent", color: mode === "client" ? "#2ECC71" : "#7E9385" } }, "Client"), /* @__PURE__ */ React.createElement("button", { onClick: () => {
@@ -1199,7 +1223,7 @@ License: MIT
       { id: "videos", label: "Videos", icon: "film" },
       { id: "settings", label: "Settings", icon: "settings" }
     ];
-    return /* @__PURE__ */ React.createElement("div", { className: "cs-root" }, /* @__PURE__ */ React.createElement("div", { className: "sticky top-0 z-10", style: { background: "#0A0D0A", borderBottom: "1px solid #1C2A1E" } }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center justify-between px-4 sm:px-6 py-3.5 max-w-6xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { className: "cs-display text-lg" }, "Clip", /* @__PURE__ */ React.createElement("span", { style: { color: "#2ECC71" } }, "Smart")), /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3" }, /* @__PURE__ */ React.createElement(Badge, { tone: "success" }, "Admin"), /* @__PURE__ */ React.createElement("button", { onClick: onLogout, className: "p-2 rounded-lg cs-btn-ghost" }, /* @__PURE__ */ React.createElement(Icon, { name: "logOut", size: 15 })))), /* @__PURE__ */ React.createElement("div", { className: "flex gap-5 px-4 sm:px-6 max-w-6xl mx-auto overflow-x-auto cs-scroll" }, tabs.map((t) => /* @__PURE__ */ React.createElement("button", { key: t.id, onClick: () => setTab(t.id), className: "cs-tab flex items-center gap-1.5 py-3 text-sm font-medium " + (tab === t.id ? "cs-tab-active" : "") }, /* @__PURE__ */ React.createElement(Icon, { name: t.icon, size: 14 }), " ", t.label)))), sheetSyncStatus && /* @__PURE__ */ React.createElement("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 pb-2 text-xs", style: { color: "#7E9385" } }, "Sheet sync: ", sheetSyncStatus), /* @__PURE__ */ React.createElement("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-6" }, tab === "overview" && /* @__PURE__ */ React.createElement(OverviewTab, { data }), tab === "clients" && /* @__PURE__ */ React.createElement(ClientsTab, { data, actions }), tab === "payments" && /* @__PURE__ */ React.createElement(PaymentsTab, { data, actions }), tab === "videos" && /* @__PURE__ */ React.createElement(VideosTab, { data, actions }), tab === "settings" && /* @__PURE__ */ React.createElement(SettingsTab, { data, actions, cloudEnabled: supabaseConfigured })));
+    return /* @__PURE__ */ React.createElement("div", { className: "cs-root" }, /* @__PURE__ */ React.createElement("div", { className: "sticky top-0 z-10", style: { background: "#0A0D0A", borderBottom: "1px solid #1C2A1E" } }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center justify-between px-4 sm:px-6 py-3.5 max-w-6xl mx-auto" }, /* @__PURE__ */ React.createElement(ClipSmartLogo, null), /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3" }, /* @__PURE__ */ React.createElement(Badge, { tone: "success" }, "Admin"), /* @__PURE__ */ React.createElement("button", { onClick: onLogout, className: "p-2 rounded-lg cs-btn-ghost" }, /* @__PURE__ */ React.createElement(Icon, { name: "logOut", size: 15 })))), /* @__PURE__ */ React.createElement("div", { className: "flex gap-5 px-4 sm:px-6 max-w-6xl mx-auto overflow-x-auto cs-scroll" }, tabs.map((t) => /* @__PURE__ */ React.createElement("button", { key: t.id, onClick: () => setTab(t.id), className: "cs-tab flex items-center gap-1.5 py-3 text-sm font-medium " + (tab === t.id ? "cs-tab-active" : "") }, /* @__PURE__ */ React.createElement(Icon, { name: t.icon, size: 14 }), " ", t.label)))), sheetSyncStatus && /* @__PURE__ */ React.createElement("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 pb-2 text-xs", style: { color: "#7E9385" } }, "Sheet sync: ", sheetSyncStatus), /* @__PURE__ */ React.createElement("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-6" }, tab === "overview" && /* @__PURE__ */ React.createElement(OverviewTab, { data }), tab === "clients" && /* @__PURE__ */ React.createElement(ClientsTab, { data, actions }), tab === "payments" && /* @__PURE__ */ React.createElement(PaymentsTab, { data, actions }), tab === "videos" && /* @__PURE__ */ React.createElement(VideosTab, { data, actions }), tab === "settings" && /* @__PURE__ */ React.createElement(SettingsTab, { data, actions, cloudEnabled: supabaseConfigured })));
   }
   function clientVideoStats(videos) {
     const totalViews = videos.reduce((s, v) => s + (Number(v.views) || 0), 0);
@@ -1483,7 +1507,7 @@ License: MIT
       { id: "videos", label: "Videos", icon: "film" },
       { id: "campaign", label: "Campaign", icon: "building2" }
     ];
-    return /* @__PURE__ */ React.createElement("div", { className: "cs-root" }, /* @__PURE__ */ React.createElement("div", { className: "sticky top-0 z-10", style: { background: "var(--cs-bg)", borderBottom: "1px solid var(--cs-border)" } }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center justify-between px-4 sm:px-6 py-3.5 max-w-6xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { className: "cs-display text-lg" }, "Clip", /* @__PURE__ */ React.createElement("span", { style: { color: "var(--cs-accent)" } }, "Smart")), /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3" }, /* @__PURE__ */ React.createElement("span", { className: "text-sm hidden sm:inline", style: { color: "var(--cs-muted)" } }, client.company), /* @__PURE__ */ React.createElement("button", { onClick: onLogout, className: "p-2 rounded-lg cs-btn-ghost" }, /* @__PURE__ */ React.createElement(Icon, { name: "logOut", size: 15 })))), /* @__PURE__ */ React.createElement("div", { className: "flex gap-5 px-4 sm:px-6 max-w-6xl mx-auto overflow-x-auto cs-scroll" }, tabs.map((t) => /* @__PURE__ */ React.createElement("button", { key: t.id, onClick: () => switchTab(t.id), className: "cs-tab flex items-center gap-1.5 py-3 text-sm font-medium " + (tab === t.id ? "cs-tab-active" : "") }, /* @__PURE__ */ React.createElement(Icon, { name: t.icon, size: 14 }), " ", t.label)))), /* @__PURE__ */ React.createElement("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-6" }, tab === "totalStats" && /* @__PURE__ */ React.createElement(ClientTotalStatsTab, { client, videos, stats, onViewAllVideos: viewAllVideos, loading: tabLoading }), tab === "videos" && /* @__PURE__ */ React.createElement(ClientVideosTab, { videos, focus: videosFocus, onFocusHandled: () => setVideosFocus(null), loading: tabLoading }), tab === "campaign" && /* @__PURE__ */ React.createElement(ClientCampaignTab, { client, videos, stats, loading: tabLoading })));
+    return /* @__PURE__ */ React.createElement("div", { className: "cs-root" }, /* @__PURE__ */ React.createElement("div", { className: "sticky top-0 z-10", style: { background: "var(--cs-bg)", borderBottom: "1px solid var(--cs-border)" } }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center justify-between px-4 sm:px-6 py-3.5 max-w-6xl mx-auto" }, /* @__PURE__ */ React.createElement(ClipSmartLogo, null), /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3" }, /* @__PURE__ */ React.createElement("span", { className: "text-sm hidden sm:inline", style: { color: "var(--cs-muted)" } }, client.company), /* @__PURE__ */ React.createElement("button", { onClick: onLogout, className: "p-2 rounded-lg cs-btn-ghost" }, /* @__PURE__ */ React.createElement(Icon, { name: "logOut", size: 15 })))), /* @__PURE__ */ React.createElement("div", { className: "flex gap-5 px-4 sm:px-6 max-w-6xl mx-auto overflow-x-auto cs-scroll" }, tabs.map((t) => /* @__PURE__ */ React.createElement("button", { key: t.id, onClick: () => switchTab(t.id), className: "cs-tab flex items-center gap-1.5 py-3 text-sm font-medium " + (tab === t.id ? "cs-tab-active" : "") }, /* @__PURE__ */ React.createElement(Icon, { name: t.icon, size: 14 }), " ", t.label)))), /* @__PURE__ */ React.createElement("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-6" }, tab === "totalStats" && /* @__PURE__ */ React.createElement(ClientTotalStatsTab, { client, videos, stats, onViewAllVideos: viewAllVideos, loading: tabLoading }), tab === "videos" && /* @__PURE__ */ React.createElement(ClientVideosTab, { videos, focus: videosFocus, onFocusHandled: () => setVideosFocus(null), loading: tabLoading }), tab === "campaign" && /* @__PURE__ */ React.createElement(ClientCampaignTab, { client, videos, stats, loading: tabLoading })));
   }
   const hasClaudeStorage = !!(window.storage && window.storage.get && window.storage.set);
   const isTopLevelWindow = (function() {
