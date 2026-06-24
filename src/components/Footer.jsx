@@ -30,6 +30,7 @@ export default function Footer() {
               <Link to="/active-campaigns">Active Campaigns</Link>
               <Link to="/case-studies">Past Campaigns</Link>
               <Link to="/work-with-us">Work With Us</Link>
+              <a href="/dashboard/">Client Dashboard</a>
             </nav>
           </div>
 
