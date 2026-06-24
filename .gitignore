@@ -32,14 +32,23 @@ work-with-us.html
 *.sln
 *.sw?
 
-# Local upload staging folder (do not commit large MP4s)
-Clispmart videos/
+# Local upload staging folders (do not commit large media files)
+Clipsmart videos/
+Clipsmart videos.zip
+face swap videos/
+*.MOV
+*.mov
 
 # Large/unwanted root files
 *.exe
 /*.mp4
 /*.pdf
 hf_*.png
+# Root-level loose image/asset files (face swap etc.)
+/*.png
+/*.jpg
+/*.jpeg
+/*.zip
 clipsmart-howitworks-carousels.html
 clipsmart-landing.html
 thailand_content_strategy.html
@@ -51,3 +60,6 @@ Clipsmart Slide Deck/
 # Generated carousel images in root / public root (not needed in repo)
 public/clipsmart-carousel-posts-30pages-*.png
 clipsmart-carousel-posts-30pages.pdf
+
+# Local Netlify folder
+.netlify

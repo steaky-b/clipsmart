@@ -89,6 +89,11 @@
   background: var(--g); flex-shrink: 0;
   animation: pulse 2.2s ease-in-out infinite;
 }
+.hero-reviews-live-label {
+  font-size: 9px; font-weight: 800; letter-spacing: 1.5px;
+  color: var(--g); text-transform: uppercase; flex-shrink: 0;
+  animation: pulse 2.2s ease-in-out infinite;
+}
 .hero-whop-icon { width: 18px; height: 18px; border-radius: 3px; flex-shrink: 0; object-fit: contain; }
 
 .hero-actions {

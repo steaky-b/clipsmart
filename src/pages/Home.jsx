@@ -183,6 +183,7 @@ const FAQS = [
 
 export default function Home() {
   const reviewCount = useCountUp(1074)
+  const creatorCount = useCountUp(74648)
   return (
     <>
 
@@ -194,8 +195,8 @@ export default function Home() {
             2.3B+ views generated across all campaigns
           </div>
           <h1 className="fade-up">
-            Stop funding content<br />
-            that <em>doesn't work.</em>
+            Without volume,<br />
+            nobody will <em>see you.</em>
           </h1>
           <p className="hero-sub fade-up">
             Hundreds of creators flood TikTok, Instagram, and YouTube with content about your brand.
@@ -207,14 +208,20 @@ export default function Home() {
               <span className="hero-reviews-score">4.8</span>
               <span className="hero-reviews-stars">★★★★★</span>
               <span className="hero-reviews-live-dot" aria-hidden="true" />
+              <span className="hero-reviews-live-label">LIVE</span>
               <span className="hero-reviews-meta">{reviewCount.toLocaleString()}+ reviews</span>
+            </span>
+            <span className="hero-reviews-chip">
+              <span className="hero-reviews-live-dot" aria-hidden="true" />
+              <span className="hero-reviews-live-label">LIVE</span>
+              <span className="hero-reviews-meta">{creatorCount.toLocaleString()}+ creators</span>
             </span>
           </div>
           <div className="hero-actions fade-up">
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
               Book a free call <span className="arr">→</span>
             </a>
-            <Link to="/case-studies" className="btn-ghost">View case studies</Link>
+            <Link to="/case-studies" className="btn-ghost">View past campaigns</Link>
           </div>
           <p className="hero-hint fade-up">30-minute call · No prep needed · Full refund if we don't deliver</p>
 
@@ -258,7 +265,7 @@ export default function Home() {
             <div className="section-eyebrow fade-up">Real Results</div>
             <h2 className="section-h2 fade-up">Campaigns that <em>speak<br />for themselves.</em></h2>
           </div>
-          <Link to="/case-studies" className="view-all fade-up">View all case studies →</Link>
+          <Link to="/case-studies" className="view-all fade-up">View all past campaigns →</Link>
         </div>
         <div className="cases-track-wrap">
           <div className="cases-track">

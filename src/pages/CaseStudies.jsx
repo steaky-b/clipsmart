@@ -166,7 +166,7 @@ export default function CaseStudies() {
     <>
       {/* HERO */}
       <div className="page-hero">
-        <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Case Studies</div>
+        <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Past Campaigns</div>
         <h1>Not projections.<br /><em>Real campaigns.</em></h1>
         <p>Every number below is verified. Real money, real creators, real views.</p>
       </div>

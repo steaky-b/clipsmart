@@ -10,7 +10,7 @@ export default function NotFound() {
         <p className="nf-p">The page you're looking for doesn't exist or has been moved.</p>
         <div className="nf-actions">
           <Link to="/" className="btn-primary">Back to home →</Link>
-          <Link to="/case-studies" className="btn-ghost">View case studies</Link>
+          <Link to="/case-studies" className="btn-ghost">View past campaigns</Link>
         </div>
       </div>
     </div>
