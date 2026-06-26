@@ -6,6 +6,8 @@
   animation: pulse 2.2s ease-in-out infinite;
   flex-shrink: 0;
 }
+/* Remove the eyebrow dash where the live orb is shown (keep the orb) */
+.section-eyebrow:has(.ac-live-dot)::before { display: none; }
 
 /* ═══════════════ STATS ═══════════════ */
 .ac-stats {
@@ -21,13 +23,17 @@
   margin-top: 32px;
 }
 .ac-card {
+  display: block;
   background: var(--s1);
   border: 1px solid var(--bd);
   border-radius: 20px;
   overflow: hidden;
   transition: border-color .25s, transform .25s;
+  color: inherit;
 }
 .ac-card:hover { border-color: var(--g-bdr); transform: translateY(-4px); }
+.ac-card:hover .ac-card-cta { color: var(--g); }
+.ac-card:hover .ac-card-cta::after { transform: translateX(3px); }
 
 .ac-card-visual {
   position: relative;
@@ -81,6 +87,15 @@
   font-size: 15px; font-weight: 800; color: var(--g); margin-bottom: 3px;
 }
 .ac-metric-l { font-size: 10px; color: var(--t3); }
+
+.ac-card-cta {
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  color: var(--t2);
+  transition: color .2s;
+}
 
 /* ═══════════════ PAST CAMPAIGNS CALLOUT ═══════════════ */
 .ac-past-link {

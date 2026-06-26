@@ -1,58 +1,27 @@
 import { Link } from 'react-router-dom'
 import './ActiveCampaigns.css'
-
-/*
-  Add your current active clients here.
-  Each entry will appear as a card on the page.
-  Leave `results` empty or partial — the "LIVE" badge shows instead of final numbers.
-*/
-const ACTIVE = [
-  {
-    id: 'client1',
-    name: 'Client Name',
-    cat: 'Music',
-    subtitle: 'Campaign running',
-    gradient: 'linear-gradient(135deg,#0d1a0d,#050a05)',
-    img: null,
-    budget: '$1,000',
-    status: 'Live now',
-    posts: '340+',
-    views: '2.1M+',
-  },
-  {
-    id: 'client2',
-    name: 'Client Name',
-    cat: 'Health & Wellness',
-    subtitle: 'Campaign running',
-    gradient: 'linear-gradient(135deg,#1a1a0d,#0a0a05)',
-    img: null,
-    budget: '$2,000',
-    status: 'Live now',
-    posts: '610+',
-    views: '4.8M+',
-  },
-  {
-    id: 'client3',
-    name: 'Client Name',
-    cat: 'E-commerce',
-    subtitle: 'Campaign running',
-    gradient: 'linear-gradient(135deg,#0d0d1a,#05050a)',
-    img: null,
-    budget: '$500',
-    status: 'Live now',
-    posts: '180+',
-    views: '900K+',
-  },
-]
-
-const LIVE_STATS = [
-  { v: '3', l: 'Active campaigns', s: 'Running right now' },
-  { v: '1,130+', l: 'Creator posts live', s: 'Across all current campaigns' },
-  { v: '7.8M+', l: 'Views this month', s: 'And climbing' },
-  { v: '48hrs', l: 'Avg. time to first clip', s: 'From campaign launch' },
-]
+import {
+  ACTIVE_CAMPAIGNS,
+  computeSnapshot,
+  formatViews,
+  formatFull,
+  formatMoney,
+} from '../data/activeCampaigns'
 
 export default function ActiveCampaigns() {
+  const now = Date.now()
+  const cards = ACTIVE_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, now) }))
+
+  const totalViews = cards.reduce((s, { snap }) => s + snap.views, 0)
+  const totalPosts = cards.reduce((s, { snap }) => s + snap.posts, 0)
+
+  const liveStats = [
+    { v: String(ACTIVE_CAMPAIGNS.length), l: 'Active campaigns', s: 'Running right now' },
+    { v: formatFull(totalPosts) + '+', l: 'Creator posts live', s: 'Across all current campaigns' },
+    { v: formatViews(totalViews) + '+', l: 'Views this month', s: 'And climbing' },
+    { v: '48hrs', l: 'Avg. time to first clip', s: 'From campaign launch' },
+  ]
+
   return (
     <>
       {/* HERO */}
@@ -68,7 +37,7 @@ export default function ActiveCampaigns() {
       {/* LIVE STATS */}
       <div className="ac-stats stats-section">
         <div className="stats-inner stagger">
-          {LIVE_STATS.map(({ v, l, s }) => (
+          {liveStats.map(({ v, l, s }) => (
             <div key={l} className="stat-block">
               <div className="stat-v">{v}</div>
               <div className="stat-l">{l}</div>
@@ -87,42 +56,46 @@ export default function ActiveCampaigns() {
         <h2 className="section-h2 fade-up">Every active campaign.<br /><em>All in real time.</em></h2>
 
         <div className="ac-grid">
-          {ACTIVE.map(({ id, name, cat, subtitle, gradient, img, budget, status, posts, views }) => (
-            <div key={id} className="ac-card fade-up">
-              <div
-                className="ac-card-visual"
-                style={img
-                  ? { backgroundImage: `url(${img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-                  : { background: gradient }
-                }
-              >
-                {img && <div className="ac-card-visual-overlay" />}
-                <div className="ac-live-badge">
-                  <span className="ac-live-dot-sm" />
-                  LIVE
+          {cards.map(({ campaign, snap }) => {
+            const { slug, name, catLabel, subtitle, gradient, img } = campaign
+            return (
+              <Link key={slug} to={`/active-campaigns/${slug}`} className="ac-card fade-up">
+                <div
+                  className="ac-card-visual"
+                  style={img
+                    ? { backgroundImage: `url(${img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+                    : { background: gradient }
+                  }
+                >
+                  {img && <div className="ac-card-visual-overlay" />}
+                  <div className="ac-live-badge">
+                    <span className="ac-live-dot-sm" />
+                    LIVE
+                  </div>
+                  <div className="ac-card-cat">{catLabel}</div>
+                  <div className="ac-card-name">{name}</div>
                 </div>
-                <div className="ac-card-cat">{cat}</div>
-                <div className="ac-card-name">{name}</div>
-              </div>
-              <div className="ac-card-body">
-                <div className="ac-card-sub">{subtitle}</div>
-                <div className="ac-card-metrics">
-                  <div className="ac-metric">
-                    <div className="ac-metric-v">{views}</div>
-                    <div className="ac-metric-l">Views so far</div>
+                <div className="ac-card-body">
+                  <div className="ac-card-sub">{subtitle}</div>
+                  <div className="ac-card-metrics">
+                    <div className="ac-metric">
+                      <div className="ac-metric-v">{formatViews(snap.views)}+</div>
+                      <div className="ac-metric-l">Views so far</div>
+                    </div>
+                    <div className="ac-metric">
+                      <div className="ac-metric-v">{formatFull(snap.posts)}+</div>
+                      <div className="ac-metric-l">Creator posts</div>
+                    </div>
+                    <div className="ac-metric">
+                      <div className="ac-metric-v">{formatMoney(campaign.budgetTotal)}</div>
+                      <div className="ac-metric-l">Budget</div>
+                    </div>
                   </div>
-                  <div className="ac-metric">
-                    <div className="ac-metric-v">{posts}</div>
-                    <div className="ac-metric-l">Creator posts</div>
-                  </div>
-                  <div className="ac-metric">
-                    <div className="ac-metric-v">{budget}</div>
-                    <div className="ac-metric-l">Budget</div>
-                  </div>
+                  <div className="ac-card-cta">View live campaign →</div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </Link>
+            )
+          })}
         </div>
       </div>
 

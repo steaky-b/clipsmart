@@ -10,6 +10,7 @@ import ROICalculator from './pages/ROICalculator'
 import Creators from './pages/Creators'
 import CaseStudies from './pages/CaseStudies'
 import ActiveCampaigns from './pages/ActiveCampaigns'
+import ActiveCampaignDetail from './pages/ActiveCampaignDetail'
 import WorkWithUs from './pages/WorkWithUs'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="creators" element={<Creators />} />
           <Route path="case-studies" element={<CaseStudies />} />
           <Route path="active-campaigns" element={<ActiveCampaigns />} />
+          <Route path="active-campaigns/:id" element={<ActiveCampaignDetail />} />
           <Route path="work-with-us" element={<WorkWithUs />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
