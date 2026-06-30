@@ -329,15 +329,6 @@ function PlatformReachInfographic() {
 /* ══════════════════════════════════════════════
    DATA
 ══════════════════════════════════════════════ */
-const TICKER_ITEMS = [
-  { value: '2.3B+', label: 'Total Views Generated' },
-  { value: '80K+', label: 'Active Creators' },
-  { value: 'from $0.81', label: 'Effective CPM Achieved' },
-  { value: '100%', label: 'Organic — Zero Ad Account Risk' },
-  { value: '48hrs', label: 'Campaign Goes Live' },
-  { label: 'Performance-Based · Pay Only For Results' },
-]
-
 const STATS = [
   { prefix: '', target: 2.3, decimals: 1, suffix: 'B+', l: 'Total views generated', s: 'Across all campaigns' },
   { prefix: '', target: 80, decimals: 0, suffix: 'K+', l: 'Active creators', s: 'In our network' },
@@ -457,19 +448,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── TICKER ── */}
-      <div className="ticker-wrap">
-        <div className="ticker">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-            <div key={i} className="ticker-item">
-              {item.value && <span>{item.value}</span>}
-              {item.label}
-              <div className="ticker-dot" />
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ── STATS ── */}
       <div className="home-stats stats-section">
         <div className="stats-inner stagger">
@@ -479,19 +457,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── PLATFORM REACH INFOGRAPHIC ── */}
-      <div className="platform-reach-section">
-        <div className="platform-reach-inner">
-          <div className="platform-reach-copy">
-            <div className="section-eyebrow">Where Your Audience Lives</div>
-            <h2 className="section-h2">Three platforms.<br /><em>Billions of eyeballs.</em></h2>
-            <p className="section-lead">Your creators post natively on every major short-form platform — no reposts, no watermarks, just content that feels native to each feed.</p>
-          </div>
-          <PlatformReachInfographic />
-        </div>
-      </div>
-
-      {/* ── CASE STUDIES CAROUSEL ── */}
+      {/* ── CASE STUDIES CAROUSEL — moved up so campaigns are immediately visible ── */}
       <div className="cases-section">
         <div className="cases-header">
           <div className="cases-header-left">
@@ -522,6 +488,18 @@ export default function Home() {
               </Link>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* ── PLATFORM REACH INFOGRAPHIC — beneath Real Results ── */}
+      <div className="platform-reach-section">
+        <div className="platform-reach-inner">
+          <div className="platform-reach-copy">
+            <div className="section-eyebrow">Where Your Audience Lives</div>
+            <h2 className="section-h2">Three platforms.<br /><em>Billions of eyeballs.</em></h2>
+            <p className="section-lead">Your creators post natively on every major short-form platform — no reposts, no watermarks, just content that feels native to each feed.</p>
+          </div>
+          <PlatformReachInfographic />
         </div>
       </div>
 
