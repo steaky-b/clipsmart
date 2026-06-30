@@ -115,7 +115,7 @@ function HeroCampaignWidget() {
   const fmtRate = (r) => r >= 1000 ? (r / 1000).toFixed(1) + 'K' : String(r)
 
   /* ── SVG area chart ── */
-  const W = 300, H = 86, padL = 4, padR = 4, padT = 10, padB = 2
+  const W = 300, H = 86, padL = 4, padR = 18, padT = 10, padB = 2
   const maxV = Math.max(...chartData)
   const pts = chartData.map((v, i) => ({
     x: padL + (i / (chartData.length - 1)) * (W - padL - padR),
