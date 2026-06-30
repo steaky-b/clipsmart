@@ -814,6 +814,27 @@
   .hero-actions { flex-direction: column !important; align-items: center !important; gap: 8px !important; width: 100%; }
   .hero-actions .btn-primary, .hero-actions .btn-ghost { width: 100%; justify-content: center; }
 
+  /* Hero widget — fill available width, prevent overflow */
+  .hw-widget { max-width: 100% !important; width: 100% !important; }
+  .hw-sparkline { gap: 2px !important; }
+  .hw-sparkline-bar { width: 4px !important; }
+  .hw-creator-feed { max-height: 110px !important; }
+  .hw-views { font-size: 26px !important; }
+  .hw-platform-bars { gap: 6px !important; }
+
+  /* Platform reach — horizontal scroll instead of wrapping */
+  .platform-reach-cards {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+  }
+  .platform-reach-card { min-width: 110px !important; flex-shrink: 0; }
+
+  /* CPM chart — prevent label overflow */
+  .cpm-bar-label { font-size: 9px !important; }
+  .cpm-bar-sublabel { font-size: 8px !important; }
+
   .how-callout { padding: 12px 8px !important; }
   .hc-val { font-size: 18px !important; }
   .hc-desc { display: none !important; }

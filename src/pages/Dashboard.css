@@ -352,22 +352,82 @@
 ═══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .db-root { flex-direction: column; }
+
+  /* Sidebar becomes a sticky top bar */
   .db-sidebar {
     width: 100%; min-width: unset; height: auto;
-    position: static; flex-direction: row; flex-wrap: wrap;
-    padding: 12px; gap: 8px; border-right: none;
+    position: sticky; top: 0; z-index: 200;
+    flex-direction: column;
+    padding: 10px 12px 0;
+    border-right: none;
     border-bottom: 1px solid var(--bd);
+    overflow: visible;
+  }
+
+  /* Top row: logo left, social right */
+  .db-sidebar-top {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
   }
-  .db-sidebar-top, .db-sidebar-bottom {
-    flex-direction: row; align-items: center; gap: 4px;
-  }
-  .db-logo { font-size: 15px; }
-  .db-view { padding: 24px 16px; }
-  .db-campaign-grid { grid-template-columns: 1fr; }
-  .db-lb-head, .db-lb-row { grid-template-columns: 50px 1fr 80px; }
-  .db-lb-posts { display: none; }
+
+  /* Hide items that clutter the compact top bar */
+  .db-sidebar-bottom { display: none; }
+  .db-back-btn { display: none; }
   .db-divider { display: none; }
-  .db-user-badge { display: none; }
-  .db-signin-prompt { display: none; }
+
+  /* Logo */
+  .db-logo { font-size: 14px; flex-shrink: 0; margin-right: 8px; padding: 6px 8px; }
+  .db-logo-img { width: 22px; height: 22px; }
+
+  /* Nav items become compact pills in the top bar */
+  .db-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    flex: 1;
+  }
+  .db-nav-item {
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .db-nav-item svg { width: 14px; height: 14px; }
+
+  /* "Start a Campaign" — compact pill at end of row */
+  .db-nav-item--accent {
+    padding: 7px 12px;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* Main content */
+  .db-main { min-height: 0; flex: 1; }
+  .db-view { padding: 20px 16px; }
+  .db-view-h { font-size: clamp(22px, 5vw, 32px); }
+
+  /* Campaign grid — single column */
+  .db-campaign-grid { grid-template-columns: 1fr; }
+
+  /* Leaderboard table — hide Posts column */
+  .db-lb-head, .db-lb-row { grid-template-columns: 44px 1fr 70px; }
+  .db-lb-posts { display: none; }
+
+  /* Users grid — 2 per row on tablet, 1 on small phone */
+  .db-users-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .db-nav-item { padding: 6px 10px; font-size: 11px; }
+  .db-nav-item--accent { padding: 6px 10px; font-size: 11px; }
+  .db-users-grid { grid-template-columns: 1fr; }
+  .db-campaign-body { padding: 16px; }
+  .db-stat-v { font-size: 22px; }
 }

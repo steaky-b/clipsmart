@@ -238,6 +238,9 @@
 }
 
 @media (max-width: 480px) {
+  /* Campaign grid goes single-column on small phones */
+  .cs-grid { grid-template-columns: 1fr !important; }
+
   .cs-modal-overlay { padding: 0; align-items: flex-end; }
   .cs-modal {
     max-height: 88vh;

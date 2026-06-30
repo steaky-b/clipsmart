@@ -5,7 +5,7 @@ const LINKS = [
   { to: '/how-it-works', label: 'How It Works' },
   { to: '/calculator', label: 'ROI Calculator' },
   { to: '/creators', label: 'Creators' },
-  { to: '/dashboard', label: 'Dashboard' },
+  { to: '/active-campaigns', label: 'Active Campaigns' },
   { to: '/case-studies', label: 'Past Campaigns' },
   { to: '/work-with-us', label: 'Work With Us' },
 ]

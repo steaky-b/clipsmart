@@ -22,11 +22,10 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Dashboard has its own full-page layout — lives outside Layout */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          {/* Backward-compat redirect */}
-          <Route path="/active-campaigns" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/active-campaigns/:id" element={<Navigate to="/dashboard" replace />} />
+          {/* Active Campaigns dashboard — its own full-page layout */}
+          <Route path="/active-campaigns" element={<Dashboard />} />
+          {/* Backward-compat: old /dashboard links redirect to the renamed page */}
+          <Route path="/dashboard" element={<Navigate to="/active-campaigns" replace />} />
 
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

@@ -165,64 +165,14 @@ export default function CaseStudies() {
   return (
     <>
       {/* HERO */}
-      <div className="page-hero">
+      <div className="page-hero" style={{ paddingBottom: '32px' }}>
         <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Past Campaigns</div>
         <h1>Not projections.<br /><em>Real campaigns.</em></h1>
         <p>Every number below is verified. Real money, real creators, real views.</p>
       </div>
 
-      {/* FEATURED */}
-      <div className="section cs-featured-section">
-        <div className="section-eyebrow fade-up">Most Talked About</div>
-        <h2 className="section-h2 fade-up">Our biggest campaign <em>to date.</em></h2>
-          <div className="cs-featured fade-up">
-          <div className="csf-left">
-            <div className="csf-tag">Music · Featured Campaign</div>
-            {featured.img
-              ? <img src={featured.img} alt={featured.name} className="csf-img" />
-              : <div className="csf-logo">NHC</div>
-            }
-            <div className="csf-name">{featured.name}</div>
-            <div className="csf-sub">Music Artist · {featured.subtitle}</div>
-            <p className="csf-desc">
-              Indie hip-hop artist with a debut single. Started with 7 posts on TikTok.
-              No label, no ad budget — just performance UGC and a creator network.
-            </p>
-          </div>
-          <div className="csf-right">
-            <div className="csf-metrics">
-              {featured.results.map(({ v, l }) => (
-                <div key={l} className="csfm">
-                  <div className="csfm-val">{v}</div>
-                  <div className="csfm-lbl">{l}</div>
-                </div>
-              ))}
-            </div>
-            <blockquote className="csf-quote">
-              "{featured.quote}"
-            </blockquote>
-            <button className="btn-primary csf-btn" onClick={() => setActiveModal('murda')}>
-              Full breakdown →
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* OVERVIEW STATS */}
-      <div className="cs-overview-stats stats-section">
-        <div className="stats-inner stagger">
-          {OVERVIEW_STATS.map(({ v, l, s }) => (
-            <div key={l} className="stat-block">
-              <div className="stat-v">{v}</div>
-              <div className="stat-l">{l}</div>
-              <div className="stat-s">{s}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* FILTER + GRID */}
-      <div className="section" style={{ paddingTop: '52px' }}>
+      {/* FILTER + GRID — moved up so campaigns are visible without scrolling */}
+      <div className="section" style={{ paddingTop: '32px' }}>
         <div className="section-eyebrow fade-up">All Campaigns</div>
         <h2 className="section-h2 fade-up">Every campaign. Every <em>result.</em></h2>
         <div className="cs-filter fade-up">
@@ -285,6 +235,56 @@ export default function CaseStudies() {
                 <div className="cs-card-cta">View breakdown →</div>
               </div>
             </button>
+          ))}
+        </div>
+      </div>
+
+      {/* FEATURED */}
+      <div className="section cs-featured-section">
+        <div className="section-eyebrow fade-up">Most Talked About</div>
+        <h2 className="section-h2 fade-up">Our biggest campaign <em>to date.</em></h2>
+        <div className="cs-featured fade-up">
+          <div className="csf-left">
+            <div className="csf-tag">Music · Featured Campaign</div>
+            {featured.img
+              ? <img src={featured.img} alt={featured.name} className="csf-img" />
+              : <div className="csf-logo">NHC</div>
+            }
+            <div className="csf-name">{featured.name}</div>
+            <div className="csf-sub">Music Artist · {featured.subtitle}</div>
+            <p className="csf-desc">
+              Indie hip-hop artist with a debut single. Started with 7 posts on TikTok.
+              No label, no ad budget — just performance UGC and a creator network.
+            </p>
+          </div>
+          <div className="csf-right">
+            <div className="csf-metrics">
+              {featured.results.map(({ v, l }) => (
+                <div key={l} className="csfm">
+                  <div className="csfm-val">{v}</div>
+                  <div className="csfm-lbl">{l}</div>
+                </div>
+              ))}
+            </div>
+            <blockquote className="csf-quote">
+              "{featured.quote}"
+            </blockquote>
+            <button className="btn-primary csf-btn" onClick={() => setActiveModal('murda')}>
+              Full breakdown →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* OVERVIEW STATS */}
+      <div className="cs-overview-stats stats-section">
+        <div className="stats-inner stagger">
+          {OVERVIEW_STATS.map(({ v, l, s }) => (
+            <div key={l} className="stat-block">
+              <div className="stat-v">{v}</div>
+              <div className="stat-l">{l}</div>
+              <div className="stat-s">{s}</div>
+            </div>
           ))}
         </div>
       </div>

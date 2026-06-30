@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from '../components/AuthModal'
-import { supabase } from '../lib/supabase'
+import { supabase, isSupabaseReady } from '../lib/supabase'
 import {
   ACTIVE_CAMPAIGNS,
   computeSnapshot,
@@ -11,6 +11,29 @@ import {
   formatMoney,
 } from '../data/activeCampaigns'
 import './Dashboard.css'
+
+/* ── Demo data (shown instantly when Supabase is not configured) ── */
+const DEMO_LEADERBOARD = [
+  { id: '1', username: 'creator_james',   display_name: 'James K.',      total_views: 2100000, total_posts: 203 },
+  { id: '2', username: 'rhythmrose',      display_name: 'Rose T.',        total_views: 1450000, total_posts: 178 },
+  { id: '3', username: 'thecliplab',      display_name: 'The Clip Lab',   total_views: 980000,  total_posts: 142 },
+  { id: '4', username: 'creatorbyluke',   display_name: 'Luke M.',        total_views: 756000,  total_posts: 116 },
+  { id: '5', username: 'vivoclips',       display_name: 'Vivo Clips',     total_views: 620000,  total_posts: 98  },
+  { id: '6', username: 'nxtviral',        display_name: 'NxtViral',       total_views: 490000,  total_posts: 74  },
+  { id: '7', username: 'shortformjay',    display_name: 'Jay S.',         total_views: 310000,  total_posts: 52  },
+  { id: '8', username: 'clip_central',    display_name: 'Clip Central',   total_views: 195000,  total_posts: 33  },
+]
+
+const DEMO_USERS = [
+  { id: '1', username: 'creator_james',   display_name: 'James K.',      total_views: 2100000, total_posts: 203, tiktok_handle: 'creator_james' },
+  { id: '2', username: 'rhythmrose',      display_name: 'Rose T.',        total_views: 1450000, total_posts: 178, instagram_handle: 'rhythmrose' },
+  { id: '3', username: 'thecliplab',      display_name: 'The Clip Lab',   total_views: 980000,  total_posts: 142, tiktok_handle: 'thecliplab' },
+  { id: '4', username: 'creatorbyluke',   display_name: 'Luke M.',        total_views: 756000,  total_posts: 116 },
+  { id: '5', username: 'vivoclips',       display_name: 'Vivo Clips',     total_views: 620000,  total_posts: 98,  tiktok_handle: 'vivoclips' },
+  { id: '6', username: 'nxtviral',        display_name: 'NxtViral',       total_views: 490000,  total_posts: 74,  instagram_handle: 'nxtviral' },
+  { id: '7', username: 'shortformjay',    display_name: 'Jay S.',         total_views: 310000,  total_posts: 52 },
+  { id: '8', username: 'clip_central',    display_name: 'Clip Central',   total_views: 195000,  total_posts: 33,  tiktok_handle: 'clip_central' },
+]
 
 /* ── Icons ── */
 function IconCampaigns() {
@@ -148,33 +171,26 @@ function CampaignsView({ onApply }) {
    LEADERBOARD VIEW
 ══════════════════════════════════════════════ */
 function LeaderboardView() {
-  const [creators, setCreators] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [dbReady, setDbReady] = useState(true)
+  // Seed with demo data immediately — replaced with real data if Supabase is configured
+  const [creators, setCreators] = useState(DEMO_LEADERBOARD)
+  const [isDemo, setIsDemo] = useState(true)
 
   useEffect(() => {
+    if (!isSupabaseReady) return
     supabase
       .from('profiles')
       .select('*')
       .order('total_views', { ascending: false })
       .limit(50)
       .then(({ data, error }) => {
-        if (error) { setDbReady(false); setLoading(false); return }
-        setCreators(data || [])
-        setLoading(false)
+        if (!error && data && data.length > 0) {
+          setCreators(data)
+          setIsDemo(false)
+        }
       })
   }, [])
 
-  if (loading) {
-    return (
-      <div className="db-view db-view--loading">
-        <div className="db-spinner" />
-        <p>Loading leaderboard…</p>
-      </div>
-    )
-  }
-
-  if (!dbReady || creators.length === 0) {
+  if (creators.length === 0) {
     return (
       <div className="db-view">
         <div className="db-view-header">
@@ -230,28 +246,23 @@ function LeaderboardView() {
    USERS VIEW
 ══════════════════════════════════════════════ */
 function UsersView() {
-  const [creators, setCreators] = useState([])
-  const [loading, setLoading] = useState(true)
+  // Seed with demo data immediately — replaced with real data if Supabase is configured
+  const [creators, setCreators] = useState(DEMO_USERS)
+  const [isDemo, setIsDemo] = useState(true)
 
   useEffect(() => {
+    if (!isSupabaseReady) return
     supabase
       .from('profiles')
       .select('*')
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
-        if (!error) setCreators(data || [])
-        setLoading(false)
+        if (!error && data && data.length > 0) {
+          setCreators(data)
+          setIsDemo(false)
+        }
       })
   }, [])
-
-  if (loading) {
-    return (
-      <div className="db-view db-view--loading">
-        <div className="db-spinner" />
-        <p>Loading creators…</p>
-      </div>
-    )
-  }
 
   return (
     <div className="db-view">
@@ -302,7 +313,7 @@ function UsersView() {
    MAIN DASHBOARD
 ══════════════════════════════════════════════ */
 const NAV_ITEMS = [
-  { id: 'campaigns', label: 'Campaigns', Icon: IconCampaigns },
+  { id: 'campaigns', label: 'Active Campaigns', Icon: IconCampaigns },
   { id: 'leaderboard', label: 'Leaderboard', Icon: IconLeaderboard },
   { id: 'users', label: 'Users', Icon: IconUsers },
 ]
