@@ -27,10 +27,9 @@ export default function Footer() {
             <div className="footer-col-h">Company</div>
             <nav className="footer-links">
               <Link to="/creators">Creator Network</Link>
-              <Link to="/active-campaigns">Active Campaigns</Link>
+              <Link to="/dashboard">Dashboard</Link>
               <Link to="/case-studies">Past Campaigns</Link>
               <Link to="/work-with-us">Work With Us</Link>
-              <a href="/dashboard/">Client Dashboard</a>
             </nav>
           </div>
 
