@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import './Home.css'
 
+/* ══════════════════════════════════════════════
+   HOOKS
+══════════════════════════════════════════════ */
 function useCountUp(target, duration = 1800) {
   const [count, setCount] = useState(0)
   const rafRef = useRef(null)
@@ -65,33 +68,252 @@ function StatBlock({ prefix, target, decimals, suffix, l, s }) {
   )
 }
 
-/* ── Platform SVG icons ── */
-function IconTikTok() {
+/* ══════════════════════════════════════════════
+   HERO CAMPAIGN WIDGET (right-side infographic)
+══════════════════════════════════════════════ */
+const WIDGET_CAMPAIGNS = [
+  {
+    name: 'NHC Murda',
+    category: 'Music',
+    startViews: 12847293,
+    posts: 1456,
+    creators: 318,
+    cpm: '$0.81',
+    platforms: [{ name: 'TikTok', pct: 72 }, { name: 'Instagram', pct: 20 }, { name: 'YouTube', pct: 8 }],
+    tickers: [
+      { handle: '@artist.clips', views: '92.1K' },
+      { handle: '@musicvault', views: '48.2K' },
+      { handle: '@viralbeats', views: '67.4K' },
+    ],
+    color: '#2ECC71',
+  },
+  {
+    name: 'Based Bodyworks',
+    category: 'Health & Wellness',
+    startViews: 2100000,
+    posts: 203,
+    creators: 97,
+    cpm: '$0.94',
+    platforms: [{ name: 'TikTok', pct: 61 }, { name: 'Instagram', pct: 32 }, { name: 'YouTube', pct: 7 }],
+    tickers: [
+      { handle: '@liftedwithleo', views: '198K' },
+      { handle: '@hypertrophy.hub', views: '142K' },
+    ],
+    color: '#2ECC71',
+  },
+]
+
+function HeroCampaignWidget() {
+  const [campaign] = useState(WIDGET_CAMPAIGNS[0])
+  const [views, setViews] = useState(campaign.startViews)
+  const [posts, setPosts] = useState(campaign.posts)
+  const [creators, setCreators] = useState(campaign.creators)
+  const [tickerIdx, setTickerIdx] = useState(0)
+  const [tickerVisible, setTickerVisible] = useState(true)
+
+  useEffect(() => {
+    const viewId = setInterval(() => {
+      setViews(v => v + Math.floor(Math.random() * 350 + 80))
+      if (Math.random() > 0.96) setPosts(p => p + 1)
+    }, 1100)
+    return () => clearInterval(viewId)
+  }, [])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTickerVisible(false)
+      setTimeout(() => {
+        setTickerIdx(i => (i + 1) % campaign.tickers.length)
+        setTickerVisible(true)
+      }, 300)
+    }, 3200)
+    return () => clearInterval(id)
+  }, [campaign.tickers.length])
+
+  const fmtViews = (n) => {
+    if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M'
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'K'
+    return n.toLocaleString()
+  }
+
+  const ticker = campaign.tickers[tickerIdx]
+
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="TikTok">
-      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.73a4.82 4.82 0 0 1-1.01-.04z" />
-    </svg>
-  )
-}
-function IconInstagram() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-    </svg>
-  )
-}
-function IconYouTube() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="YouTube">
-      <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z" />
-    </svg>
+    <div className="hw-widget">
+      {/* Glow behind widget */}
+      <div className="hw-widget-glow" />
+
+      {/* Header */}
+      <div className="hw-widget-header">
+        <div className="hw-live-badge">
+          <span className="hw-live-dot" />
+          Live Campaign
+        </div>
+        <div className="hw-campaign-tag">{campaign.name} · {campaign.category}</div>
+      </div>
+
+      {/* Big view counter */}
+      <div className="hw-views-group">
+        <div className="hw-views">{fmtViews(views)}</div>
+        <div className="hw-views-label">Total Organic Views</div>
+      </div>
+
+      {/* Platform split */}
+      <div className="hw-platforms">
+        {campaign.platforms.map(({ name, pct }) => (
+          <div key={name} className="hw-platform-row">
+            <span className="hw-platform-name">{name}</span>
+            <div className="hw-bar-track">
+              <div className="hw-bar-fill" style={{ width: `${pct}%` }} />
+            </div>
+            <span className="hw-platform-pct">{pct}%</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Stats row */}
+      <div className="hw-stats-row">
+        <div className="hw-stat">
+          <div className="hw-stat-v">{posts.toLocaleString()}</div>
+          <div className="hw-stat-l">Posts</div>
+        </div>
+        <div className="hw-stat-sep" />
+        <div className="hw-stat">
+          <div className="hw-stat-v">{creators}</div>
+          <div className="hw-stat-l">Creators</div>
+        </div>
+        <div className="hw-stat-sep" />
+        <div className="hw-stat">
+          <div className="hw-stat-v">{campaign.cpm}</div>
+          <div className="hw-stat-l">eff. CPM</div>
+        </div>
+      </div>
+
+      {/* Ticker — rotating top post */}
+      <div className={'hw-ticker' + (tickerVisible ? '' : ' hw-ticker--out')}>
+        <div className="hw-ticker-dot" />
+        <div className="hw-ticker-content">
+          <span className="hw-ticker-handle">{ticker.handle}</span>
+          <span className="hw-ticker-views">{ticker.views} views</span>
+        </div>
+      </div>
+
+      {/* Second "ghost" card for depth */}
+      <div className="hw-widget-bg-card" aria-hidden="true" />
+    </div>
   )
 }
 
+/* ══════════════════════════════════════════════
+   CPM COMPARISON INFOGRAPHIC
+══════════════════════════════════════════════ */
+function CPMComparisonChart() {
+  const [animated, setAnimated] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setAnimated(true); obs.disconnect() }
+    }, { threshold: 0.4 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
+  const bars = [
+    { label: 'Google Ads', cpm: '$12.40', pct: 100, muted: true },
+    { label: 'Meta Ads', cpm: '$9.80', pct: 79, muted: true },
+    { label: 'Influencer', cpm: '$8.50', pct: 69, muted: true },
+    { label: 'TikTok Ads', cpm: '$7.20', pct: 58, muted: true },
+    { label: 'ClipSmart', cpm: 'from $0.81', pct: 7, muted: false, highlight: true },
+  ]
+
+  return (
+    <div className="cpm-chart" ref={ref}>
+      <div className="cpm-chart-eyebrow">Effective CPM Comparison</div>
+      <div className="cpm-chart-bars">
+        {bars.map(({ label, cpm, pct, muted, highlight }) => (
+          <div key={label} className={'cpm-row' + (highlight ? ' cpm-row--highlight' : '')}>
+            <div className="cpm-row-label">{label}</div>
+            <div className="cpm-row-track">
+              <div
+                className={'cpm-row-fill' + (highlight ? ' cpm-row-fill--green' : '')}
+                style={{ width: animated ? `${pct}%` : '0%' }}
+              />
+            </div>
+            <div className={'cpm-row-val' + (highlight ? ' cpm-row-val--green' : '')}>{cpm}</div>
+          </div>
+        ))}
+      </div>
+      <div className="cpm-chart-note">Lower is better · Organic reach, no ad spend</div>
+    </div>
+  )
+}
+
+/* ══════════════════════════════════════════════
+   PLATFORM REACH INFOGRAPHIC
+══════════════════════════════════════════════ */
+function PlatformReachInfographic() {
+  const platforms = [
+    {
+      name: 'TikTok',
+      share: '68%',
+      reach: '1B+ daily active users',
+      color: '#fff',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.73a4.82 4.82 0 0 1-1.01-.04z" />
+        </svg>
+      ),
+    },
+    {
+      name: 'Instagram',
+      share: '23%',
+      reach: '500M+ Reels views daily',
+      color: '#E1306C',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+        </svg>
+      ),
+    },
+    {
+      name: 'YouTube',
+      share: '9%',
+      reach: '70M+ Shorts daily views',
+      color: '#FF0000',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+          <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z" />
+        </svg>
+      ),
+    },
+  ]
+
+  return (
+    <div className="platform-reach">
+      <div className="platform-reach-cards">
+        {platforms.map(({ name, share, reach, color, icon }) => (
+          <div key={name} className="platform-reach-card">
+            <div className="platform-reach-icon" style={{ color }}>{icon}</div>
+            <div className="platform-reach-share">{share}</div>
+            <div className="platform-reach-name">{name}</div>
+            <div className="platform-reach-sub">{reach}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/* ══════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════ */
 const TICKER_ITEMS = [
   { value: '2.3B+', label: 'Total Views Generated' },
   { value: '80K+', label: 'Active Creators' },
-  { value: 'from $0.09', label: 'Effective CPM Achieved' },
+  { value: 'from $0.81', label: 'Effective CPM Achieved' },
   { value: '100%', label: 'Organic — Zero Ad Account Risk' },
   { value: '48hrs', label: 'Campaign Goes Live' },
   { label: 'Performance-Based · Pay Only For Results' },
@@ -142,101 +364,93 @@ const RFY_ITEMS = [
 ]
 
 const CREATOR_POSTS = [
-  {
-    video: '/murda-clip-1.mp4#t=1',
-    username: '@nhcmurda60x',
-    caption: 'bro went from 7 posts to 12 million views 🔥 this is crazy',
-    likes: '92.1K',
-    niche: 'Music',
-  },
-  {
-    video: '/cpkshawn-clip-2.mp4#t=1',
-    username: '@musiclovers',
-    caption: 'this beat has been stuck in my head for 3 days straight 🎵',
-    likes: '48.2K',
-    niche: 'Music',
-  },
-  {
-    video: '/bussin-clip-1.mp4#t=1',
-    username: '@podcastclips',
-    caption: 'They said THIS on the podcast and I can\'t stop replaying it',
-    likes: '67.4K',
-    niche: 'Podcast',
-  },
-  {
-    video: '/base-clip-2.mp4#t=1',
-    username: '@fitnesscreator',
-    caption: 'Not sponsored — just actually obsessed with this brand 💪',
-    likes: '31.7K',
-    niche: 'Health & Fitness',
-  },
+  { video: '/murda-clip-1.mp4#t=1', username: '@nhcmurda60x', caption: 'bro went from 7 posts to 12 million views 🔥', likes: '92.1K', niche: 'Music' },
+  { video: '/cpkshawn-clip-2.mp4#t=1', username: '@musiclovers', caption: 'this beat has been stuck in my head for 3 days straight 🎵', likes: '48.2K', niche: 'Music' },
+  { video: '/bussin-clip-1.mp4#t=1', username: '@podcastclips', caption: "They said THIS on the podcast and I can't stop replaying it", likes: '67.4K', niche: 'Podcast' },
+  { video: '/base-clip-2.mp4#t=1', username: '@fitnesscreator', caption: 'Not sponsored — just actually obsessed with this brand 💪', likes: '31.7K', niche: 'Health & Fitness' },
 ]
 
 const FAQS = [
   { q: 'What is performance UGC?', a: 'Performance UGC means creators post about your brand from their own accounts — and you only pay when content hits your view threshold. No flat fees. No "projected" results. Only real views, counted after they happen.' },
-  { q: 'How does the pricing work?', a: 'You pay per 1,000 organic views. At our standard rate, a $1,000 budget guarantees a minimum of 1,000,000 views. You\'ll often get more, because creators are incentivised to over-deliver.' },
-  { q: 'Do I need to ship products to creators?', a: 'For most campaigns, no. Our creators are briefed with talking points, angles, and messaging. For product-based brands, we can facilitate seeding — but it\'s not required to launch.' },
+  { q: 'How does the pricing work?', a: "You pay per 1,000 organic views. At our standard rate, a $1,000 budget guarantees a minimum of 1,000,000 views. You'll often get more, because creators are incentivised to over-deliver." },
+  { q: 'Do I need to ship products to creators?', a: "For most campaigns, no. Our creators are briefed with talking points, angles, and messaging. For product-based brands, we can facilitate seeding — but it's not required to launch." },
   { q: 'What platforms do creators post on?', a: 'Primarily TikTok, Instagram Reels, and YouTube Shorts. All three are tracked. Views from all platforms count toward your campaign total.' },
   { q: 'How quickly does a campaign go live?', a: 'Once onboarded and budget confirmed, your campaign brief goes out to the creator network within 24–48 hours. First clips typically appear within 16 hours.' },
   { q: 'What types of brands work best with ClipSmart?', a: 'E-commerce brands, music artists, podcasters, health & wellness products, sports events, and franchise businesses. If your audience watches short-form video, ClipSmart works.' },
 ]
 
+/* ══════════════════════════════════════════════
+   MAIN PAGE
+══════════════════════════════════════════════ */
 export default function Home() {
   const reviewCount = useCountUp(1074)
   const creatorCount = useCountUp(74648)
+
   return (
     <>
-
-      {/* HERO */}
+      {/* ── HERO ── */}
       <div className="hero">
         <div className="hero-inner">
-          <div className="hero-proof fade-up">
-            <div className="hero-proof-dot" />
-            2.3B+ views generated across all campaigns
-          </div>
-          <h1 className="fade-up">
-            Without volume,<br />
-            nobody will <em>see you.</em>
-          </h1>
-          <p className="hero-sub fade-up">
-            Hundreds of creators flood TikTok, Instagram, and YouTube with content about your brand.
-            You only pay when it performs.
-          </p>
-          <div className="hero-platforms fade-up">
-            <span className="hero-reviews-chip">
-              <img src="/whop-logo.png" alt="Whop" className="hero-whop-icon" />
-              <span className="hero-reviews-score">4.8</span>
-              <span className="hero-reviews-stars">★★★★★</span>
-              <span className="hero-reviews-live-dot" aria-hidden="true" />
-              <span className="hero-reviews-live-label">LIVE</span>
-              <span className="hero-reviews-meta">{reviewCount.toLocaleString()}+ reviews</span>
-            </span>
-            <span className="hero-reviews-chip">
-              <span className="hero-reviews-live-dot" aria-hidden="true" />
-              <span className="hero-reviews-live-label">LIVE</span>
-              <span className="hero-reviews-meta">{creatorCount.toLocaleString()}+ creators</span>
-            </span>
-          </div>
-          <div className="hero-actions fade-up">
-            <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
-              Book a free call <span className="arr">→</span>
-            </a>
-            <Link to="/case-studies" className="btn-ghost">View past campaigns</Link>
-          </div>
-          <p className="hero-hint fade-up">30-minute call · No prep needed · Full refund if we don't deliver</p>
-
-          <div className="hero-video fade-up">
-            <div className="video-frame">
-              <video controls autoPlay muted loop playsInline preload="auto">
-                <source src="/clipsmart-video-updated.mp4" type="video/mp4" />
-              </video>
-              <div className="video-glow" />
+          {/* Left: text + CTAs */}
+          <div className="hero-left">
+            <div className="hero-proof fade-up">
+              <div className="hero-proof-dot" />
+              2.3B+ views generated across all campaigns
             </div>
+            <h1 className="fade-up">
+              Without volume,<br />
+              nobody will <em>see you.</em>
+            </h1>
+            <p className="hero-sub fade-up">
+              Hundreds of creators flood TikTok, Instagram, and YouTube with content about your brand.
+              You only pay when it performs.
+            </p>
+
+            <div className="hero-platforms fade-up">
+              <span className="hero-reviews-chip">
+                <img src="/whop-logo.png" alt="Whop" className="hero-whop-icon" />
+                <span className="hero-reviews-score">4.8</span>
+                <span className="hero-reviews-stars">★★★★★</span>
+                <span className="hero-reviews-live-dot" aria-hidden="true" />
+                <span className="hero-reviews-live-label">LIVE</span>
+                <span className="hero-reviews-meta">{reviewCount.toLocaleString()}+ reviews</span>
+              </span>
+              <span className="hero-reviews-chip">
+                <span className="hero-reviews-live-dot" aria-hidden="true" />
+                <span className="hero-reviews-live-label">LIVE</span>
+                <span className="hero-reviews-meta">{creatorCount.toLocaleString()}+ creators</span>
+              </span>
+            </div>
+
+            <div className="hero-actions fade-up">
+              <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                Book a free call <span className="arr">→</span>
+              </a>
+              <Link to="/case-studies" className="btn-ghost">View past campaigns</Link>
+            </div>
+            <p className="hero-hint fade-up">30-minute call · No prep needed · Full refund if we don't deliver</p>
+          </div>
+
+          {/* Right: live campaign infographic */}
+          <div className="hero-right fade-up">
+            <HeroCampaignWidget />
           </div>
         </div>
       </div>
 
-      {/* TICKER */}
+      {/* ── HERO VIDEO (full-width below hero) ── */}
+      <div className="hero-video-section">
+        <div className="hero-video-inner">
+          <div className="video-frame">
+            <video controls autoPlay muted loop playsInline preload="auto">
+              <source src="/clipsmart-video-updated.mp4" type="video/mp4" />
+            </video>
+            <div className="video-glow" />
+          </div>
+        </div>
+      </div>
+
+      {/* ── TICKER ── */}
       <div className="ticker-wrap">
         <div className="ticker">
           {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
@@ -249,7 +463,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* STATS */}
+      {/* ── STATS ── */}
       <div className="home-stats stats-section">
         <div className="stats-inner stagger">
           {STATS.map((stat) => (
@@ -258,7 +472,19 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CASE STUDIES CAROUSEL */}
+      {/* ── PLATFORM REACH INFOGRAPHIC ── */}
+      <div className="platform-reach-section">
+        <div className="platform-reach-inner">
+          <div className="platform-reach-copy">
+            <div className="section-eyebrow">Where Your Audience Lives</div>
+            <h2 className="section-h2">Three platforms.<br /><em>Billions of eyeballs.</em></h2>
+            <p className="section-lead">Your creators post natively on every major short-form platform — no reposts, no watermarks, just content that feels native to each feed.</p>
+          </div>
+          <PlatformReachInfographic />
+        </div>
+      </div>
+
+      {/* ── CASE STUDIES CAROUSEL ── */}
       <div className="cases-section">
         <div className="cases-header">
           <div className="cases-header-left">
@@ -292,7 +518,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CREATOR CONTENT EXAMPLES */}
+      {/* ── CREATOR CONTENT EXAMPLES ── */}
       <div className="creator-section">
         <div className="creator-header">
           <div className="section-eyebrow fade-up">What It Looks Like</div>
@@ -327,7 +553,7 @@ export default function Home() {
         <p className="creator-note fade-up">Real content. Real creators. Zero "sponsored" energy.</p>
       </div>
 
-      {/* HOW IT WORKS PREVIEW */}
+      {/* ── HOW IT WORKS PREVIEW ── */}
       <div className="how-section">
         <div className="how-inner">
           <div className="how-steps-col">
@@ -357,7 +583,7 @@ export default function Home() {
             </div>
             <div className="how-callout fade-up">
               <div className="hc-label">Effective CPM Achieved</div>
-              <div className="hc-val">from $0.09</div>
+              <div className="hc-val">from $0.81</div>
               <div className="hc-desc">vs. $8–$15 on paid ads — same audience, fraction of the cost</div>
             </div>
             <div className="how-callout fade-up">
@@ -369,10 +595,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* WHY DIFFERENT */}
+      {/* ── WHY DIFFERENT ── */}
       <div className="section why-section">
-        <div className="section-eyebrow fade-up">Why Different</div>
-        <h2 className="section-h2 fade-up">ClipSmart vs <em>everything<br />you've tried before.</em></h2>
+        <div className="why-header fade-up">
+          <div>
+            <div className="section-eyebrow">Why Different</div>
+            <h2 className="section-h2">ClipSmart vs <em>everything<br />you've tried before.</em></h2>
+          </div>
+          <CPMComparisonChart />
+        </div>
         <div className="why-scroll-wrap">
           <div className="why-strip fade-up">
             <div className="why-header-row">
@@ -397,7 +628,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* GUARANTEE STRIP */}
+      {/* ── GUARANTEE STRIP ── */}
       <div className="guarantee-strip fade-up">
         <div className="guarantee-strip-inner">
           <div className="guarantee-icon">🛡</div>
@@ -408,47 +639,47 @@ export default function Home() {
         </div>
       </div>
 
-      {/* IS THIS RIGHT FOR YOU? */}
+      {/* ── IS THIS RIGHT FOR YOU ── */}
       <div className="rfy-section">
         <div className="section" style={{ paddingTop: '88px', paddingBottom: '88px' }}>
-        <div className="rfy-inner">
-          <div className="rfy-left fade-up">
-            <div className="section-eyebrow">Is This Right For You?</div>
-            <h2 className="section-h2">Built for brands that <em>need results,<br />not promises.</em></h2>
-            <p className="rfy-lead">ClipSmart works best when your audience watches short-form video. If that's your customer, this is the most efficient reach you'll ever buy.</p>
-            <div className="rfy-grid">
-              {RFY_ITEMS.map(({ icon, label }) => (
-                <div key={label} className="rfy-item">
-                  <span className="rfy-icon">{icon}</span>
-                  <span>{label}</span>
-                </div>
-              ))}
+          <div className="rfy-inner">
+            <div className="rfy-left fade-up">
+              <div className="section-eyebrow">Is This Right For You?</div>
+              <h2 className="section-h2">Built for brands that <em>need results,<br />not promises.</em></h2>
+              <p className="rfy-lead">ClipSmart works best when your audience watches short-form video. If that's your customer, this is the most efficient reach you'll ever buy.</p>
+              <div className="rfy-grid">
+                {RFY_ITEMS.map(({ icon, label }) => (
+                  <div key={label} className="rfy-item">
+                    <span className="rfy-icon">{icon}</span>
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="rfy-right fade-up">
-            <div className="rfy-card">
-              <div className="rfy-card-eyebrow">Not sure if it's a fit?</div>
-              <h3 className="rfy-card-h">Let's talk.</h3>
-              <p className="rfy-card-p">Book a 30-minute call. We'll tell you honestly whether ClipSmart is right for your brand — before you spend anything.</p>
-              <a
-                href="https://calendly.com/esaanwar/partner-with-clipsmart"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary rfy-btn"
-              >
-                Let's talk →
-              </a>
-              <div className="rfy-guarantee">
-                <span className="rfy-guarantee-icon">✓</span>
-                Full refund if we don't hit your guaranteed views
+            <div className="rfy-right fade-up">
+              <div className="rfy-card">
+                <div className="rfy-card-eyebrow">Not sure if it's a fit?</div>
+                <h3 className="rfy-card-h">Let's talk.</h3>
+                <p className="rfy-card-p">Book a 30-minute call. We'll tell you honestly whether ClipSmart is right for your brand — before you spend anything.</p>
+                <a
+                  href="https://calendly.com/esaanwar/partner-with-clipsmart"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary rfy-btn"
+                >
+                  Let's talk →
+                </a>
+                <div className="rfy-guarantee">
+                  <span className="rfy-guarantee-icon">✓</span>
+                  Full refund if we don't hit your guaranteed views
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
       </div>
 
-      {/* TESTIMONIALS */}
+      {/* ── TESTIMONIALS ── */}
       <div className="section testimonials-section">
         <div className="section-eyebrow fade-up" style={{ justifyContent: 'center' }}>What Clients Say</div>
         <h2 className="section-h2 fade-up" style={{ textAlign: 'center' }}>Don't take our word <em>for it.</em></h2>
@@ -477,7 +708,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* FAQ */}
+      {/* ── FAQ ── */}
       <div className="faq-section">
         <div className="faq-inner">
           <div>
@@ -496,7 +727,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <div className="cta-section">
         <div className="cta-box fade-up">
           <div>
