@@ -351,14 +351,10 @@
 }
 .hac-card:hover .hac-cta { gap: 8px; }
 
-/* responsive */
+/* HAC: 2-col at tablet, handled as 1-col in the 768px block above */
 @media (max-width: 900px) {
   .hac-grid { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 560px) {
-  .hac-grid { grid-template-columns: 1fr; }
-  .hac-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .perks-inner { justify-content: flex-start; }
+  .hac-section { padding: 56px 0 64px; }
 }
 
 /* ═══════════════ PLATFORM REACH ═══════════════ */
@@ -744,42 +740,80 @@
 
 /* ─── 768px ─── */
 @media (max-width: 768px) {
-  .hero { padding: calc(var(--nav-h) + 20px) var(--pad) 28px; }
-  .hero-left h1 { font-size: clamp(24px, 6.5vw, 36px) !important; letter-spacing: -1px !important; margin-bottom: 14px !important; }
+  /* ── Hero ── */
+  .hero { padding: calc(var(--nav-h) + 16px) var(--pad) 28px; }
+  .hero-left h1 { font-size: clamp(26px, 6.5vw, 38px) !important; letter-spacing: -1px !important; margin-bottom: 14px !important; }
   .hero-sub { font-size: 14px !important; margin-bottom: 20px !important; }
-  .hero-platforms { margin-bottom: 24px !important; gap: 8px !important; }
-  .hero-platform-chip { font-size: 11px !important; padding: 5px 10px !important; }
-  .hero-reviews-chip { font-size: 11px !important; padding: 5px 10px !important; gap: 8px !important; }
-  .hero-actions { gap: 10px !important; }
-  .hero-hint { font-size: 11px !important; }
+  .hero-platforms { margin-bottom: 20px !important; gap: 8px !important; flex-wrap: wrap !important; }
+  .hero-reviews-chip { font-size: 11px !important; padding: 5px 10px !important; gap: 6px !important; }
+  .hero-actions { gap: 10px !important; flex-direction: column !important; width: 100% !important; }
+  .hero-actions .btn-primary, .hero-actions .btn-ghost { width: 100% !important; justify-content: center !important; }
+  .hero-hint { font-size: 11px !important; text-align: center !important; }
   .hero-proof { font-size: 11px !important; padding: 6px 12px !important; margin-bottom: 16px !important; }
 
-  .logo-bar { padding: 14px var(--pad) !important; }
+  /* ── Hero widget ── */
+  .hw-widget { max-width: 100% !important; padding: 18px !important; }
+  .hw-views { font-size: 28px !important; }
+  .hw-chart-svg { height: 72px !important; }
+  .hw-chart-label { font-size: 8.5px !important; }
+  .hw-rate-badge { font-size: 10px !important; padding: 4px 8px !important; }
+
+  /* ── Logo bar ── */
+  .logo-bar { padding: 12px var(--pad) !important; }
   .logo-bar-inner { gap: 10px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .logo-bar-label { display: none; }
-  .logo-bar-sep { display: none; }
+  .logo-bar-label, .logo-bar-sep { display: none; }
   .logo-items { gap: 18px; flex-wrap: nowrap; }
   .logo-item-text { font-size: 12px; }
-  .logo-platforms { gap: 12px; }
 
-  .cases-section { padding: 24px 0 56px !important; }
-  .cases-header { padding: 0 var(--pad) 24px !important; flex-direction: column; align-items: flex-start; gap: 12px !important; }
-  .cases-header h2 { font-size: clamp(26px, 6.5vw, 36px) !important; }
-  .how-steps-col .section-h2 { font-size: clamp(24px, 6vw, 32px) !important; }
-  .case-thumb { width: 280px !important; }
+  /* ── Home stats (2×2) ── */
+  .home-stats .stats-inner { grid-template-columns: 1fr 1fr !important; max-width: 100% !important; }
+  .home-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; padding: 20px 18px !important; }
+  .home-stats .stat-block:nth-child(odd) { border-right: 1px solid var(--bd) !important; }
+  .home-stats .stat-block:nth-last-child(-n+2) { border-bottom: none !important; }
+  .home-stats .stat-v { font-size: 30px !important; }
+  .home-stats .stat-l { font-size: 12px !important; }
 
-  .how-inner { padding: 40px var(--pad) !important; gap: 24px !important; }
-  .how-right { display: flex !important; flex-direction: row !important; gap: 8px !important; }
-  .how-callout { flex: 1 !important; min-width: 0 !important; padding: 16px 12px !important; }
-  .hc-val { font-size: clamp(20px,5vw,28px) !important; margin-bottom: 4px !important; }
+  /* ── Perks strip ── */
+  .perks-strip { padding: 14px var(--pad) !important; }
+  .perks-inner { gap: 8px 20px !important; justify-content: flex-start !important; }
+  .perk-item { font-size: 12px !important; }
+
+  /* ── Active campaigns grid: 1-col ── */
+  .hac-section { padding: 48px 0 56px !important; }
+  .hac-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; padding-bottom: 24px !important; }
+  .hac-grid { grid-template-columns: 1fr !important; max-width: 480px !important; }
+  .hac-views { font-size: 28px !important; }
+
+  /* ── Platform reach ── */
+  .platform-reach-inner { padding: 48px var(--pad) !important; gap: 32px !important; }
+  .platform-reach-cards { flex-wrap: wrap !important; justify-content: center !important; }
+  .platform-reach-card { flex: 1 1 120px; min-width: 120px; }
+
+  /* ── Creator phones ── */
+  .creator-section { padding: 40px 0 32px !important; }
+  .creator-header { padding: 0 var(--pad) 24px !important; }
+  .creator-lead { font-size: 14px !important; }
+  .phone-card { width: 155px !important; }
+
+  /* ── How it works ── */
+  .how-inner { padding: 40px var(--pad) !important; gap: 28px !important; }
+  .how-right { flex-direction: column !important; gap: 10px !important; }
+  .how-callout { padding: 20px 18px !important; }
+  .hc-val { font-size: clamp(24px,5vw,32px) !important; margin-bottom: 4px !important; }
   .hc-label { margin-bottom: 6px !important; }
-  .hc-desc { font-size: 12px !important; color: var(--t3) !important; }
+  .hc-desc { font-size: 13px !important; }
   .how-step { padding: 18px 0 !important; }
-  .step-b { font-size: 12.5px !important; }
+  .step-b { font-size: 13px !important; }
 
+  /* ── Why different ── */
+  .why-header { flex-direction: column !important; gap: 24px !important; }
+  .cpm-chart { max-width: 100% !important; min-width: 0 !important; }
+
+  /* ── FAQ ── */
   .faq-inner { padding: 40px var(--pad) !important; grid-template-columns: 1fr !important; gap: 24px !important; }
   .faq-q { font-size: 13.5px !important; padding: 16px 0 !important; }
 
+  /* ── Right for you ── */
   .rfy-inner { grid-template-columns: 1fr !important; gap: 24px !important; }
   .rfy-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
   .rfy-item { padding: 10px 12px !important; font-size: 12.5px !important; }
@@ -788,22 +822,84 @@
   .rfy-card-h { font-size: clamp(20px,5vw,28px) !important; }
   .rfy-card-p { font-size: 13.5px !important; margin-bottom: 20px !important; }
 
-  .home-stats .stats-inner { grid-template-columns: 1fr 1fr !important; }
-  .home-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; padding: 20px 18px !important; }
-  .home-stats .stat-block:nth-child(odd) { border-right: 1px solid var(--bd) !important; }
-  .home-stats .stat-block:last-child { border-bottom: none !important; }
-  .home-stats .stat-v { font-size: 32px !important; }
-  .home-stats .stat-l { font-size: 13px !important; }
-
+  /* ── Guarantee ── */
   .guarantee-strip { padding: 16px var(--pad) !important; }
   .guarantee-strip-inner { flex-direction: column; text-align: center; padding: 24px 20px !important; align-items: center !important; }
   .guarantee-btn { width: 100%; justify-content: center; }
   .guarantee-p { max-width: 100% !important; }
 
-  .creator-section { padding: 40px 0 32px !important; }
-  .creator-header { padding: 0 var(--pad) 24px !important; }
-  .creator-lead { font-size: 14px !important; }
-  .phone-card { width: 160px !important; }
+  /* ── Reviews ── */
+  .reviews-section { padding: 32px var(--pad) !important; }
+  .reviews-score { font-size: 48px !important; }
+  .reviews-cards { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .reviews-badge { flex-direction: column; align-items: flex-start; }
+}
+
+/* ─── 480px (small phones) ─── */
+@media (max-width: 480px) {
+  /* ── Hero ── */
+  .hero { padding: calc(var(--nav-h) + 12px) var(--pad) 20px; }
+  .hero-left h1 { font-size: clamp(22px, 7vw, 28px) !important; }
+  .hero-sub { font-size: 13.5px !important; }
+  .hero-proof { font-size: 10px !important; }
+
+  /* ── Hero widget ── */
+  .hw-widget { padding: 14px !important; gap: 12px !important; }
+  .hw-views { font-size: 24px !important; }
+  .hw-chart-svg { height: 60px !important; }
+  .hw-chart-label { font-size: 7.5px !important; }
+  .hw-rate-badge { display: none; }
+  .hw-stat-pills { gap: 5px !important; }
+  .hw-stat-pill { padding: 8px 5px !important; }
+  .hw-stat-pill-v { font-size: 13px !important; }
+
+  /* ── Home stats ── */
+  .home-stats .stat-block { padding: 16px 12px !important; }
+  .home-stats .stat-v { font-size: 26px !important; }
+  .home-stats .stat-l { font-size: 11px !important; }
+
+  /* ── Perks strip ── */
+  .perks-inner { gap: 6px 14px !important; }
+  .perk-item { font-size: 11.5px !important; }
+
+  /* ── Active campaigns ── */
+  .hac-section { padding: 36px 0 44px !important; }
+  .hac-grid { max-width: 100% !important; }
+  .hac-views { font-size: 24px !important; }
+  .hac-name { font-size: 16px !important; }
+  .hac-body { padding: 14px 16px 16px !important; gap: 10px !important; }
+
+  /* ── Platform reach ── */
+  .platform-reach-inner { padding: 36px var(--pad) !important; }
+  .platform-reach-cards {
+    overflow-x: auto !important; flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch; padding-bottom: 8px;
+  }
+  .platform-reach-card { min-width: 110px !important; flex-shrink: 0; }
+
+  /* ── Creator phones ── */
+  .phone-card { width: 135px !important; }
+
+  /* ── How it works ── */
+  .how-inner { padding: 32px var(--pad) !important; }
+  .how-callout { padding: 16px 14px !important; }
+  .hc-val { font-size: clamp(20px,6vw,26px) !important; }
+
+  /* ── CPM chart labels ── */
+  .cpm-bar-label { font-size: 9px !important; }
+  .cpm-bar-sublabel { font-size: 8px !important; }
+  .cpm-row { grid-template-columns: 72px 1fr 90px !important; }
+  .cpm-row-label { font-size: 11px !important; }
+  .cpm-row-val { font-size: 10px !important; }
+
+  /* ── RFY grid: 1 col ── */
+  .rfy-grid { grid-template-columns: 1fr !important; }
+
+  /* ── Guarantee ── */
+  .guarantee-strip-inner { padding: 20px 16px !important; }
+
+  /* ── Testimonials ── */
+  .testimonials-grid { grid-template-columns: 1fr !important; margin-top: 24px !important; }
 }
 
 /* ═══════════════ REVIEWS ═══════════════ */
@@ -952,43 +1048,7 @@
   .testimonial-quote { font-size: 14px !important; }
 }
 
-/* ─── 480px ─── */
-@media (max-width: 480px) {
-  .hero { padding: calc(var(--nav-h) + 12px) var(--pad) 28px; }
-  .hero-actions { flex-direction: column !important; align-items: center !important; gap: 8px !important; width: 100%; }
-  .hero-actions .btn-primary, .hero-actions .btn-ghost { width: 100%; justify-content: center; }
-
-  /* Hero widget — fill available width, prevent overflow */
-  .hw-widget { max-width: 100% !important; width: 100% !important; }
-  .hw-views { font-size: 26px !important; }
-  .hw-chart-svg { height: 72px !important; }
-  .hw-rate-badge { font-size: 10px !important; padding: 4px 8px !important; }
-
-  /* Platform reach — horizontal scroll instead of wrapping */
-  .platform-reach-cards {
-    overflow-x: auto !important;
-    flex-wrap: nowrap !important;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-  }
-  .platform-reach-card { min-width: 110px !important; flex-shrink: 0; }
-
-  /* CPM chart — prevent label overflow */
-  .cpm-bar-label { font-size: 9px !important; }
-  .cpm-bar-sublabel { font-size: 8px !important; }
-
-  .how-callout { padding: 12px 8px !important; }
-  .hc-val { font-size: 18px !important; }
-  .hc-desc { display: none !important; }
-
-  .rfy-grid { grid-template-columns: 1fr 1fr !important; }
-  .rfy-card { padding: 20px 16px !important; }
-  .rfy-item { padding: 9px 10px !important; font-size: 12px !important; }
-
-  .case-thumb { width: 240px !important; }
-
-  .phone-card { width: 140px !important; }
-}
+/* (480px handled in the block above) */
 
 /* ═══════════════════════════════════════════
    LIGHT THEME OVERRIDES — Home.css
