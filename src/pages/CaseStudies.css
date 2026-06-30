@@ -257,6 +257,16 @@
   .cs-modal-close { margin: 8px 10px 0 0; width: 32px; height: 32px; font-size: 18px; }
 }
 
+/* ═══════════════════════════════════════════
+   LIGHT THEME OVERRIDES — CaseStudies.css
+═══════════════════════════════════════════ */
+[data-theme="light"] .cs-modal-close {
+  background: rgba(255,255,255,0.92);
+  border-color: var(--bd2);
+  color: var(--t1);
+}
+[data-theme="light"] .cs-modal-close:hover { background: var(--s2); }
+
 @media (max-width: 768px) {
   .cs-overview-stats .stats-inner { grid-template-columns: 1fr 1fr !important; }
   .cs-overview-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; padding: 24px 20px !important; }

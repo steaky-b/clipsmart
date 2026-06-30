@@ -847,3 +847,82 @@
 
   .phone-card { width: 140px !important; }
 }
+
+/* ═══════════════════════════════════════════
+   LIGHT THEME OVERRIDES — Home.css
+   Addresses the many hardcoded dark colors
+   inside .hw-widget and a few other spots.
+═══════════════════════════════════════════ */
+
+/* ── Hero campaign widget ── */
+[data-theme="light"] .hw-widget {
+  background: linear-gradient(135deg, #ffffff 0%, #f4faf5 100%);
+  border-color: var(--bd);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(24,163,74,0.12);
+}
+[data-theme="light"] .hw-widget::before { opacity: 0.5; }
+
+[data-theme="light"] .hw-campaign-name { color: var(--white); }
+[data-theme="light"] .hw-campaign-cat  { color: var(--t2); }
+
+[data-theme="light"] .hw-live-pill {
+  background: var(--g-glow);
+  border-color: var(--g-bdr);
+}
+[data-theme="light"] .hw-cpm-pill {
+  background: var(--g-glow);
+  border-color: var(--g-bdr);
+}
+
+[data-theme="light"] .hw-counter-row {
+  background: var(--s2);
+  border-color: var(--bd);
+}
+[data-theme="light"] .hw-views       { color: var(--g); }
+[data-theme="light"] .hw-views-label { color: var(--t2); }
+[data-theme="light"] .hw-views-sub   { color: var(--g); }
+
+[data-theme="light"] .hw-spark-bar                        { background: var(--bd); }
+[data-theme="light"] .hw-spark-bar:last-child,
+[data-theme="light"] .hw-spark-bar:nth-last-child(-n+5)   { background: var(--g); }
+
+[data-theme="light"] .hw-platform-name { color: var(--t2); }
+[data-theme="light"] .hw-bar-track     { background: var(--bd); }
+[data-theme="light"] .hw-bar-fill      { background: linear-gradient(90deg, var(--g-dark), var(--g)); }
+[data-theme="light"] .hw-platform-pct  { color: var(--g); }
+
+[data-theme="light"] .hw-stat-pill {
+  background: var(--s2);
+  border-color: var(--bd);
+}
+[data-theme="light"] .hw-stat-pill--green {
+  background: var(--g-glow);
+  border-color: var(--g-bdr);
+}
+[data-theme="light"] .hw-stat-pill-v                       { color: var(--white); }
+[data-theme="light"] .hw-stat-pill--green .hw-stat-pill-v  { color: var(--g); }
+[data-theme="light"] .hw-stat-pill-l                       { color: var(--t2); }
+
+[data-theme="light"] .hw-feed-label { color: var(--t3); }
+[data-theme="light"] .hw-feed-row {
+  background: var(--s2);
+  border-color: var(--bd);
+}
+[data-theme="light"] .hw-feed-avatar { background: linear-gradient(135deg, var(--g-dark), var(--g)); color: #ffffff; }
+[data-theme="light"] .hw-feed-handle  { color: var(--t2); }
+[data-theme="light"] .hw-feed-bar-wrap { background: var(--bd); }
+[data-theme="light"] .hw-feed-bar     { background: var(--g); }
+[data-theme="light"] .hw-feed-views   { color: var(--g); }
+
+/* ── Reviews stars keep gold in both modes ── */
+/* (no change needed — gold works on light bg) */
+
+/* ── Why-us row hover — barely-there on dark; use a green tint on light ── */
+[data-theme="light"] .why-row:hover           { background: rgba(24,163,74,0.04); }
+[data-theme="light"] .why-row-us              { background: rgba(24,163,74,0.05); }
+
+/* ── FAQ open icon background ── */
+[data-theme="light"] .faq-item.open .faq-icon { background: var(--g); color: #ffffff; }
+
+/* ── Phone / video overlays (on media — keep dark for readability) ── */
+/* no changes needed — rgba(0,0,0,x) overlays work on both themes */

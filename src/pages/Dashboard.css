@@ -431,3 +431,10 @@
   .db-campaign-body { padding: 16px; }
   .db-stat-v { font-size: 22px; }
 }
+
+/* ═══════════════════════════════════════════
+   LIGHT THEME OVERRIDES — Dashboard.css
+═══════════════════════════════════════════ */
+/* Apply / sign-in buttons — white text on darker green */
+[data-theme="light"] .db-apply-btn:hover      { color: #ffffff; }
+[data-theme="light"] .db-signin-prompt:hover  { color: #ffffff; }

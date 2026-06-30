@@ -566,3 +566,82 @@ body::before {
   /* Ticker */
   .ticker-item { font-size: 12px !important; padding: 0 14px !important; }
 }
+
+/* ═══════════════════════════════════════════
+   LIGHT THEME  (data-theme="light")
+   ——— CSS vars are redefined here; most
+       components adapt automatically. Only
+       hardcoded colours need explicit fixes.
+═══════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg:     #F1F5F1;
+  --s1:     #FFFFFF;
+  --s2:     #F4F7F4;
+  --s3:     #ECF0EC;
+  --bd:     #DBE4DC;
+  --bd2:    #C8D5CA;
+  --white:  #111111;
+  --t1:     #2A2A2A;
+  --t2:     #606060;
+  --t3:     #9A9A9A;
+  /* Slightly darker green for better contrast on white */
+  --g:      #18A34A;
+  --g-dark: #0F6B30;
+  --g-glow: rgba(24,163,74,0.08);
+  --g-bdr:  rgba(24,163,74,0.22);
+}
+
+/* Body background tint */
+[data-theme="light"] body {
+  background:
+    radial-gradient(circle at 95% -10%, rgba(24,163,74,.04) 0%, transparent 45%),
+    radial-gradient(circle at -15% 105%, rgba(24,163,74,.05) 0%, transparent 50%),
+    var(--bg);
+}
+/* Dial back the grain texture — barely visible on light bg */
+[data-theme="light"] body::before { opacity: 0.012; }
+
+/* ── Nav ── */
+[data-theme="light"] .nav {
+  background: rgba(241,245,241,0.94);
+  border-bottom-color: var(--bd);
+}
+[data-theme="light"] .nav-logo-img { border-color: var(--bd2); }
+[data-theme="light"] .mob-drawer {
+  background: rgba(241,245,241,0.98);
+  border-bottom-color: var(--bd);
+}
+
+/* ── Buttons — text colour must flip to white on darker green ── */
+[data-theme="light"] .nav-cta               { color: #ffffff; }
+[data-theme="light"] .nav-cta:hover         { background: var(--g-dark); color: #ffffff; }
+[data-theme="light"] .btn-primary           { color: #ffffff; }
+[data-theme="light"] .btn-primary:hover     { background: var(--g-dark); color: #ffffff; }
+[data-theme="light"] .mob-book              { color: #ffffff !important; }
+[data-theme="light"] .mob-book:hover        { background: var(--g-dark) !important; color: #ffffff !important; }
+
+/* ── How-it-works step number — white text on green circle ── */
+[data-theme="light"] .how-step:hover .step-num { color: #ffffff; }
+
+/* ── FAQ open icon on green background ── */
+[data-theme="light"] .faq-item.open .faq-icon { color: #ffffff; }
+
+/* ── Theme toggle pill (shared style) ── */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  color: var(--t2);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.theme-toggle:hover { border-color: var(--g-bdr); color: var(--t1); background: var(--s3); }
+.theme-toggle svg   { flex-shrink: 0; }
