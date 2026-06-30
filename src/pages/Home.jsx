@@ -468,12 +468,17 @@ export default function Home() {
                   }
                 >
                   <div className="case-img-overlay" />
+                  <div className="case-img-cta">See full results</div>
                 </div>
                 <div className="case-meta">
                   <div className="case-cat">{c.cat}</div>
                   <div className="case-name">{c.name}</div>
                   <div className="case-views">{c.views}</div>
                   <div className="case-spend">{c.subs}</div>
+                  <div className="case-footer">
+                    <span className="case-footer-label">Full breakdown inside</span>
+                    <span className="case-footer-arrow">View results →</span>
+                  </div>
                 </div>
               </Link>
             ))}
