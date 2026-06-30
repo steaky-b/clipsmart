@@ -71,76 +71,61 @@ function StatBlock({ prefix, target, decimals, suffix, l, s }) {
 /* ══════════════════════════════════════════════
    HERO CAMPAIGN WIDGET (right-side infographic)
 ══════════════════════════════════════════════ */
-const WIDGET_CAMPAIGNS = [
-  {
-    name: 'NHC Murda',
-    category: 'Music',
-    startViews: 12847293,
-    posts: 1456,
-    creators: 318,
-    cpm: '$0.81',
-    platforms: [{ name: 'TikTok', pct: 72 }, { name: 'Instagram', pct: 20 }, { name: 'YouTube', pct: 8 }],
-    tickers: [
-      { handle: '@artist.clips', views: '92.1K' },
-      { handle: '@musicvault', views: '48.2K' },
-      { handle: '@viralbeats', views: '67.4K' },
-    ],
-    color: '#2ECC71',
-  },
-  {
-    name: 'Based Bodyworks',
-    category: 'Health & Wellness',
-    startViews: 2100000,
-    posts: 203,
-    creators: 97,
-    cpm: '$0.94',
-    platforms: [{ name: 'TikTok', pct: 61 }, { name: 'Instagram', pct: 32 }, { name: 'YouTube', pct: 7 }],
-    tickers: [
-      { handle: '@liftedwithleo', views: '198K' },
-      { handle: '@hypertrophy.hub', views: '142K' },
-    ],
-    color: '#2ECC71',
-  },
-]
+const CAMPAIGN = {
+  name: 'NHC Murda',
+  category: 'Music',
+  startViews: 12847293,
+  posts: 1456,
+  creators: 318,
+  cpm: '$0.81',
+  platforms: [{ name: 'TikTok', pct: 72 }, { name: 'Instagram', pct: 20 }, { name: 'YouTube', pct: 8 }],
+}
 
-/* ── sparkline bar heights for the mini chart ── */
-const SPARKLINE = [18, 26, 22, 34, 29, 42, 38, 55, 48, 62, 58, 72, 68, 84, 78, 100, 94, 88, 96, 100]
+/* 7-day view growth data (Mon → Today) */
+const CHART_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Today']
+const CHART_BASE = [820000, 1400000, 2100000, 3800000, 6200000, 9800000, 12847293]
 
 function HeroCampaignWidget() {
-  const campaign = WIDGET_CAMPAIGNS[0]
-  const [views, setViews] = useState(campaign.startViews)
-  const [posts, setPosts] = useState(campaign.posts)
-  const [tickerIdx, setTickerIdx] = useState(0)
-  const [tickerVisible, setTickerVisible] = useState(true)
+  const [views, setViews] = useState(CAMPAIGN.startViews)
+  const [hourRate, setHourRate] = useState(4200)
+  const [chartData, setChartData] = useState(CHART_BASE)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     const id = setInterval(() => {
-      setViews(v => v + Math.floor(Math.random() * 380 + 90))
-      if (Math.random() > 0.96) setPosts(p => p + 1)
+      const delta = Math.floor(Math.random() * 380 + 90)
+      setViews(v => v + delta)
+      setHourRate(r => Math.max(3000, Math.min(6500, r + Math.floor((Math.random() - 0.5) * 400))))
+      setChartData(d => { const n = [...d]; n[n.length - 1] += delta; return n })
     }, 1000)
     return () => clearInterval(id)
   }, [])
 
-  useEffect(() => {
-    const id = setInterval(() => {
-      setTickerVisible(false)
-      setTimeout(() => {
-        setTickerIdx(i => (i + 1) % campaign.tickers.length)
-        setTickerVisible(true)
-      }, 280)
-    }, 3000)
-    return () => clearInterval(id)
-  }, [campaign.tickers.length])
-
   const fmt = (n) => {
-    if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M'
-    if (n >= 1000) return (n / 1000).toFixed(1) + 'K'
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'M'
+    if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K'
     return n.toLocaleString()
   }
+  const fmtRate = (r) => r >= 1000 ? (r / 1000).toFixed(1) + 'K' : String(r)
 
-  const ticker = campaign.tickers[tickerIdx]
+  /* ── SVG area chart ── */
+  const W = 300, H = 86, padL = 4, padR = 4, padT = 10, padB = 2
+  const maxV = Math.max(...chartData)
+  const pts = chartData.map((v, i) => ({
+    x: padL + (i / (chartData.length - 1)) * (W - padL - padR),
+    y: padT + (1 - v / maxV) * (H - padT - padB),
+  }))
+
+  const linePath = pts.reduce((acc, pt, i) => {
+    if (i === 0) return `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`
+    const prev = pts[i - 1]
+    const cpx = ((prev.x + pt.x) / 2).toFixed(1)
+    return `${acc} C ${cpx} ${prev.y.toFixed(1)}, ${cpx} ${pt.y.toFixed(1)}, ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`
+  }, '')
+
+  const last = pts[pts.length - 1]
+  const areaPath = `${linePath} L ${last.x.toFixed(1)} ${H} L ${pts[0].x.toFixed(1)} ${H} Z`
 
   return (
     <div className={'hw-widget' + (mounted ? ' hw-widget--in' : '')}>
@@ -148,39 +133,57 @@ function HeroCampaignWidget() {
       {/* ── HEADER ── */}
       <div className="hw-header">
         <div className="hw-header-left">
-          <div className="hw-live-pill">
-            <span className="hw-live-dot" />
-            Live
-          </div>
-          <div className="hw-campaign-name">{campaign.name}</div>
-          <div className="hw-campaign-cat">{campaign.category}</div>
+          <div className="hw-live-pill"><span className="hw-live-dot" />Live</div>
+          <div className="hw-campaign-name">{CAMPAIGN.name}</div>
+          <div className="hw-campaign-cat">{CAMPAIGN.category}</div>
         </div>
-        <div className="hw-header-right">
-          <div className="hw-cpm-pill">{campaign.cpm} CPM</div>
-        </div>
+        <div className="hw-cpm-pill">{CAMPAIGN.cpm} CPM</div>
       </div>
 
-      {/* ── VIEW COUNTER + SPARKLINE ── */}
+      {/* ── VIEW COUNTER ── */}
       <div className="hw-counter-row">
         <div className="hw-counter-left">
           <div className="hw-views">{fmt(views)}</div>
-          <div className="hw-views-label">Organic views generated</div>
-          <div className="hw-views-sub">↑ +{fmt(Math.floor(Math.random() * 1200 + 800))} in the last hour</div>
+          <div className="hw-views-label">Organic views this campaign</div>
         </div>
-        <div className="hw-sparkline">
-          {SPARKLINE.map((h, i) => (
-            <div
-              key={i}
-              className="hw-spark-bar"
-              style={{ height: `${h}%`, animationDelay: `${i * 40}ms` }}
-            />
+        <div className="hw-rate-badge">↑ +{fmtRate(hourRate)}/hr</div>
+      </div>
+
+      {/* ── SVG AREA CHART ── */}
+      <div className="hw-chart-wrap">
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          className={'hw-chart-svg' + (mounted ? ' hw-chart-svg--in' : '')}
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="hw-area-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--g)" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="var(--g)" stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+          {/* Area fill */}
+          <path d={areaPath} fill="url(#hw-area-grad)" />
+          {/* Line */}
+          <path d={linePath} fill="none" stroke="var(--g)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+          {/* Historical dots */}
+          {pts.slice(0, -1).map((pt, i) => (
+            <circle key={i} cx={pt.x} cy={pt.y} r="2.5" fill="var(--s1)" stroke="var(--g)" strokeWidth="1.5" />
           ))}
+          {/* Live dot glow */}
+          <circle cx={last.x} cy={last.y} r="8" fill="var(--g)" className="hw-dot-glow" />
+          {/* Live dot */}
+          <circle cx={last.x} cy={last.y} r="4" fill="var(--g)" />
+        </svg>
+        <div className="hw-chart-labels">
+          {CHART_DAYS.map(d => <span key={d} className="hw-chart-label">{d}</span>)}
         </div>
       </div>
 
       {/* ── PLATFORM BARS ── */}
       <div className="hw-platforms">
-        {campaign.platforms.map(({ name, pct }) => (
+        {CAMPAIGN.platforms.map(({ name, pct }) => (
           <div key={name} className="hw-platform-row">
             <span className="hw-platform-name">{name}</span>
             <div className="hw-bar-track">
@@ -194,30 +197,17 @@ function HeroCampaignWidget() {
       {/* ── STAT PILLS ── */}
       <div className="hw-stat-pills">
         <div className="hw-stat-pill">
-          <div className="hw-stat-pill-v">{posts.toLocaleString()}</div>
+          <div className="hw-stat-pill-v">{CAMPAIGN.posts.toLocaleString()}</div>
           <div className="hw-stat-pill-l">Posts</div>
         </div>
         <div className="hw-stat-pill">
-          <div className="hw-stat-pill-v">{campaign.creators}</div>
+          <div className="hw-stat-pill-v">{CAMPAIGN.creators}</div>
           <div className="hw-stat-pill-l">Creators</div>
         </div>
         <div className="hw-stat-pill hw-stat-pill--green">
-          <div className="hw-stat-pill-v">{campaign.cpm}</div>
+          <div className="hw-stat-pill-v">{CAMPAIGN.cpm}</div>
           <div className="hw-stat-pill-l">eff. CPM</div>
         </div>
-      </div>
-
-      {/* ── CREATOR FEED (rotating) ── */}
-      <div className="hw-feed-label">Top performing post right now</div>
-      <div className={'hw-feed-row' + (tickerVisible ? '' : ' hw-feed-row--out')}>
-        <div className="hw-feed-avatar">{ticker.handle[1].toUpperCase()}</div>
-        <div className="hw-feed-info">
-          <div className="hw-feed-handle">{ticker.handle}</div>
-          <div className="hw-feed-bar-wrap">
-            <div className="hw-feed-bar" style={{ width: `${(parseFloat(ticker.views) / 100) * 0.7 + 30}%` }} />
-          </div>
-        </div>
-        <div className="hw-feed-views">{ticker.views}</div>
       </div>
     </div>
   )
