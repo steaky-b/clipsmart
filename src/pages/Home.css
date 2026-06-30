@@ -193,14 +193,7 @@
 .hw-ticker-handle { font-size: 12px; font-weight: 700; color: var(--t1); white-space: nowrap; }
 .hw-ticker-views { font-size: 11.5px; color: var(--g); font-weight: 600; white-space: nowrap; margin-left: auto; }
 
-/* ═══════════════ HERO VIDEO (standalone section) ═══════════════ */
-.hero-video-section {
-  padding: 0 var(--pad) 80px;
-  position: relative; z-index: 1;
-}
-.hero-video-inner {
-  max-width: var(--max); margin: 0 auto;
-}
+/* video-frame used by HowItWorks page */
 .video-frame {
   overflow: hidden; border-radius: 20px; background: #000;
   aspect-ratio: 16/9; position: relative;
@@ -552,7 +545,6 @@
   .hero-sub { max-width: 560px; font-size: 16px; }
   .hw-widget { max-width: 420px; }
 
-  .hero-video-section { padding: 0 var(--pad) 56px; }
   .platform-reach-inner { grid-template-columns: 1fr; gap: 36px; padding: 56px var(--pad); }
   .platform-reach-cards { justify-content: center; }
   .platform-reach-card { min-width: 120px; }
@@ -582,7 +574,6 @@
   .hero-actions { gap: 10px !important; }
   .hero-hint { font-size: 11px !important; }
   .hero-proof { font-size: 11px !important; padding: 6px 12px !important; margin-bottom: 16px !important; }
-  .hero-video-section { padding: 0 var(--pad) 40px; }
 
   .logo-bar { padding: 14px var(--pad) !important; }
   .logo-bar-inner { gap: 10px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }

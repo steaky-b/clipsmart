@@ -170,3 +170,38 @@
   .hiw-hub-stats { gap: 6px !important; margin-bottom: 8px !important; }
   .hiw-hub-cta { font-size: 13px; }
 }
+
+/* ═══════════════ VIDEO SECTION ═══════════════ */
+.hiw-video-section {
+  width: 100%; max-width: 860px;
+  margin: 40px auto 0;
+  text-align: center;
+  padding: 0 0 64px;
+}
+.hiw-video-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--g); margin-bottom: 10px;
+}
+.hiw-video-eyebrow::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--g);
+}
+.hiw-video-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(22px, 3vw, 36px); font-weight: 800;
+  letter-spacing: -.5px; margin-bottom: 24px;
+}
+.hiw-video-h em { font-style: normal; color: var(--g); }
+.hiw-video-frame {
+  overflow: hidden; border-radius: 16px; background: #000;
+  aspect-ratio: 16/9; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px var(--bd);
+}
+.hiw-video-frame video {
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .hiw-video-section { margin-top: 24px; padding-bottom: 40px; }
+  .hiw-video-h { font-size: clamp(18px, 5vw, 26px) !important; }
+}

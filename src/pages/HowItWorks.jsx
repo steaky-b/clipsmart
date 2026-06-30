@@ -3,7 +3,7 @@ import './HowItWorks.css'
 
 export default function HowItWorks() {
   return (
-    <div className="hiw-viewport">
+    <div className="hiw-viewport hiw-viewport--scroll">
       <div className="hiw-title-block">
         <div className="section-eyebrow hiw-eyebrow">How It Works</div>
         <h1 className="hiw-h1">Awareness<br /><em>leads to sales.</em></h1>
@@ -106,6 +106,17 @@ export default function HowItWorks() {
           </div>
           <div className="hiw-hub-cta">Explore this service →</div>
         </Link>
+      </div>
+
+      {/* Overview video */}
+      <div className="hiw-video-section">
+        <div className="hiw-video-eyebrow">See It In Action</div>
+        <h2 className="hiw-video-h">Watch how a campaign <em>actually works.</em></h2>
+        <div className="hiw-video-frame">
+          <video controls muted loop playsInline preload="metadata">
+            <source src="/clipsmart-video-updated.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </div>
   )

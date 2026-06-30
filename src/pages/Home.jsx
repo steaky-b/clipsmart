@@ -323,7 +323,7 @@ const STATS = [
   { prefix: '', target: 2.3, decimals: 1, suffix: 'B+', l: 'Total views generated', s: 'Across all campaigns' },
   { prefix: '', target: 80, decimals: 0, suffix: 'K+', l: 'Active creators', s: 'In our network' },
   { prefix: '', target: 1, decimals: 1, suffix: 'M+', l: 'Guaranteed views', s: 'Per $1,000 — guaranteed' },
-  { prefix: '$', target: 0, decimals: 0, suffix: '', l: 'Upfront creator fees', s: 'Pay only for performance' },
+  { prefix: '', target: 1024, decimals: 0, suffix: '+', l: 'Campaigns run', s: 'And counting' },
 ]
 
 const CASES = [
@@ -434,18 +434,6 @@ export default function Home() {
           {/* Right: live campaign infographic */}
           <div className="hero-right fade-up">
             <HeroCampaignWidget />
-          </div>
-        </div>
-      </div>
-
-      {/* ── HERO VIDEO (full-width below hero) ── */}
-      <div className="hero-video-section">
-        <div className="hero-video-inner">
-          <div className="video-frame">
-            <video controls autoPlay muted loop playsInline preload="auto">
-              <source src="/clipsmart-video-updated.mp4" type="video/mp4" />
-            </video>
-            <div className="video-glow" />
           </div>
         </div>
       </div>
