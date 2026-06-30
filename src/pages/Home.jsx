@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  ACTIVE_CAMPAIGNS,
+  computeSnapshot,
+  formatViews,
+} from '../data/activeCampaigns'
 import './Home.css'
 
 /* ══════════════════════════════════════════════
@@ -210,6 +215,75 @@ function HeroCampaignWidget() {
         </div>
       </div>
     </div>
+  )
+}
+
+/* ══════════════════════════════════════════════
+   ACTIVE CAMPAIGN CARD (homepage)
+══════════════════════════════════════════════ */
+function HomeActiveCampaignCard({ campaign }) {
+  const [snap, setSnap] = useState(() => computeSnapshot(campaign))
+
+  useEffect(() => {
+    const id = setInterval(() => setSnap(computeSnapshot(campaign)), 1500)
+    return () => clearInterval(id)
+  }, [campaign])
+
+  const pct = Math.min(100, Math.round((snap.views / campaign.viewsGuaranteed) * 100))
+  const platforms = Object.entries(campaign.platformSplit)
+
+  return (
+    <Link to="/active-campaigns" className="hac-card">
+      {/* Image / gradient header */}
+      <div
+        className="hac-img"
+        style={campaign.img
+          ? { backgroundImage: `url(${campaign.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
+          : { background: campaign.gradient }}
+      >
+        <div className="hac-img-overlay" />
+        <div className="hac-live-pill"><span className="hac-live-dot" />LIVE</div>
+        <div className="hac-cat-badge">{campaign.catLabel}</div>
+      </div>
+
+      {/* Body */}
+      <div className="hac-body">
+        <div className="hac-name">{campaign.name}</div>
+        <div className="hac-subtitle">{campaign.subtitle}</div>
+
+        {/* Live view counter */}
+        <div className="hac-views-row">
+          <div className="hac-views">{formatViews(snap.views)}</div>
+          <div className="hac-views-label">organic views</div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="hac-progress-wrap">
+          <div className="hac-progress-track">
+            <div className="hac-progress-fill" style={{ width: `${pct}%` }} />
+          </div>
+          <div className="hac-progress-labels">
+            <span className="hac-progress-pct">{pct}% of {formatViews(campaign.viewsGuaranteed)} guaranteed</span>
+            <span className="hac-progress-posts">{snap.posts.toLocaleString()} posts</span>
+          </div>
+        </div>
+
+        {/* Platform split */}
+        <div className="hac-platforms">
+          {platforms.map(([name, pctP]) => (
+            <div key={name} className="hac-platform">
+              <span className="hac-platform-name">{name}</span>
+              <div className="hac-platform-track">
+                <div className="hac-platform-fill" style={{ width: `${pctP}%` }} />
+              </div>
+              <span className="hac-platform-pct">{pctP}%</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="hac-cta">View live campaign →</div>
+      </div>
+    </Link>
   )
 }
 
@@ -447,42 +521,41 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── CASE STUDIES CAROUSEL — moved up so campaigns are immediately visible ── */}
-      <div className="cases-section">
-        <div className="cases-header">
-          <div className="cases-header-left">
-            <div className="section-eyebrow fade-up">Real Results</div>
-            <h2 className="section-h2 fade-up">Campaigns that <em>speak<br />for themselves.</em></h2>
-          </div>
-          <Link to="/case-studies" className="view-all fade-up">View all past campaigns →</Link>
+      {/* ── PERKS STRIP ── */}
+      <div className="perks-strip">
+        <div className="perks-inner">
+          {[
+            'Pay-per-view pricing',
+            'No lock-in contracts',
+            'Real results, guaranteed',
+            '1M+ views per $1,000',
+            'Campaign live in 48hrs',
+            '100% organic reach',
+          ].map(label => (
+            <div key={label} className="perk-item">
+              <svg className="perk-icon" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M6 10.5l2.5 2.5L14 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {label}
+            </div>
+          ))}
         </div>
-        <div className="cases-track-wrap">
-          <div className="cases-track">
-            {[...CASES, ...CASES].map((c, i) => (
-              <Link key={i} to="/case-studies" state={{ modalId: c.id }} className="case-thumb">
-                <div
-                  className="case-img"
-                  style={c.img
-                    ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
-                    : { background: c.gradient }
-                  }
-                >
-                  <div className="case-img-overlay" />
-                  <div className="case-img-cta">See full results</div>
-                </div>
-                <div className="case-meta">
-                  <div className="case-cat">{c.cat}</div>
-                  <div className="case-name">{c.name}</div>
-                  <div className="case-views">{c.views}</div>
-                  <div className="case-spend">{c.subs}</div>
-                  <div className="case-footer">
-                    <span className="case-footer-label">Full breakdown inside</span>
-                    <span className="case-footer-arrow">View results →</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+      </div>
+
+      {/* ── ACTIVE CAMPAIGNS ── */}
+      <div className="hac-section">
+        <div className="hac-header">
+          <div className="hac-header-left">
+            <div className="section-eyebrow fade-up">Active Campaigns</div>
+            <h2 className="section-h2 fade-up">Campaigns running <em>right now.</em></h2>
           </div>
+          <Link to="/active-campaigns" className="view-all fade-up">View full dashboard →</Link>
+        </div>
+        <div className="hac-grid">
+          {ACTIVE_CAMPAIGNS.map(c => (
+            <HomeActiveCampaignCard key={c.slug} campaign={c} />
+          ))}
         </div>
       </div>
 
