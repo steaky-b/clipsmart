@@ -103,20 +103,24 @@ const WIDGET_CAMPAIGNS = [
   },
 ]
 
+/* ── sparkline bar heights for the mini chart ── */
+const SPARKLINE = [18, 26, 22, 34, 29, 42, 38, 55, 48, 62, 58, 72, 68, 84, 78, 100, 94, 88, 96, 100]
+
 function HeroCampaignWidget() {
-  const [campaign] = useState(WIDGET_CAMPAIGNS[0])
+  const campaign = WIDGET_CAMPAIGNS[0]
   const [views, setViews] = useState(campaign.startViews)
   const [posts, setPosts] = useState(campaign.posts)
-  const [creators, setCreators] = useState(campaign.creators)
   const [tickerIdx, setTickerIdx] = useState(0)
   const [tickerVisible, setTickerVisible] = useState(true)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const viewId = setInterval(() => {
-      setViews(v => v + Math.floor(Math.random() * 350 + 80))
+    setMounted(true)
+    const id = setInterval(() => {
+      setViews(v => v + Math.floor(Math.random() * 380 + 90))
       if (Math.random() > 0.96) setPosts(p => p + 1)
-    }, 1100)
-    return () => clearInterval(viewId)
+    }, 1000)
+    return () => clearInterval(id)
   }, [])
 
   useEffect(() => {
@@ -125,12 +129,12 @@ function HeroCampaignWidget() {
       setTimeout(() => {
         setTickerIdx(i => (i + 1) % campaign.tickers.length)
         setTickerVisible(true)
-      }, 300)
-    }, 3200)
+      }, 280)
+    }, 3000)
     return () => clearInterval(id)
   }, [campaign.tickers.length])
 
-  const fmtViews = (n) => {
+  const fmt = (n) => {
     if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M'
     if (n >= 1000) return (n / 1000).toFixed(1) + 'K'
     return n.toLocaleString()
@@ -139,67 +143,82 @@ function HeroCampaignWidget() {
   const ticker = campaign.tickers[tickerIdx]
 
   return (
-    <div className="hw-widget">
-      {/* Glow behind widget */}
-      <div className="hw-widget-glow" />
+    <div className={'hw-widget' + (mounted ? ' hw-widget--in' : '')}>
 
-      {/* Header */}
-      <div className="hw-widget-header">
-        <div className="hw-live-badge">
-          <span className="hw-live-dot" />
-          Live Campaign
+      {/* ── HEADER ── */}
+      <div className="hw-header">
+        <div className="hw-header-left">
+          <div className="hw-live-pill">
+            <span className="hw-live-dot" />
+            Live
+          </div>
+          <div className="hw-campaign-name">{campaign.name}</div>
+          <div className="hw-campaign-cat">{campaign.category}</div>
         </div>
-        <div className="hw-campaign-tag">{campaign.name} · {campaign.category}</div>
+        <div className="hw-header-right">
+          <div className="hw-cpm-pill">{campaign.cpm} CPM</div>
+        </div>
       </div>
 
-      {/* Big view counter */}
-      <div className="hw-views-group">
-        <div className="hw-views">{fmtViews(views)}</div>
-        <div className="hw-views-label">Total Organic Views</div>
+      {/* ── VIEW COUNTER + SPARKLINE ── */}
+      <div className="hw-counter-row">
+        <div className="hw-counter-left">
+          <div className="hw-views">{fmt(views)}</div>
+          <div className="hw-views-label">Organic views generated</div>
+          <div className="hw-views-sub">↑ +{fmt(Math.floor(Math.random() * 1200 + 800))} in the last hour</div>
+        </div>
+        <div className="hw-sparkline">
+          {SPARKLINE.map((h, i) => (
+            <div
+              key={i}
+              className="hw-spark-bar"
+              style={{ height: `${h}%`, animationDelay: `${i * 40}ms` }}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Platform split */}
+      {/* ── PLATFORM BARS ── */}
       <div className="hw-platforms">
         {campaign.platforms.map(({ name, pct }) => (
           <div key={name} className="hw-platform-row">
             <span className="hw-platform-name">{name}</span>
             <div className="hw-bar-track">
-              <div className="hw-bar-fill" style={{ width: `${pct}%` }} />
+              <div className="hw-bar-fill" style={{ width: mounted ? `${pct}%` : '0%' }} />
             </div>
             <span className="hw-platform-pct">{pct}%</span>
           </div>
         ))}
       </div>
 
-      {/* Stats row */}
-      <div className="hw-stats-row">
-        <div className="hw-stat">
-          <div className="hw-stat-v">{posts.toLocaleString()}</div>
-          <div className="hw-stat-l">Posts</div>
+      {/* ── STAT PILLS ── */}
+      <div className="hw-stat-pills">
+        <div className="hw-stat-pill">
+          <div className="hw-stat-pill-v">{posts.toLocaleString()}</div>
+          <div className="hw-stat-pill-l">Posts</div>
         </div>
-        <div className="hw-stat-sep" />
-        <div className="hw-stat">
-          <div className="hw-stat-v">{creators}</div>
-          <div className="hw-stat-l">Creators</div>
+        <div className="hw-stat-pill">
+          <div className="hw-stat-pill-v">{campaign.creators}</div>
+          <div className="hw-stat-pill-l">Creators</div>
         </div>
-        <div className="hw-stat-sep" />
-        <div className="hw-stat">
-          <div className="hw-stat-v">{campaign.cpm}</div>
-          <div className="hw-stat-l">eff. CPM</div>
+        <div className="hw-stat-pill hw-stat-pill--green">
+          <div className="hw-stat-pill-v">{campaign.cpm}</div>
+          <div className="hw-stat-pill-l">eff. CPM</div>
         </div>
       </div>
 
-      {/* Ticker — rotating top post */}
-      <div className={'hw-ticker' + (tickerVisible ? '' : ' hw-ticker--out')}>
-        <div className="hw-ticker-dot" />
-        <div className="hw-ticker-content">
-          <span className="hw-ticker-handle">{ticker.handle}</span>
-          <span className="hw-ticker-views">{ticker.views} views</span>
+      {/* ── CREATOR FEED (rotating) ── */}
+      <div className="hw-feed-label">Top performing post right now</div>
+      <div className={'hw-feed-row' + (tickerVisible ? '' : ' hw-feed-row--out')}>
+        <div className="hw-feed-avatar">{ticker.handle[1].toUpperCase()}</div>
+        <div className="hw-feed-info">
+          <div className="hw-feed-handle">{ticker.handle}</div>
+          <div className="hw-feed-bar-wrap">
+            <div className="hw-feed-bar" style={{ width: `${(parseFloat(ticker.views) / 100) * 0.7 + 30}%` }} />
+          </div>
         </div>
+        <div className="hw-feed-views">{ticker.views}</div>
       </div>
-
-      {/* Second "ghost" card for depth */}
-      <div className="hw-widget-bg-card" aria-hidden="true" />
     </div>
   )
 }
