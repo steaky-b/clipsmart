@@ -27,10 +27,12 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html {
   scroll-behavior: smooth;
-  /* Prevent Chrome mobile from widening the viewport beyond the device width,
-     which would stop the hamburger media-query from firing */
-  overflow-x: hidden;
-  max-width: 100%;
+  /* overflow: clip is stronger than hidden — it clips without creating a scroll
+     container, ensuring Chrome mobile never zooms out to fit overflowing content.
+     Combined with minimum-scale=1.0 in the viewport meta, this keeps the layout
+     viewport pinned to the device width so mobile media queries fire correctly. */
+  overflow-x: clip;
+  width: 100%;
 }
 body {
   background:
@@ -41,8 +43,8 @@ body {
   color: var(--white);
   font-family: 'Instrument Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  max-width: 100%;
+  overflow-x: clip;
+  width: 100%;
   /* Support iPhone notch / home indicator */
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
@@ -148,24 +150,25 @@ body::before {
   display: none;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 5px;
-  width: 38px; height: 38px;
-  border: 1px solid rgba(255,255,255,0.18);
+  width: 42px; height: 42px;
+  border: 1.5px solid rgba(255,255,255,0.4);
   border-radius: 9px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.14);
   cursor: pointer;
-  padding: 9px;
+  padding: 10px;
   flex-shrink: 0;
 }
 .mob-menu-btn span {
   display: block;
-  width: 100%;
-  height: 1.5px;
+  width: 20px;
+  height: 2px;
   background: #ffffff;
   border-radius: 2px;
   transition: all .25s;
 }
-.mob-menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mob-menu-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .mob-menu-btn.open span:nth-child(2) { opacity: 0; }
 .mob-menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
@@ -309,7 +312,7 @@ body::before {
 /* ═══════════════════════════════
    STATS ROW
 ═══════════════════════════════ */
-.stats-section { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; }
+.stats-section { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; overflow: hidden; }
 .stats-inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
 .stat-block { padding: 40px 36px; border-right: 1px solid var(--bd); position: relative; }
 .stat-block:last-child { border-right: none; }
