@@ -27,11 +27,10 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html {
   scroll-behavior: smooth;
-  /* overflow: clip is stronger than hidden — it clips without creating a scroll
-     container, ensuring Chrome mobile never zooms out to fit overflowing content.
-     Combined with minimum-scale=1.0 in the viewport meta, this keeps the layout
-     viewport pinned to the device width so mobile media queries fire correctly. */
-  overflow-x: clip;
+  /* Clip horizontal overflow so no element can push the page wider than the
+     device, which would prevent the 900px hamburger media query from firing.
+     minimum-scale=1.0 in the viewport meta stops Chrome from zooming out. */
+  overflow-x: hidden;
   width: 100%;
 }
 body {
@@ -43,7 +42,7 @@ body {
   color: var(--white);
   font-family: 'Instrument Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
+  overflow-x: hidden;
   width: 100%;
   /* Support iPhone notch / home indicator */
   padding-left: env(safe-area-inset-left);
@@ -450,12 +449,23 @@ body::before {
 
 /* ═══════════════════════════════
    RESPONSIVE — 900px (show hamburger)
+   Also handled by Nav.jsx JS fallback via [data-mob="true"]
 ═══════════════════════════════ */
 @media (max-width: 900px) {
   :root { --pad: 24px; }
   .nav { padding: 0 20px; }
   .nav-links, .nav-cta { display: none !important; }
   .mob-menu-btn { display: flex !important; }
+}
+
+/* JS fallback: when visualViewport.width ≤ 900 the Nav sets data-mob="true".
+   This fires independently of CSS media queries, so it works even when Chrome
+   mobile has zoomed the layout viewport wider than the physical screen. */
+.nav[data-mob="true"] .nav-links,
+.nav[data-mob="true"] .nav-cta { display: none !important; }
+.nav[data-mob="true"] .mob-menu-btn { display: flex !important; }
+
+@media (max-width: 900px) {
 
   /* Footer: 2-col */
   .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }

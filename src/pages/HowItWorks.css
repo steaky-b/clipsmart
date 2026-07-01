@@ -18,6 +18,7 @@
 .hiw-title-block {
   text-align: center;
   flex-shrink: 0;
+  padding: 20px 0 28px;
 }
 .hiw-eyebrow {
   justify-content: center;

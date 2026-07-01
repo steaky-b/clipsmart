@@ -10,17 +10,46 @@ const LINKS = [
   { to: '/work-with-us', label: 'Work With Us' },
 ]
 
+const MOBILE_BREAKPOINT = 900
+
+function getViewportWidth() {
+  // visualViewport.width returns the PHYSICAL screen width in CSS px, independent
+  // of any browser zoom level. Falls back to innerWidth for older browsers.
+  if (typeof window === 'undefined') return MOBILE_BREAKPOINT + 1
+  return (window.visualViewport ? window.visualViewport.width : window.innerWidth)
+}
+
 export default function Nav() {
   const [open, setOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => getViewportWidth() <= MOBILE_BREAKPOINT)
   const { pathname } = useLocation()
 
   useEffect(() => {
     setOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    const update = () => setIsMobile(getViewportWidth() <= MOBILE_BREAKPOINT)
+    // Listen to both visual-viewport resize (mobile pinch-zoom) and window resize
+    const vv = window.visualViewport
+    if (vv) vv.addEventListener('resize', update)
+    window.addEventListener('resize', update)
+    return () => {
+      if (vv) vv.removeEventListener('resize', update)
+      window.removeEventListener('resize', update)
+    }
+  }, [])
+
+  // Close drawer when switching to desktop
+  useEffect(() => {
+    if (!isMobile) setOpen(false)
+  }, [isMobile])
+
   return (
     <>
-      <nav className="nav">
+      {/* data-mob attribute is the JS fallback: it forces the CSS media-query
+          behaviour even if the browser zoom level has widened the layout viewport */}
+      <nav className="nav" data-mob={isMobile ? 'true' : undefined}>
         <Link to="/" className="nav-logo">
           <img src="/logo.png" alt="ClipSmart" className="nav-logo-img" />
           ClipSmart

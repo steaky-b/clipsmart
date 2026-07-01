@@ -4,9 +4,28 @@
 .db-root {
   display: flex;
   min-height: 100dvh;
+  font-family: inherit;
+
+  /* Force dark theme regardless of the site-wide light/dark toggle.
+     Defining CSS vars here overrides any [data-theme="light"] values
+     inherited from html, because .db-root is a descendant that shadows them. */
+  --bg:    #060C07;
+  --s1:    #0B120E;
+  --s2:    #101812;
+  --s3:    #161D17;
+  --bd:    #161D17;
+  --bd2:   #1F2822;
+  --white: #FFFFFF;
+  --t1:    #DEDEDE;
+  --t2:    #888888;
+  --t3:    #444444;
+  --g:     #2ECC71;
+  --g-dark: #1B7A43;
+  --g-glow: rgba(46,204,113,0.10);
+  --g-bdr:  rgba(46,204,113,0.26);
+
   background: var(--bg);
   color: var(--t1);
-  font-family: inherit;
 }
 
 /* ═══════════════════════════════════════════════════════

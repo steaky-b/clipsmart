@@ -312,8 +312,8 @@ function UsersView() {
 /* ══════════════════════════════════════════════
    MAIN DASHBOARD
 ══════════════════════════════════════════════ */
+/* Leaderboard + Users in main nav; Campaigns sits directly above Start a Campaign */
 const NAV_ITEMS = [
-  { id: 'campaigns', label: 'Active Campaigns', Icon: IconCampaigns },
   { id: 'leaderboard', label: 'Leaderboard', Icon: IconLeaderboard },
   { id: 'users', label: 'Users', Icon: IconUsers },
 ]
@@ -325,6 +325,11 @@ export default function Dashboard() {
   const [applySuccess, setApplySuccess] = useState(null)
   const { user, profile, signOut } = useAuth()
   const navigate = useNavigate()
+
+  // Ensure the page always starts at the top when navigating here
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [])
 
   function openSupport() {
     if (typeof window !== 'undefined' && window.Tawk_API) {
@@ -376,7 +381,7 @@ export default function Dashboard() {
 
           <div className="db-divider" />
 
-          {/* Main nav */}
+          {/* Main nav — Leaderboard + Users */}
           <nav className="db-nav">
             {NAV_ITEMS.map(({ id, label, Icon }) => (
               <button
@@ -392,7 +397,15 @@ export default function Dashboard() {
 
           <div className="db-divider" />
 
-          {/* Start a campaign */}
+          {/* Campaigns sits directly above Start a Campaign */}
+          <button
+            className={'db-nav-item' + (activeView === 'campaigns' ? ' active' : '')}
+            onClick={() => setActiveView('campaigns')}
+          >
+            <IconCampaigns />
+            Campaigns
+          </button>
+
           <a
             href="https://calendly.com/esaanwar/partner-with-clipsmart"
             target="_blank"
