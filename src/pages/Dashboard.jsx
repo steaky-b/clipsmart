@@ -1,208 +1,405 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from '../components/AuthModal'
-import { supabase, isSupabaseReady } from '../lib/supabase'
 import {
   ACTIVE_CAMPAIGNS,
   computeSnapshot,
   formatViews,
-  formatFull,
   formatMoney,
 } from '../data/activeCampaigns'
 import './Dashboard.css'
 
-/* ── Demo data (shown instantly when Supabase is not configured) ── */
-const DEMO_LEADERBOARD = [
-  { id: '1', username: 'creator_james',   display_name: 'James K.',      total_views: 2100000, total_posts: 203 },
-  { id: '2', username: 'rhythmrose',      display_name: 'Rose T.',        total_views: 1450000, total_posts: 178 },
-  { id: '3', username: 'thecliplab',      display_name: 'The Clip Lab',   total_views: 980000,  total_posts: 142 },
-  { id: '4', username: 'creatorbyluke',   display_name: 'Luke M.',        total_views: 756000,  total_posts: 116 },
-  { id: '5', username: 'vivoclips',       display_name: 'Vivo Clips',     total_views: 620000,  total_posts: 98  },
-  { id: '6', username: 'nxtviral',        display_name: 'NxtViral',       total_views: 490000,  total_posts: 74  },
-  { id: '7', username: 'shortformjay',    display_name: 'Jay S.',         total_views: 310000,  total_posts: 52  },
-  { id: '8', username: 'clip_central',    display_name: 'Clip Central',   total_views: 195000,  total_posts: 33  },
+/* ─────────────────────────────────────────────
+   DEMO DATA
+───────────────────────────────────────────── */
+const DEMO_JOINED = [
+  {
+    campaignSlug:   'murdadale',
+    joinedDate:     'Jun 22, 2026',
+    status:         'Active',
+    postsSubmitted: 3,
+    acceptedPosts:  3,
+    earnings:       48.50,
+  },
+  {
+    campaignSlug:   'based-bodyworks',
+    joinedDate:     'Jun 25, 2026',
+    status:         'Active',
+    postsSubmitted: 1,
+    acceptedPosts:  1,
+    earnings:       12.40,
+  },
 ]
 
-const DEMO_USERS = [
-  { id: '1', username: 'creator_james',   display_name: 'James K.',      total_views: 2100000, total_posts: 203, tiktok_handle: 'creator_james' },
-  { id: '2', username: 'rhythmrose',      display_name: 'Rose T.',        total_views: 1450000, total_posts: 178, instagram_handle: 'rhythmrose' },
-  { id: '3', username: 'thecliplab',      display_name: 'The Clip Lab',   total_views: 980000,  total_posts: 142, tiktok_handle: 'thecliplab' },
-  { id: '4', username: 'creatorbyluke',   display_name: 'Luke M.',        total_views: 756000,  total_posts: 116 },
-  { id: '5', username: 'vivoclips',       display_name: 'Vivo Clips',     total_views: 620000,  total_posts: 98,  tiktok_handle: 'vivoclips' },
-  { id: '6', username: 'nxtviral',        display_name: 'NxtViral',       total_views: 490000,  total_posts: 74,  instagram_handle: 'nxtviral' },
-  { id: '7', username: 'shortformjay',    display_name: 'Jay S.',         total_views: 310000,  total_posts: 52 },
-  { id: '8', username: 'clip_central',    display_name: 'Clip Central',   total_views: 195000,  total_posts: 33,  tiktok_handle: 'clip_central' },
+const DEMO_WALLET = {
+  available:       142.30,
+  totalEarned:     218.50,
+  pendingEarnings:  76.20,
+  transactions: [
+    { id: 1, campaign: 'NHC Murda',         date: 'Jun 28', views: 48500, amount: 48.50, status: 'paid'    },
+    { id: 2, campaign: 'Based Bodyworks',    date: 'Jun 27', views: 12400, amount: 12.40, status: 'paid'    },
+    { id: 3, campaign: 'NHC Murda',         date: 'Jun 26', views: 34200, amount: 34.20, status: 'pending' },
+    { id: 4, campaign: 'Growing Up Italian', date: 'Jun 25', views: 78600, amount: 78.60, status: 'paid'    },
+    { id: 5, campaign: 'Based Bodyworks',    date: 'Jun 24', views: 45000, amount: 45.00, status: 'pending' },
+  ],
+}
+
+const DEMO_SUBMISSIONS = [
+  { id: 1, campaign: 'NHC Murda',         platform: 'TikTok',    date: 'Jun 28', status: 'accepted', views: 48500 },
+  { id: 2, campaign: 'NHC Murda',         platform: 'TikTok',    date: 'Jun 27', status: 'accepted', views: 34200 },
+  { id: 3, campaign: 'Based Bodyworks',    platform: 'Instagram', date: 'Jun 26', status: 'accepted', views: 12400 },
+  { id: 4, campaign: 'NHC Murda',         platform: 'TikTok',    date: 'Jun 25', status: 'denied',   views: 0     },
+  { id: 5, campaign: 'Growing Up Italian', platform: 'TikTok',    date: 'Jun 24', status: 'accepted', views: 78600 },
+  { id: 6, campaign: 'Based Bodyworks',    platform: 'TikTok',    date: 'Jun 22', status: 'pending',  views: 0     },
 ]
 
-/* ── Icons ── */
-function IconCampaigns() {
+/* ─────────────────────────────────────────────
+   ICON FACTORY  (stroke icons via Ic; filled via individual fns)
+───────────────────────────────────────────── */
+function Ic({ c, size = 16, ...props }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-    </svg>
+    <svg
+      width={size} height={size} viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round"
+      aria-hidden="true" {...props}
+    >{c}</svg>
   )
 }
-function IconLeaderboard() {
+
+const IcHome    = (p) => <Ic {...p} c={<><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>} />
+const IcJoined  = (p) => <Ic {...p} c={<><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></>} />
+const IcWallet  = (p) => <Ic {...p} c={<><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></>} />
+const IcClips   = (p) => <Ic {...p} c={<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></>} />
+const IcZap     = (p) => <Ic {...p} c={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>} />
+const IcSupport = (p) => <Ic {...p} c={<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>} />
+const IcUpload  = (p) => <Ic {...p} c={<><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></>} />
+const IcSearch  = (p) => <Ic {...p} c={<><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></>} />
+const IcChevron = (p) => <Ic {...p} c={<polyline points="6 9 12 15 18 9"/>} />
+const IcClose   = (p) => <Ic {...p} c={<><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>} />
+const IcSignout = (p) => <Ic {...p} c={<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></>} />
+
+function IcDiscord({ size = 16, ...p }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 20V10M12 20V4M6 20v-6"/>
-    </svg>
-  )
-}
-function IconUsers() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-    </svg>
-  )
-}
-function IconStart() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="5 3 19 12 5 21 5 3"/>
-    </svg>
-  )
-}
-function IconSupport() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
-  )
-}
-function IconDiscord() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
       <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
     </svg>
   )
 }
-function IconInstagram() {
+function IcInstagram({ size = 16, ...p }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...p}>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
     </svg>
   )
 }
-function IconBack() {
+function IcTikTok({ size = 16, ...p }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.31 6.31 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.67a8.18 8.18 0 0 0 4.79 1.53V6.75a4.85 4.85 0 0 1-1.02-.06z"/>
+    </svg>
+  )
+}
+function IcYouTube({ size = 16, ...p }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    </svg>
+  )
+}
+function IcXSocial({ size = 16, ...p }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
     </svg>
   )
 }
 
-/* ══════════════════════════════════════════════
-   CAMPAIGNS VIEW
-══════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────
+   SHARED COMPONENTS
+───────────────────────────────────────────── */
+
+function PlatformIcons({ platformSplit, size = 13 }) {
+  const platforms = Object.entries(platformSplit || {})
+    .filter(([, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+  return (
+    <div className="db-platform-icons">
+      {platforms.map(([name]) => {
+        const ic = { key: name, size }
+        if (name === 'TikTok')    return <IcTikTok    {...ic} />
+        if (name === 'Instagram') return <IcInstagram {...ic} />
+        if (name === 'YouTube')   return <IcYouTube   {...ic} />
+        if (name === 'X')         return <IcXSocial   {...ic} />
+        return null
+      })}
+    </div>
+  )
+}
+
+const CAT_COLORS = {
+  music:    { color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', border: 'rgba(167,139,250,0.3)' },
+  health:   { color: '#34d399', bg: 'rgba(52,211,153,0.12)',  border: 'rgba(52,211,153,0.3)'  },
+  podcast:  { color: '#f59e0b', bg: 'rgba(245,158,11,0.12)',  border: 'rgba(245,158,11,0.3)'  },
+  ugc:      { color: '#38bdf8', bg: 'rgba(56,189,248,0.12)',  border: 'rgba(56,189,248,0.3)'  },
+  clipping: { color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)'  },
+  gaming:   { color: '#f472b6', bg: 'rgba(244,114,182,0.12)', border: 'rgba(244,114,182,0.3)' },
+}
+function CatBadge({ cat, label }) {
+  const s = CAT_COLORS[cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
+  return (
+    <span className="db-cat-badge" style={{ color: s.color, background: s.bg, borderColor: s.border }}>
+      {label}
+    </span>
+  )
+}
+
+function SignInPrompt({ onSignIn, message }) {
+  return (
+    <div className="db-signin-card">
+      <div className="db-signin-card-icon">🔒</div>
+      <h3 className="db-signin-card-h">Sign in to continue</h3>
+      <p className="db-signin-card-p">{message}</p>
+      <button className="db-signin-card-btn" onClick={onSignIn}>Sign in / Create account</button>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════
+   EXPLORE CAMPAIGNS VIEW
+═══════════════════════════════════════════════════════ */
+const PLATFORM_TABS = [
+  { id: 'all',       label: 'All platforms' },
+  { id: 'Instagram', Icon: IcInstagram      },
+  { id: 'TikTok',    Icon: IcTikTok         },
+  { id: 'YouTube',   Icon: IcYouTube        },
+  { id: 'X',         Icon: IcXSocial        },
+]
+
+const SORT_OPTIONS = [
+  { id: 'cpm',    label: 'Highest CPM'    },
+  { id: 'views',  label: 'Most Views'     },
+  { id: 'budget', label: 'Largest Budget' },
+]
+
 function CampaignsView({ onApply }) {
   const [snapshots, setSnapshots] = useState(() =>
     ACTIVE_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
   )
+  const [search,       setSearch]       = useState('')
+  const [platform,     setPlatform]     = useState('all')
+  const [sort,         setSort]         = useState('cpm')
+  const [showSortMenu, setShowSortMenu] = useState(false)
 
   useEffect(() => {
     const id = setInterval(() => {
-      setSnapshots(
-        ACTIVE_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
-      )
+      setSnapshots(ACTIVE_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) })))
     }, 3000)
     return () => clearInterval(id)
   }, [])
 
+  let filtered = snapshots.filter(({ campaign: c }) => {
+    const q = search.trim().toLowerCase()
+    if (q && !c.name.toLowerCase().includes(q) && !c.catLabel.toLowerCase().includes(q)) return false
+    if (platform !== 'all' && !(c.platformSplit || {})[platform]) return false
+    return true
+  })
+  if (sort === 'cpm')    filtered = [...filtered].sort((a, b) => b.campaign.clientRpm - a.campaign.clientRpm)
+  if (sort === 'views')  filtered = [...filtered].sort((a, b) => b.snap.views - a.snap.views)
+  if (sort === 'budget') filtered = [...filtered].sort((a, b) => b.campaign.budgetTotal - a.campaign.budgetTotal)
+
   return (
-    <div className="db-view">
-      <div className="db-view-header">
-        <div className="db-view-eyebrow">
-          <span className="db-live-dot" />
-          Live Now
+    <div className="db-view db-explore">
+      {/* Top bar */}
+      <div className="db-explore-topbar">
+        <h1 className="db-explore-h">Explore Campaigns</h1>
+        <div className="db-explore-controls">
+          <label className="db-search-wrap">
+            <IcSearch size={14} className="db-search-icon" />
+            <input
+              className="db-search"
+              placeholder="Search for a campaign..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </label>
+          <div className="db-sort-wrap">
+            <button className="db-filter-pill" onClick={() => setShowSortMenu(!showSortMenu)}>
+              Sort by: <strong>{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
+              <IcChevron size={12} />
+            </button>
+            {showSortMenu && (
+              <div className="db-sort-menu">
+                {SORT_OPTIONS.map((o) => (
+                  <button
+                    key={o.id}
+                    className={'db-sort-item' + (sort === o.id ? ' active' : '')}
+                    onClick={() => { setSort(o.id); setShowSortMenu(false) }}
+                  >
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <h1 className="db-view-h">Active Campaigns</h1>
-        <p className="db-view-sub">Creators are posting. Views are rolling in. These campaigns are live right now.</p>
       </div>
 
-      <div className="db-campaign-grid">
-        {snapshots.map(({ campaign: c, snap }) => (
-          <div key={c.slug} className="db-campaign-card">
-            <div
-              className="db-campaign-visual"
-              style={c.img
-                ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
-                : { background: c.gradient }
-              }
-            >
-              {c.img && <div className="db-campaign-overlay" />}
-              <div className="db-live-badge"><span className="db-live-dot-sm" />LIVE</div>
-              <div className="db-campaign-cat">{c.catLabel}</div>
-              <div className="db-campaign-name">{c.name}</div>
-            </div>
-            <div className="db-campaign-body">
-              <p className="db-campaign-summary">{c.summary}</p>
-              <div className="db-campaign-stats">
-                <div className="db-stat">
-                  <div className="db-stat-v">{formatViews(snap.views)}+</div>
-                  <div className="db-stat-l">Views</div>
-                </div>
-                <div className="db-stat">
-                  <div className="db-stat-v">{formatFull(snap.posts)}+</div>
-                  <div className="db-stat-l">Posts</div>
-                </div>
-                <div className="db-stat">
-                  <div className="db-stat-v">{formatMoney(c.budgetTotal)}</div>
-                  <div className="db-stat-l">Budget</div>
-                </div>
+      {/* Platform filter tabs */}
+      <div className="db-platform-tabs">
+        {PLATFORM_TABS.map(({ id, label, Icon }) => (
+          <button
+            key={id}
+            className={'db-platform-tab' + (platform === id ? ' active' : '')}
+            onClick={() => setPlatform(id)}
+          >
+            {Icon ? <Icon size={15} /> : label}
+          </button>
+        ))}
+      </div>
+
+      <p className="db-showing-count">
+        Showing {filtered.length} active campaign{filtered.length !== 1 ? 's' : ''}
+      </p>
+
+      {/* Hero banner */}
+      <div className="db-hero-banner">
+        <div className="db-hero-left">
+          <h2 className="db-hero-h">
+            Pick a campaign,<br />post clips, <em>get paid.</em>
+          </h2>
+          <p className="db-hero-p">
+            Join active ClipSmart campaigns, submit approved content, and earn based on
+            performance with transparent budgets and rates.
+          </p>
+          <div className="db-hero-chips">
+            <div className="db-hero-chip">
+              <span className="db-hero-chip-ic">⚡</span>
+              <div>
+                <div className="db-hero-chip-t">Fast Payouts</div>
+                <div className="db-hero-chip-s">Tracked earnings</div>
               </div>
-              <button
-                className="db-apply-btn"
-                onClick={() => onApply(c)}
-              >
-                Apply to this campaign →
-              </button>
+            </div>
+            <div className="db-hero-chip">
+              <span className="db-hero-chip-ic">📊</span>
+              <div>
+                <div className="db-hero-chip-t">Live Budgets</div>
+                <div className="db-hero-chip-s">Real campaign stats</div>
+              </div>
+            </div>
+            <div className="db-hero-chip">
+              <span className="db-hero-chip-ic">🎬</span>
+              <div>
+                <div className="db-hero-chip-t">Submit Clips</div>
+                <div className="db-hero-chip-s">Easy approvals</div>
+              </div>
             </div>
           </div>
-        ))}
+        </div>
+        <div className="db-hero-right" aria-hidden="true">
+          <div className="db-hero-icon-wrap">
+            <div className="db-hero-icon-glow" />
+            <div className="db-hero-icon">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                <rect width="60" height="60" rx="16" fill="url(#dbHeroGrad)" />
+                <path d="M30 18v24M18 30h24" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" />
+                <defs>
+                  <linearGradient id="dbHeroGrad" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#2ECC71" />
+                    <stop offset="1" stopColor="#1a8a48" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Campaigns grid */}
+      <div className="db-campaigns-section">
+        <div className="db-campaigns-sh">
+          <span className="db-campaigns-sh-title">Active Campaigns</span>
+          <span className="db-campaigns-sh-count">
+            <span className="db-live-dot-sm" />{filtered.length} Active
+          </span>
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className="db-empty">
+            <div className="db-empty-icon">🔍</div>
+            <h3>No campaigns match</h3>
+            <p>Try adjusting your search or platform filter.</p>
+          </div>
+        ) : (
+          <div className="db-compact-grid">
+            {filtered.map(({ campaign: c, snap }) => {
+              const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
+              return (
+                <div key={c.slug} className="db-compact-card">
+                  <div className="db-compact-top">
+                    <div className="db-compact-icon">
+                      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                        <rect width="30" height="30" rx="9" fill="rgba(46,204,113,0.16)" />
+                        <path d="M15 8v14M8 15h14" stroke="#2ECC71" strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
+                    </div>
+                    <div className="db-compact-meta">
+                      <div className="db-compact-name">{c.name}</div>
+                      <PlatformIcons platformSplit={c.platformSplit} size={12} />
+                    </div>
+                  </div>
+
+                  <CatBadge cat={c.cat} label={c.catLabel} />
+
+                  <div className="db-compact-stats">
+                    <div className="db-compact-stat">
+                      <div className="db-compact-stat-l">Active</div>
+                      <div className="db-compact-stat-v">
+                        {activePct}%<span className="db-compact-stat-budget"> / {formatMoney(c.budgetTotal)}</span>
+                      </div>
+                    </div>
+                    <div className="db-compact-stat db-compact-stat--r">
+                      <div className="db-compact-stat-l">Rate</div>
+                      <div className="db-compact-stat-v db-compact-stat-rate">
+                        ${c.clientRpm.toFixed(2)}<span className="db-compact-stat-per">/1K</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="db-progress">
+                    <div className="db-progress-bar" style={{ width: `${activePct}%` }} />
+                  </div>
+
+                  <button className="db-apply-btn" onClick={() => onApply(c)}>
+                    Apply to campaign →
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )
 }
 
-/* ══════════════════════════════════════════════
-   LEADERBOARD VIEW
-══════════════════════════════════════════════ */
-function LeaderboardView() {
-  // Seed with demo data immediately — replaced with real data if Supabase is configured
-  const [creators, setCreators] = useState(DEMO_LEADERBOARD)
-  const [isDemo, setIsDemo] = useState(true)
-
-  useEffect(() => {
-    if (!isSupabaseReady) return
-    supabase
-      .from('profiles')
-      .select('*')
-      .order('total_views', { ascending: false })
-      .limit(50)
-      .then(({ data, error }) => {
-        if (!error && data && data.length > 0) {
-          setCreators(data)
-          setIsDemo(false)
-        }
-      })
-  }, [])
-
-  if (creators.length === 0) {
+/* ═══════════════════════════════════════════════════════
+   JOINED CAMPAIGNS VIEW
+═══════════════════════════════════════════════════════ */
+function JoinedCampaignsView({ user, onSignIn }) {
+  if (!user) {
     return (
       <div className="db-view">
         <div className="db-view-header">
-          <div className="db-view-eyebrow">Leaderboard</div>
-          <h1 className="db-view-h">Top Creators</h1>
-          <p className="db-view-sub">The leaderboard fills automatically as creators sign up and post.</p>
+          <div className="db-view-eyebrow"><IcJoined size={13} /> Joined Campaigns</div>
+          <h1 className="db-view-h">Your Campaigns</h1>
+          <p className="db-view-sub">Campaigns you have been accepted to work with.</p>
         </div>
-        <div className="db-empty">
-          <div className="db-empty-icon">🏆</div>
-          <h3>No creators yet</h3>
-          <p>Once creators start applying to campaigns, their stats will appear here ranked by total views generated.</p>
-        </div>
+        <SignInPrompt onSignIn={onSignIn} message="Sign in to see the campaigns you have been accepted to and track your progress." />
       </div>
     )
   }
@@ -210,228 +407,412 @@ function LeaderboardView() {
   return (
     <div className="db-view">
       <div className="db-view-header">
-        <div className="db-view-eyebrow">Leaderboard</div>
-        <h1 className="db-view-h">Top Creators</h1>
-        <p className="db-view-sub">Ranked by total views generated across all campaigns.</p>
+        <div className="db-view-eyebrow"><IcJoined size={13} /> Joined Campaigns</div>
+        <h1 className="db-view-h">Your Campaigns</h1>
+        <p className="db-view-sub">
+          {DEMO_JOINED.length} active campaign{DEMO_JOINED.length !== 1 ? 's' : ''} you have been accepted to. Keep posting to earn.
+        </p>
       </div>
-      <div className="db-leaderboard">
-        <div className="db-lb-head">
-          <span>Rank</span>
-          <span>Creator</span>
-          <span>Views</span>
-          <span>Posts</span>
-        </div>
-        {creators.map((c, i) => (
-          <div key={c.id} className={'db-lb-row' + (i < 3 ? ' db-lb-row--top' : '')}>
-            <span className={'db-lb-rank' + (i === 0 ? ' gold' : i === 1 ? ' silver' : i === 2 ? ' bronze' : '')}>
-              {i + 1}
-            </span>
-            <span className="db-lb-creator">
-              <div className="db-lb-avatar">{(c.display_name || c.username || '?')[0].toUpperCase()}</div>
-              <div>
-                <div className="db-lb-name">{c.display_name || c.username}</div>
-                <div className="db-lb-handle">@{c.username}</div>
+      <div className="db-joined-grid">
+        {DEMO_JOINED.map((j) => {
+          const c = ACTIVE_CAMPAIGNS.find((x) => x.slug === j.campaignSlug)
+          if (!c) return null
+          const snap = computeSnapshot(c, Date.now())
+          const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
+          return (
+            <div key={j.campaignSlug} className="db-joined-card">
+              <div
+                className="db-joined-visual"
+                style={c.img
+                  ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+                  : { background: c.gradient }
+                }
+              >
+                {c.img && <div className="db-joined-overlay" />}
+                <div className="db-joined-visual-name">{c.name}</div>
               </div>
-            </span>
-            <span className="db-lb-views">{formatViews(c.total_views || 0)}</span>
-            <span className="db-lb-posts">{c.total_posts || 0}</span>
-          </div>
-        ))}
+              <div className="db-joined-body">
+                <div className="db-joined-row">
+                  <CatBadge cat={c.cat} label={c.catLabel} />
+                  <span className="db-badge db-badge--active">● {j.status}</span>
+                </div>
+                <PlatformIcons platformSplit={c.platformSplit} size={14} />
+                <div className="db-joined-stats">
+                  <div className="db-joined-stat">
+                    <div className="db-joined-stat-v">{j.postsSubmitted}</div>
+                    <div className="db-joined-stat-l">Posts</div>
+                  </div>
+                  <div className="db-joined-stat">
+                    <div className="db-joined-stat-v">{j.acceptedPosts}</div>
+                    <div className="db-joined-stat-l">Accepted</div>
+                  </div>
+                  <div className="db-joined-stat">
+                    <div className="db-joined-stat-v db-green">${j.earnings.toFixed(2)}</div>
+                    <div className="db-joined-stat-l">Earned</div>
+                  </div>
+                  <div className="db-joined-stat">
+                    <div className="db-joined-stat-v">${c.clientRpm.toFixed(2)}</div>
+                    <div className="db-joined-stat-l">Rate/1K</div>
+                  </div>
+                </div>
+                <div className="db-progress" style={{ marginTop: 6 }}>
+                  <div className="db-progress-bar" style={{ width: `${activePct}%` }} />
+                </div>
+                <p className="db-joined-meta">Joined {j.joinedDate}</p>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
 }
 
-/* ══════════════════════════════════════════════
-   USERS VIEW
-══════════════════════════════════════════════ */
-function UsersView() {
-  // Seed with demo data immediately — replaced with real data if Supabase is configured
-  const [creators, setCreators] = useState(DEMO_USERS)
-  const [isDemo, setIsDemo] = useState(true)
-
-  useEffect(() => {
-    if (!isSupabaseReady) return
-    supabase
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .then(({ data, error }) => {
-        if (!error && data && data.length > 0) {
-          setCreators(data)
-          setIsDemo(false)
-        }
-      })
-  }, [])
+/* ═══════════════════════════════════════════════════════
+   WALLET VIEW
+═══════════════════════════════════════════════════════ */
+function WalletView({ user, onSignIn, onWithdraw }) {
+  if (!user) {
+    return (
+      <div className="db-view">
+        <div className="db-view-header">
+          <div className="db-view-eyebrow"><IcWallet size={13} /> Wallet</div>
+          <h1 className="db-view-h">Your Wallet</h1>
+          <p className="db-view-sub">View your earnings, balance, and request withdrawals.</p>
+        </div>
+        <SignInPrompt onSignIn={onSignIn} message="Sign in to view your wallet and earnings from ClipSmart campaigns." />
+      </div>
+    )
+  }
 
   return (
     <div className="db-view">
       <div className="db-view-header">
-        <div className="db-view-eyebrow">Creator Network</div>
-        <h1 className="db-view-h">All Creators</h1>
-        <p className="db-view-sub">{creators.length > 0 ? `${creators.length} creators in the network.` : 'The creator directory fills as people sign up.'}</p>
+        <div className="db-view-eyebrow"><IcWallet size={13} /> Wallet</div>
+        <h1 className="db-view-h">Your Wallet</h1>
+        <p className="db-view-sub">Track your earnings and withdraw your available balance.</p>
       </div>
 
-      {creators.length === 0 ? (
-        <div className="db-empty">
-          <div className="db-empty-icon">👥</div>
-          <h3>No creators yet</h3>
-          <p>Once creators sign up and apply to campaigns, their profiles will appear here.</p>
+      <div className="db-stat-cards">
+        <div className="db-stat-card db-stat-card--primary">
+          <div className="db-stat-card-label">Available to Withdraw</div>
+          <div className="db-stat-card-value">${DEMO_WALLET.available.toFixed(2)}</div>
+          <div className="db-stat-card-sub">Ready to cash out</div>
+          <button className="db-withdraw-btn" onClick={onWithdraw}>Withdraw Funds</button>
         </div>
-      ) : (
-        <div className="db-users-grid">
-          {creators.map((c) => (
-            <div key={c.id} className="db-user-card">
-              <div className="db-user-avatar">{(c.display_name || c.username || '?')[0].toUpperCase()}</div>
-              <div className="db-user-name">{c.display_name || c.username}</div>
-              <div className="db-user-handle">@{c.username}</div>
-              {(c.tiktok_handle || c.instagram_handle) && (
-                <div className="db-user-handles">
-                  {c.tiktok_handle && <span>TikTok: @{c.tiktok_handle}</span>}
-                  {c.instagram_handle && <span>IG: @{c.instagram_handle}</span>}
-                </div>
-              )}
-              <div className="db-user-stats">
-                <div>
-                  <div className="db-user-stat-v">{formatViews(c.total_views || 0)}</div>
-                  <div className="db-user-stat-l">Views</div>
-                </div>
-                <div>
-                  <div className="db-user-stat-v">{c.total_posts || 0}</div>
-                  <div className="db-user-stat-l">Posts</div>
-                </div>
-              </div>
+        <div className="db-stat-card">
+          <div className="db-stat-card-label">Total Earned</div>
+          <div className="db-stat-card-value">${DEMO_WALLET.totalEarned.toFixed(2)}</div>
+          <div className="db-stat-card-sub">All time earnings</div>
+        </div>
+        <div className="db-stat-card">
+          <div className="db-stat-card-label">Pending</div>
+          <div className="db-stat-card-value">${DEMO_WALLET.pendingEarnings.toFixed(2)}</div>
+          <div className="db-stat-card-sub">Processing now</div>
+        </div>
+      </div>
+
+      <div className="db-tx-section">
+        <h3 className="db-section-h3">Transaction History</h3>
+        <div className="db-tx-table-wrap">
+          <div className="db-tx-table">
+            <div className="db-tx-head">
+              <span>Date</span>
+              <span>Campaign</span>
+              <span>Views</span>
+              <span>Amount</span>
+              <span>Status</span>
             </div>
-          ))}
+            {DEMO_WALLET.transactions.map((t) => (
+              <div key={t.id} className="db-tx-row">
+                <span className="db-tx-date">{t.date}</span>
+                <span className="db-tx-campaign">{t.campaign}</span>
+                <span className="db-tx-views">{formatViews(t.views)}</span>
+                <span className="db-tx-amount">+${t.amount.toFixed(2)}</span>
+                <span>
+                  <span className={'db-badge db-badge--' + t.status}>
+                    {t.status === 'paid' ? 'Paid' : 'Pending'}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
 
-/* ══════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
+   MY SUBMISSIONS VIEW
+═══════════════════════════════════════════════════════ */
+function SubmissionsView({ user, onSignIn }) {
+  if (!user) {
+    return (
+      <div className="db-view">
+        <div className="db-view-header">
+          <div className="db-view-eyebrow"><IcClips size={13} /> My Submissions</div>
+          <h1 className="db-view-h">My Submissions</h1>
+          <p className="db-view-sub">Track all your submitted clips and their review status.</p>
+        </div>
+        <SignInPrompt onSignIn={onSignIn} message="Sign in to view your submitted clips and see which ones have been accepted." />
+      </div>
+    )
+  }
+
+  const counts = {
+    accepted: DEMO_SUBMISSIONS.filter((s) => s.status === 'accepted').length,
+    pending:  DEMO_SUBMISSIONS.filter((s) => s.status === 'pending').length,
+    denied:   DEMO_SUBMISSIONS.filter((s) => s.status === 'denied').length,
+  }
+
+  return (
+    <div className="db-view">
+      <div className="db-view-header">
+        <div className="db-view-eyebrow"><IcClips size={13} /> My Submissions</div>
+        <h1 className="db-view-h">My Submissions</h1>
+        <p className="db-view-sub">All {DEMO_SUBMISSIONS.length} clip submissions across campaigns.</p>
+      </div>
+
+      <div className="db-sub-summary">
+        <span className="db-badge db-badge--accepted">{counts.accepted} Accepted</span>
+        <span className="db-badge db-badge--pending">{counts.pending} Pending</span>
+        <span className="db-badge db-badge--denied">{counts.denied} Denied</span>
+      </div>
+
+      <div className="db-subs-table-wrap">
+        <div className="db-subs-table">
+          <div className="db-subs-head">
+            <span>Campaign</span>
+            <span>Platform</span>
+            <span>Date</span>
+            <span>Status</span>
+            <span>Views</span>
+          </div>
+          {DEMO_SUBMISSIONS.map((s) => (
+            <div key={s.id} className="db-subs-row">
+              <span className="db-subs-campaign">{s.campaign}</span>
+              <span className="db-subs-platform">{s.platform}</span>
+              <span className="db-subs-date">{s.date}</span>
+              <span>
+                <span className={'db-badge db-badge--' + s.status}>
+                  {s.status.charAt(0).toUpperCase() + s.status.slice(1)}
+                </span>
+              </span>
+              <span className={s.views > 0 ? 'db-subs-views' : 'db-subs-views-none'}>
+                {s.views > 0 ? formatViews(s.views) : '—'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════
+   SUBMIT CLIP MODAL
+═══════════════════════════════════════════════════════ */
+function SubmitClipModal({ onClose, onSuccess }) {
+  const [campaign, setCampaign] = useState(ACTIVE_CAMPAIGNS[0]?.slug || '')
+  const [platform, setPlatform] = useState('TikTok')
+  const [url,      setUrl]      = useState('')
+  const [note,     setNote]     = useState('')
+  const [loading,  setLoading]  = useState(false)
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (!url.trim()) return
+    setLoading(true)
+    setTimeout(() => { setLoading(false); onSuccess() }, 900)
+  }
+
+  return (
+    <div className="db-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="db-modal">
+        <div className="db-modal-hdr">
+          <h2 className="db-modal-title">Submit a Clip</h2>
+          <button className="db-modal-close" onClick={onClose}><IcClose size={18} /></button>
+        </div>
+        <form className="db-modal-form" onSubmit={handleSubmit}>
+          <div className="db-modal-field">
+            <label className="db-modal-lbl">Campaign</label>
+            <select className="db-modal-sel" value={campaign} onChange={(e) => setCampaign(e.target.value)}>
+              {ACTIVE_CAMPAIGNS.map((c) => (
+                <option key={c.slug} value={c.slug}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="db-modal-field">
+            <label className="db-modal-lbl">Platform</label>
+            <div className="db-modal-pltf-row">
+              {['TikTok', 'Instagram', 'YouTube'].map((p) => (
+                <button
+                  key={p} type="button"
+                  className={'db-modal-pltf-btn' + (platform === p ? ' active' : '')}
+                  onClick={() => setPlatform(p)}
+                >{p}</button>
+              ))}
+            </div>
+          </div>
+          <div className="db-modal-field">
+            <label className="db-modal-lbl">Video URL</label>
+            <input
+              className="db-modal-inp"
+              placeholder="https://tiktok.com/@yourhandle/video/..."
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              required
+            />
+          </div>
+          <div className="db-modal-field">
+            <label className="db-modal-lbl">Note <span className="db-modal-opt">(optional)</span></label>
+            <textarea
+              className="db-modal-txt"
+              placeholder="Any notes for the review team..."
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              rows={3}
+            />
+          </div>
+          <button className="db-modal-submit" type="submit" disabled={loading || !url.trim()}>
+            {loading ? 'Submitting...' : 'Submit Clip'}
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════
    MAIN DASHBOARD
-══════════════════════════════════════════════ */
-/* Leaderboard + Users in main nav; Campaigns sits directly above Start a Campaign */
-const NAV_ITEMS = [
-  { id: 'leaderboard', label: 'Leaderboard', Icon: IconLeaderboard },
-  { id: 'users', label: 'Users', Icon: IconUsers },
+═══════════════════════════════════════════════════════ */
+const MAIN_NAV = [
+  { id: 'home',        label: 'Home',            Icon: IcHome,   href: '/' },
+  { id: 'joined',      label: 'Joined Campaigns', Icon: IcJoined             },
+  { id: 'wallet',      label: 'Wallet',           Icon: IcWallet             },
+  { id: 'submissions', label: 'My Submissions',   Icon: IcClips              },
+]
+
+const SUPPORT_NAV = [
+  { id: 'campaigns', label: 'Active Campaigns', Icon: IcZap     },
+  { id: 'support',   label: 'Live Support',     Icon: IcSupport },
 ]
 
 export default function Dashboard() {
-  const [activeView, setActiveView] = useState('campaigns')
-  const [authModal, setAuthModal] = useState(null) // null | { intent, campaignSlug }
-  const [appliedSet, setAppliedSet] = useState(new Set())
-  const [applySuccess, setApplySuccess] = useState(null)
+  const [activeView,      setActiveView]      = useState('campaigns')
+  const [authModal,       setAuthModal]       = useState(null)
+  const [toast,           setToast]           = useState(null)
+  const [showSubmitModal, setShowSubmitModal] = useState(false)
   const { user, profile, signOut } = useAuth()
-  const navigate = useNavigate()
 
-  // Ensure the page always starts at the top when navigating here
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [])
 
-  function openSupport() {
-    if (typeof window !== 'undefined' && window.Tawk_API) {
-      window.Tawk_API.toggle()
-    }
+  function showToast(msg) {
+    setToast(msg)
+    setTimeout(() => setToast(null), 3500)
   }
 
-  const handleApply = useCallback(async (campaign) => {
-    if (!user) {
-      setAuthModal({ intent: `Apply to ${campaign.name}`, campaignSlug: campaign.slug })
-      return
-    }
-    // Already applied
-    if (appliedSet.has(campaign.slug)) return
+  function openSupport() {
+    if (typeof window !== 'undefined' && window.Tawk_API) window.Tawk_API.toggle()
+  }
 
-    const { error } = await supabase.from('applications').insert({
-      creator_id: user.id,
-      campaign_slug: campaign.slug,
-    })
+  function handleApply(campaign) {
+    if (!user) { setAuthModal({ intent: `Apply to ${campaign.name}` }); return }
+    showToast(`Applied to ${campaign.name}! Your application is under review.`)
+  }
 
-    if (!error) {
-      setAppliedSet((prev) => new Set([...prev, campaign.slug]))
-      setApplySuccess(`Applied to ${campaign.name}!`)
-      setTimeout(() => setApplySuccess(null), 3000)
-    }
-  }, [user, appliedSet])
+  function handleSubmitClip() {
+    if (!user) { setAuthModal({ intent: 'Submit a clip to a campaign' }); return }
+    setShowSubmitModal(true)
+  }
 
-  function onAuthSuccess() {
-    // After login/signup, re-attempt the apply
-    if (authModal?.campaignSlug) {
-      const c = ACTIVE_CAMPAIGNS.find((x) => x.slug === authModal.campaignSlug)
-      if (c) handleApply(c)
+  function handleWithdraw() {
+    showToast('Withdrawal request sent — funds arrive within 3–5 business days.')
+  }
+
+  function handleNavClick(id) {
+    if (id === 'support') { openSupport(); return }
+    setActiveView(id)
+  }
+
+  function renderView() {
+    switch (activeView) {
+      case 'campaigns':    return <CampaignsView onApply={handleApply} />
+      case 'joined':       return <JoinedCampaignsView user={user} onSignIn={() => setAuthModal({ intent: 'View joined campaigns' })} />
+      case 'wallet':       return <WalletView user={user} onSignIn={() => setAuthModal({ intent: 'View your wallet' })} onWithdraw={handleWithdraw} />
+      case 'submissions':  return <SubmissionsView user={user} onSignIn={() => setAuthModal({ intent: 'View your submissions' })} />
+      default:             return <CampaignsView onApply={handleApply} />
     }
   }
 
   return (
     <div className="db-root">
-      {/* ── SIDEBAR ── */}
+      {/* ──────── SIDEBAR ──────── */}
       <aside className="db-sidebar">
         <div className="db-sidebar-top">
-          {/* Logo + back */}
+          {/* Logo */}
           <Link to="/" className="db-logo">
             <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
-            ClipSmart
-          </Link>
-          <Link to="/" className="db-back-btn">
-            <IconBack /> Back to site
+            <span>ClipSmart</span>
           </Link>
 
-          <div className="db-divider" />
+          {/* User badge when signed in */}
+          {user && (
+            <div className="db-user-badge">
+              <div className="db-ub-av">
+                {(profile?.username || user.email || '?')[0].toUpperCase()}
+              </div>
+              <div className="db-ub-info">
+                <div className="db-ub-name">{profile?.username || 'Creator'}</div>
+                <div className="db-ub-email">{user.email}</div>
+              </div>
+              <button className="db-signout-btn" onClick={signOut} title="Sign out">
+                <IcSignout size={14} />
+              </button>
+            </div>
+          )}
 
-          {/* Main nav — Leaderboard + Users */}
+          {/* MAIN nav */}
+          <p className="db-section-lbl">MAIN</p>
           <nav className="db-nav">
-            {NAV_ITEMS.map(({ id, label, Icon }) => (
+            {MAIN_NAV.map(({ id, label, Icon, href }) =>
+              href ? (
+                <Link key={id} to={href} className="db-nav-item">
+                  <Icon size={16} />{label}
+                </Link>
+              ) : (
+                <button
+                  key={id}
+                  className={'db-nav-item' + (activeView === id ? ' active' : '')}
+                  onClick={() => handleNavClick(id)}
+                >
+                  <Icon size={16} />{label}
+                </button>
+              )
+            )}
+          </nav>
+
+          {/* SUPPORT nav */}
+          <p className="db-section-lbl">SUPPORT</p>
+          <nav className="db-nav">
+            {SUPPORT_NAV.map(({ id, label, Icon }) => (
               <button
                 key={id}
                 className={'db-nav-item' + (activeView === id ? ' active' : '')}
-                onClick={() => setActiveView(id)}
+                onClick={() => handleNavClick(id)}
               >
-                <Icon />
-                {label}
+                <Icon size={16} />{label}
               </button>
             ))}
           </nav>
-
-          <div className="db-divider" />
-
-          {/* Campaigns sits directly above Start a Campaign */}
-          <button
-            className={'db-nav-item' + (activeView === 'campaigns' ? ' active' : '')}
-            onClick={() => setActiveView('campaigns')}
-          >
-            <IconCampaigns />
-            Campaigns
-          </button>
-
-          <a
-            href="https://calendly.com/esaanwar/partner-with-clipsmart"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="db-nav-item db-nav-item--accent"
-          >
-            <IconStart />
-            Start a Campaign
-          </a>
         </div>
 
-        {/* ── SIDEBAR BOTTOM ── */}
-        <div className="db-sidebar-bottom">
-          {/* User badge */}
-          {user ? (
-            <div className="db-user-badge">
-              <div className="db-user-badge-avatar">
-                {(profile?.display_name || user.email || '?')[0].toUpperCase()}
-              </div>
-              <div className="db-user-badge-info">
-                <div className="db-user-badge-name">{profile?.display_name || profile?.username || 'Creator'}</div>
-                <div className="db-user-badge-email">{user.email}</div>
-              </div>
-              <button className="db-signout" onClick={signOut} title="Sign out">↪</button>
-            </div>
-          ) : (
+        {/* ──────── SIDEBAR FOOT ──────── */}
+        <div className="db-sidebar-foot">
+          {!user && (
             <button
               className="db-signin-prompt"
               onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}
@@ -439,50 +820,47 @@ export default function Dashboard() {
               Sign in / Sign up
             </button>
           )}
-
-          <div className="db-divider" />
-
-          {/* Live support */}
-          <button className="db-nav-item" onClick={openSupport}>
-            <IconSupport />
-            Live Support
-          </button>
-
-          {/* Social links */}
           <div className="db-social-row">
             <a href="https://discord.gg/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Discord">
-              <IconDiscord />
-              <span>Discord</span>
+              <IcDiscord size={15} /><span>Discord</span>
             </a>
             <a href="https://www.instagram.com/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Instagram">
-              <IconInstagram />
-              <span>Instagram</span>
+              <IcInstagram size={15} /><span>Instagram</span>
             </a>
           </div>
+          <button className="db-submit-clip-btn" onClick={handleSubmitClip}>
+            <IcUpload size={16} />Submit Clip
+          </button>
         </div>
       </aside>
 
-      {/* ── MAIN CONTENT ── */}
-      <main className="db-main">
-        {activeView === 'campaigns' && <CampaignsView onApply={handleApply} />}
-        {activeView === 'leaderboard' && <LeaderboardView />}
-        {activeView === 'users' && <UsersView />}
-      </main>
+      {/* ──────── MAIN CONTENT ──────── */}
+      <main className="db-main">{renderView()}</main>
 
-      {/* ── TOASTS ── */}
-      {applySuccess && (
+      {/* ──────── TOAST ──────── */}
+      {toast && (
         <div className="db-toast">
-          <span className="db-toast-dot" />
-          {applySuccess}
+          <span className="db-live-dot-sm" />{toast}
         </div>
       )}
 
-      {/* ── AUTH MODAL ── */}
+      {/* ──────── AUTH MODAL ──────── */}
       {authModal && (
         <AuthModal
           intent={authModal.intent}
           onClose={() => setAuthModal(null)}
-          onSuccess={onAuthSuccess}
+          onSuccess={() => setAuthModal(null)}
+        />
+      )}
+
+      {/* ──────── SUBMIT CLIP MODAL ──────── */}
+      {showSubmitModal && (
+        <SubmitClipModal
+          onClose={() => setShowSubmitModal(false)}
+          onSuccess={() => {
+            setShowSubmitModal(false)
+            showToast("Clip submitted! We'll review it within 24 hours.")
+          }}
         />
       )}
     </div>
