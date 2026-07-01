@@ -44,7 +44,7 @@ const DEMO_SUBMISSIONS = [
 const CAT_BANNER = {
   music:    'linear-gradient(135deg, #14084a 0%, #3d1899 100%)',
   health:   'linear-gradient(135deg, #041a0c 0%, #0b5230 100%)',
-  podcast:  'linear-gradient(135deg, #20120  3 0%, #5c370b 100%)',
+  podcast:  'linear-gradient(135deg, #201203 0%, #5c370b 100%)',
   ugc:      'linear-gradient(135deg, #041525 0%, #0a3d7c 100%)',
   clipping: 'linear-gradient(135deg, #1f0a03 0%, #5c250b 100%)',
   gaming:   'linear-gradient(135deg, #1a0330 0%, #4a0868 100%)',
@@ -149,6 +149,18 @@ function SignInPrompt({ onSignIn, message }) {
       <h3 className="db-signin-card-h">Sign in to continue</h3>
       <p className="db-signin-card-p">{message}</p>
       <button className="db-signin-card-btn" onClick={onSignIn}>Sign in / Create account</button>
+    </div>
+  )
+}
+
+function DemoBanner({ onSignIn }) {
+  return (
+    <div className="db-demo-banner">
+      <div className="db-demo-banner-left">
+        <span className="db-demo-pill">DEMO</span>
+        <span className="db-demo-text">Sample data — sign in to see your real activity.</span>
+      </div>
+      <button className="db-demo-signin-btn" onClick={onSignIn}>Sign in →</button>
     </div>
   )
 }
@@ -323,24 +335,6 @@ function CampaignsView({ onApply }) {
         </div>
       </div>
 
-      {/* ── HOW IT WORKS ── */}
-      <div className="db-steps">
-        {HOW_STEPS.flatMap((step, i) => {
-          const items = [
-            <div key={step.n} className="db-step">
-              <div className="db-step-top">
-                <span className="db-step-num">{step.n}</span>
-                <span className="db-step-icon">{step.icon}</span>
-              </div>
-              <div className="db-step-t">{step.t}</div>
-              <div className="db-step-d">{step.d}</div>
-            </div>,
-          ]
-          if (i < HOW_STEPS.length - 1) items.push(<div key={'a' + i} className="db-step-arrow">→</div>)
-          return items
-        })}
-      </div>
-
       {/* ── CAMPAIGNS SECTION ── */}
       <div className="db-campaigns-section">
         <div className="db-campaigns-sh">
@@ -416,6 +410,24 @@ function CampaignsView({ onApply }) {
           </div>
         )}
       </div>
+
+      {/* ── HOW IT WORKS ── */}
+      <div className="db-steps">
+        {HOW_STEPS.flatMap((step, i) => {
+          const items = [
+            <div key={step.n} className="db-step">
+              <div className="db-step-top">
+                <span className="db-step-num">{step.n}</span>
+                <span className="db-step-icon">{step.icon}</span>
+              </div>
+              <div className="db-step-t">{step.t}</div>
+              <div className="db-step-d">{step.d}</div>
+            </div>,
+          ]
+          if (i < HOW_STEPS.length - 1) items.push(<div key={'a' + i} className="db-step-arrow">→</div>)
+          return items
+        })}
+      </div>
     </div>
   )
 }
@@ -424,25 +436,14 @@ function CampaignsView({ onApply }) {
    JOINED CAMPAIGNS VIEW
 ═══════════════════════════════════════════════════════ */
 function JoinedCampaignsView({ user, onSignIn }) {
-  if (!user) {
-    return (
-      <div className="db-view">
-        <div className="db-view-header">
-          <div className="db-view-eyebrow"><IcJoined size={13} /> Joined Campaigns</div>
-          <h1 className="db-view-h">Your Campaigns</h1>
-          <p className="db-view-sub">Campaigns you have been accepted to work with.</p>
-        </div>
-        <SignInPrompt onSignIn={onSignIn} message="Sign in to see campaigns you have been accepted to and track your progress." />
-      </div>
-    )
-  }
   return (
     <div className="db-view">
       <div className="db-view-header">
         <div className="db-view-eyebrow"><IcJoined size={13} /> Joined Campaigns</div>
         <h1 className="db-view-h">Your Campaigns</h1>
-        <p className="db-view-sub">{DEMO_JOINED.length} active campaign{DEMO_JOINED.length !== 1 ? 's' : ''} you have been accepted to. Keep posting to earn.</p>
+        <p className="db-view-sub">{user ? `${DEMO_JOINED.length} active campaigns you have been accepted to. Keep posting to earn.` : 'Campaigns you have been accepted to work with.'}</p>
       </div>
+      {!user && <DemoBanner onSignIn={onSignIn} />}
       <div className="db-joined-grid">
         {DEMO_JOINED.map((j) => {
           const c = ACTIVE_CAMPAIGNS.find((x) => x.slug === j.campaignSlug)
@@ -485,18 +486,6 @@ function JoinedCampaignsView({ user, onSignIn }) {
    WALLET VIEW
 ═══════════════════════════════════════════════════════ */
 function WalletView({ user, onSignIn, onWithdraw }) {
-  if (!user) {
-    return (
-      <div className="db-view">
-        <div className="db-view-header">
-          <div className="db-view-eyebrow"><IcWallet size={13} /> Wallet</div>
-          <h1 className="db-view-h">Your Wallet</h1>
-          <p className="db-view-sub">View your earnings, balance, and request withdrawals.</p>
-        </div>
-        <SignInPrompt onSignIn={onSignIn} message="Sign in to view your wallet and earnings from ClipSmart campaigns." />
-      </div>
-    )
-  }
   return (
     <div className="db-view">
       <div className="db-view-header">
@@ -504,6 +493,7 @@ function WalletView({ user, onSignIn, onWithdraw }) {
         <h1 className="db-view-h">Your Wallet</h1>
         <p className="db-view-sub">Track your earnings and withdraw your available balance.</p>
       </div>
+      {!user && <DemoBanner onSignIn={onSignIn} />}
       <div className="db-stat-cards">
         <div className="db-stat-card db-stat-card--primary">
           <div className="db-stat-card-label">Available to Withdraw</div>
@@ -547,18 +537,6 @@ function WalletView({ user, onSignIn, onWithdraw }) {
    MY SUBMISSIONS VIEW
 ═══════════════════════════════════════════════════════ */
 function SubmissionsView({ user, onSignIn }) {
-  if (!user) {
-    return (
-      <div className="db-view">
-        <div className="db-view-header">
-          <div className="db-view-eyebrow"><IcClips size={13} /> My Submissions</div>
-          <h1 className="db-view-h">My Submissions</h1>
-          <p className="db-view-sub">Track all your submitted clips and their review status.</p>
-        </div>
-        <SignInPrompt onSignIn={onSignIn} message="Sign in to view your submitted clips and see which ones have been accepted." />
-      </div>
-    )
-  }
   const counts = {
     accepted: DEMO_SUBMISSIONS.filter((s) => s.status === 'accepted').length,
     pending:  DEMO_SUBMISSIONS.filter((s) => s.status === 'pending').length,
@@ -571,6 +549,7 @@ function SubmissionsView({ user, onSignIn }) {
         <h1 className="db-view-h">My Submissions</h1>
         <p className="db-view-sub">All {DEMO_SUBMISSIONS.length} clip submissions across campaigns.</p>
       </div>
+      {!user && <DemoBanner onSignIn={onSignIn} />}
       <div className="db-sub-summary">
         <span className="db-badge db-badge--accepted">{counts.accepted} Accepted</span>
         <span className="db-badge db-badge--pending">{counts.pending} Pending</span>
@@ -770,6 +749,11 @@ export default function Dashboard() {
       </aside>
 
       <main className="db-main">{renderView()}</main>
+
+      {/* Mobile floating Submit Clip button */}
+      <button className="db-mobile-fab" onClick={handleSubmitClip}>
+        <IcUpload size={18} />Submit Clip
+      </button>
 
       {toast && <div className="db-toast"><span className="db-live-dot-sm" />{toast}</div>}
 
