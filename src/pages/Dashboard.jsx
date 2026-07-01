@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from '../components/AuthModal'
+import { supabase, isSupabaseReady } from '../lib/supabase'
 import {
   ACTIVE_CAMPAIGNS,
   computeSnapshot,
@@ -436,16 +437,54 @@ function CampaignsView({ onApply }) {
    JOINED CAMPAIGNS VIEW
 ═══════════════════════════════════════════════════════ */
 function JoinedCampaignsView({ user, onSignIn }) {
+  const [realData, setRealData]   = useState(null) // null=not loaded
+  const [fetching, setFetching]   = useState(false)
+  const isDemo = !user || !isSupabaseReady || realData === null
+
+  useEffect(() => {
+    if (!user || !isSupabaseReady) return
+    setFetching(true)
+    supabase
+      .from('applications')
+      .select('campaign_slug, status, created_at')
+      .eq('user_id', user.id)
+      .eq('status', 'accepted')
+      .then(async ({ data: apps, error }) => {
+        if (error || !apps) { setRealData([]); setFetching(false); return }
+        // Enrich with submission counts and earnings
+        const enriched = await Promise.all(apps.map(async (app) => {
+          const [{ count: posts }, { data: txData }] = await Promise.all([
+            supabase.from('submissions').select('id', { count: 'exact' }).eq('user_id', user.id).eq('campaign_slug', app.campaign_slug).eq('status', 'accepted'),
+            supabase.from('transactions').select('amount_usd').eq('user_id', user.id).eq('campaign_slug', app.campaign_slug),
+          ])
+          const earnings = (txData || []).reduce((s, t) => s + (t.amount_usd || 0), 0)
+          return { campaignSlug: app.campaign_slug, joinedDate: new Date(app.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }), status: 'Active', postsSubmitted: posts || 0, acceptedPosts: posts || 0, earnings }
+        }))
+        setRealData(enriched)
+        setFetching(false)
+      })
+  }, [user])
+
+  const displayData = isDemo ? DEMO_JOINED : realData
+
   return (
     <div className="db-view">
       <div className="db-view-header">
         <div className="db-view-eyebrow"><IcJoined size={13} /> Joined Campaigns</div>
         <h1 className="db-view-h">Your Campaigns</h1>
-        <p className="db-view-sub">{user ? `${DEMO_JOINED.length} active campaigns you have been accepted to. Keep posting to earn.` : 'Campaigns you have been accepted to work with.'}</p>
+        <p className="db-view-sub">{user && !isDemo ? `${displayData.length} active campaigns you have been accepted to. Keep posting to earn.` : 'Campaigns you have been accepted to work with.'}</p>
       </div>
-      {!user && <DemoBanner onSignIn={onSignIn} />}
+      {isDemo && <DemoBanner onSignIn={onSignIn} />}
+      {fetching && <div className="db-loading">Loading your campaigns…</div>}
+      {!fetching && displayData.length === 0 && user && (
+        <div className="db-empty-state">
+          <IcJoined size={36} />
+          <p>You haven't been accepted to any campaigns yet.</p>
+          <p className="db-empty-sub">Browse Active Campaigns and apply to get started.</p>
+        </div>
+      )}
       <div className="db-joined-grid">
-        {DEMO_JOINED.map((j) => {
+        {displayData.map((j) => {
           const c = ACTIVE_CAMPAIGNS.find((x) => x.slug === j.campaignSlug)
           if (!c) return null
           const snap = computeSnapshot(c, Date.now())
@@ -486,6 +525,44 @@ function JoinedCampaignsView({ user, onSignIn }) {
    WALLET VIEW
 ═══════════════════════════════════════════════════════ */
 function WalletView({ user, onSignIn, onWithdraw }) {
+  const [walletData, setWalletData] = useState(null)
+  const [fetching, setFetching]     = useState(false)
+  const isDemo = !user || !isSupabaseReady || walletData === null
+
+  useEffect(() => {
+    if (!user || !isSupabaseReady) return
+    setFetching(true)
+    supabase
+      .from('transactions')
+      .select('id, campaign_slug, amount_usd, views_counted, status, created_at')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .then(({ data: txs, error }) => {
+        setFetching(false)
+        if (error || !txs) { setWalletData({ available: 0, totalEarned: 0, pendingEarnings: 0, transactions: [] }); return }
+        const paid    = txs.filter(t => t.status === 'paid')
+        const pending = txs.filter(t => t.status === 'pending')
+        const totalEarned  = paid.reduce((s, t) => s + (t.amount_usd || 0), 0)
+        const pendingTotal = pending.reduce((s, t) => s + (t.amount_usd || 0), 0)
+        setWalletData({
+          available: totalEarned,
+          totalEarned: totalEarned + pendingTotal,
+          pendingEarnings: pendingTotal,
+          transactions: txs.map(t => ({
+            id: t.id,
+            campaign: t.campaign_slug,
+            date: new Date(t.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+            views: t.views_counted || 0,
+            amount: t.amount_usd || 0,
+            status: t.status,
+          })),
+        })
+      })
+  }, [user])
+
+  const w = isDemo ? DEMO_WALLET : walletData
+  if (!w) return null
+
   return (
     <div className="db-view">
       <div className="db-view-header">
@@ -493,41 +570,46 @@ function WalletView({ user, onSignIn, onWithdraw }) {
         <h1 className="db-view-h">Your Wallet</h1>
         <p className="db-view-sub">Track your earnings and withdraw your available balance.</p>
       </div>
-      {!user && <DemoBanner onSignIn={onSignIn} />}
+      {isDemo && <DemoBanner onSignIn={onSignIn} />}
+      {fetching && <div className="db-loading">Loading wallet data…</div>}
       <div className="db-stat-cards">
         <div className="db-stat-card db-stat-card--primary">
           <div className="db-stat-card-label">Available to Withdraw</div>
-          <div className="db-stat-card-value">${DEMO_WALLET.available.toFixed(2)}</div>
+          <div className="db-stat-card-value">${w.available.toFixed(2)}</div>
           <div className="db-stat-card-sub">Ready to cash out</div>
           <button className="db-withdraw-btn" onClick={onWithdraw}>Withdraw Funds</button>
         </div>
         <div className="db-stat-card">
           <div className="db-stat-card-label">Total Earned</div>
-          <div className="db-stat-card-value">${DEMO_WALLET.totalEarned.toFixed(2)}</div>
+          <div className="db-stat-card-value">${w.totalEarned.toFixed(2)}</div>
           <div className="db-stat-card-sub">All time earnings</div>
         </div>
         <div className="db-stat-card">
           <div className="db-stat-card-label">Pending</div>
-          <div className="db-stat-card-value">${DEMO_WALLET.pendingEarnings.toFixed(2)}</div>
+          <div className="db-stat-card-value">${w.pendingEarnings.toFixed(2)}</div>
           <div className="db-stat-card-sub">Processing now</div>
         </div>
       </div>
       <div className="db-tx-section">
         <h3 className="db-section-h3">Transaction History</h3>
-        <div className="db-tx-table-wrap">
-          <div className="db-tx-table">
-            <div className="db-tx-head"><span>Date</span><span>Campaign</span><span>Views</span><span>Amount</span><span>Status</span></div>
-            {DEMO_WALLET.transactions.map((t) => (
-              <div key={t.id} className="db-tx-row">
-                <span className="db-tx-date">{t.date}</span>
-                <span className="db-tx-campaign">{t.campaign}</span>
-                <span className="db-tx-views">{formatViews(t.views)}</span>
-                <span className="db-tx-amount">+${t.amount.toFixed(2)}</span>
-                <span><span className={'db-badge db-badge--' + t.status}>{t.status === 'paid' ? 'Paid' : 'Pending'}</span></span>
-              </div>
-            ))}
+        {w.transactions.length === 0 && user && !isDemo ? (
+          <div className="db-empty-state"><IcWallet size={32} /><p>No transactions yet.</p></div>
+        ) : (
+          <div className="db-tx-table-wrap">
+            <div className="db-tx-table">
+              <div className="db-tx-head"><span>Date</span><span>Campaign</span><span>Views</span><span>Amount</span><span>Status</span></div>
+              {w.transactions.map((t) => (
+                <div key={t.id} className="db-tx-row">
+                  <span className="db-tx-date">{t.date}</span>
+                  <span className="db-tx-campaign">{t.campaign}</span>
+                  <span className="db-tx-views">{formatViews(t.views)}</span>
+                  <span className="db-tx-amount">+${t.amount.toFixed(2)}</span>
+                  <span><span className={'db-badge db-badge--' + t.status}>{t.status === 'paid' ? 'Paid' : 'Pending'}</span></span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
@@ -537,38 +619,73 @@ function WalletView({ user, onSignIn, onWithdraw }) {
    MY SUBMISSIONS VIEW
 ═══════════════════════════════════════════════════════ */
 function SubmissionsView({ user, onSignIn }) {
+  const [subs, setSubs]       = useState(null)
+  const [fetching, setFetching] = useState(false)
+  const isDemo = !user || !isSupabaseReady || subs === null
+
+  useEffect(() => {
+    if (!user || !isSupabaseReady) return
+    setFetching(true)
+    supabase
+      .from('submissions')
+      .select('id, campaign_slug, platform, status, views_count, submitted_at')
+      .eq('user_id', user.id)
+      .order('submitted_at', { ascending: false })
+      .then(({ data, error }) => {
+        setFetching(false)
+        if (error) { setSubs([]); return }
+        setSubs((data || []).map(s => ({
+          id: s.id,
+          campaign: s.campaign_slug,
+          platform: s.platform,
+          date: new Date(s.submitted_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+          status: s.status,
+          views: s.views_count || 0,
+        })))
+      })
+  }, [user])
+
+  const displaySubs = isDemo ? DEMO_SUBMISSIONS : (subs || [])
   const counts = {
-    accepted: DEMO_SUBMISSIONS.filter((s) => s.status === 'accepted').length,
-    pending:  DEMO_SUBMISSIONS.filter((s) => s.status === 'pending').length,
-    denied:   DEMO_SUBMISSIONS.filter((s) => s.status === 'denied').length,
+    accepted: displaySubs.filter((s) => s.status === 'accepted').length,
+    pending:  displaySubs.filter((s) => s.status === 'pending').length,
+    denied:   displaySubs.filter((s) => s.status === 'denied').length,
   }
+
   return (
     <div className="db-view">
       <div className="db-view-header">
         <div className="db-view-eyebrow"><IcClips size={13} /> My Submissions</div>
         <h1 className="db-view-h">My Submissions</h1>
-        <p className="db-view-sub">All {DEMO_SUBMISSIONS.length} clip submissions across campaigns.</p>
+        <p className="db-view-sub">All {displaySubs.length} clip submissions across campaigns.</p>
       </div>
-      {!user && <DemoBanner onSignIn={onSignIn} />}
-      <div className="db-sub-summary">
-        <span className="db-badge db-badge--accepted">{counts.accepted} Accepted</span>
-        <span className="db-badge db-badge--pending">{counts.pending} Pending</span>
-        <span className="db-badge db-badge--denied">{counts.denied} Denied</span>
-      </div>
-      <div className="db-subs-table-wrap">
-        <div className="db-subs-table">
-          <div className="db-subs-head"><span>Campaign</span><span>Platform</span><span>Date</span><span>Status</span><span>Views</span></div>
-          {DEMO_SUBMISSIONS.map((s) => (
-            <div key={s.id} className="db-subs-row">
-              <span className="db-subs-campaign">{s.campaign}</span>
-              <span className="db-subs-platform">{s.platform}</span>
-              <span className="db-subs-date">{s.date}</span>
-              <span><span className={'db-badge db-badge--' + s.status}>{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</span></span>
-              <span className={s.views > 0 ? 'db-subs-views' : 'db-subs-views-none'}>{s.views > 0 ? formatViews(s.views) : '—'}</span>
+      {isDemo && <DemoBanner onSignIn={onSignIn} />}
+      {fetching && <div className="db-loading">Loading submissions…</div>}
+      {!fetching && displaySubs.length === 0 && user && !isDemo ? (
+        <div className="db-empty-state"><IcClips size={36} /><p>No submissions yet — submit your first clip!</p></div>
+      ) : (
+        <>
+          <div className="db-sub-summary">
+            <span className="db-badge db-badge--accepted">{counts.accepted} Accepted</span>
+            <span className="db-badge db-badge--pending">{counts.pending} Pending</span>
+            <span className="db-badge db-badge--denied">{counts.denied} Denied</span>
+          </div>
+          <div className="db-subs-table-wrap">
+            <div className="db-subs-table">
+              <div className="db-subs-head"><span>Campaign</span><span>Platform</span><span>Date</span><span>Status</span><span>Views</span></div>
+              {displaySubs.map((s) => (
+                <div key={s.id} className="db-subs-row">
+                  <span className="db-subs-campaign">{s.campaign}</span>
+                  <span className="db-subs-platform">{s.platform}</span>
+                  <span className="db-subs-date">{s.date}</span>
+                  <span><span className={'db-badge db-badge--' + s.status}>{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</span></span>
+                  <span className={s.views > 0 ? 'db-subs-views' : 'db-subs-views-none'}>{s.views > 0 ? formatViews(s.views) : '—'}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -576,18 +693,34 @@ function SubmissionsView({ user, onSignIn }) {
 /* ═══════════════════════════════════════════════════════
    SUBMIT CLIP MODAL
 ═══════════════════════════════════════════════════════ */
-function SubmitClipModal({ onClose, onSuccess }) {
+function SubmitClipModal({ onClose, onSuccess, user }) {
   const [campaign, setCampaign] = useState(ACTIVE_CAMPAIGNS[0]?.slug || '')
   const [platform, setPlatform] = useState('TikTok')
   const [url,      setUrl]      = useState('')
   const [note,     setNote]     = useState('')
   const [loading,  setLoading]  = useState(false)
+  const [err,      setErr]      = useState(null)
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     if (!url.trim()) return
     setLoading(true)
-    setTimeout(() => { setLoading(false); onSuccess() }, 900)
+    setErr(null)
+    if (user && isSupabaseReady) {
+      const { error } = await supabase.from('submissions').insert({
+        user_id: user.id,
+        campaign_slug: campaign,
+        platform,
+        video_url: url.trim(),
+        note: note.trim() || null,
+        status: 'pending',
+      })
+      setLoading(false)
+      if (error) { setErr('Could not submit clip. Please try again.'); return }
+      onSuccess()
+    } else {
+      setTimeout(() => { setLoading(false); onSuccess() }, 900)
+    }
   }
 
   return (
@@ -620,6 +753,7 @@ function SubmitClipModal({ onClose, onSuccess }) {
             <label className="db-modal-lbl">Note <span className="db-modal-opt">(optional)</span></label>
             <textarea className="db-modal-txt" placeholder="Any notes for the review team..." value={note} onChange={(e) => setNote(e.target.value)} rows={3} />
           </div>
+          {err && <p className="db-modal-err">{err}</p>}
           <button className="db-modal-submit" type="submit" disabled={loading || !url.trim()}>
             {loading ? 'Submitting...' : 'Submit Clip'}
           </button>
@@ -648,16 +782,31 @@ export default function Dashboard() {
   const [authModal,       setAuthModal]       = useState(null)
   const [toast,           setToast]           = useState(null)
   const [showSubmitModal, setShowSubmitModal] = useState(false)
+  const [drawerOpen,      setDrawerOpen]      = useState(false)
   const { user, profile, signOut } = useAuth()
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [])
+
+  // Close drawer on resize to desktop
+  useEffect(() => {
+    function onResize() { if (window.innerWidth > 768) setDrawerOpen(false) }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   function showToast(msg) { setToast(msg); setTimeout(() => setToast(null), 3500) }
 
   function openSupport() { if (typeof window !== 'undefined' && window.Tawk_API) window.Tawk_API.toggle() }
 
-  function handleApply(campaign) {
+  async function handleApply(campaign) {
     if (!user) { setAuthModal({ intent: `Apply to ${campaign.name}` }); return }
+    if (isSupabaseReady) {
+      const { error } = await supabase.from('applications').upsert(
+        { user_id: user.id, campaign_slug: campaign.slug, status: 'pending' },
+        { onConflict: 'user_id,campaign_slug', ignoreDuplicates: true }
+      )
+      if (error) { showToast('Could not apply — please try again.'); return }
+    }
     showToast(`Applied to ${campaign.name}! Your application is under review.`)
   }
 
@@ -671,6 +820,7 @@ export default function Dashboard() {
   function handleNavClick(id) {
     if (id === 'support') { openSupport(); return }
     setActiveView(id)
+    setDrawerOpen(false)
   }
 
   function renderView() {
@@ -683,53 +833,45 @@ export default function Dashboard() {
     }
   }
 
-  return (
-    <div className="db-root">
-      {/* ──────── SIDEBAR ──────── */}
-      <aside className="db-sidebar">
-        <div className="db-sidebar-top">
-          <Link to="/" className="db-logo">
-            <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
-            <span>ClipSmart</span>
-          </Link>
-
-          {user && (
-            <div className="db-user-badge">
-              <div className="db-ub-av">{(profile?.username || user.email || '?')[0].toUpperCase()}</div>
-              <div className="db-ub-info">
-                <div className="db-ub-name">{profile?.username || 'Creator'}</div>
-                <div className="db-ub-email">{user.email}</div>
-              </div>
-              <button className="db-signout-btn" onClick={signOut} title="Sign out"><IcSignout size={14} /></button>
+  /* Shared sidebar content — rendered in both desktop sidebar and mobile drawer */
+  function SidebarContent() {
+    return (
+      <>
+        {user && (
+          <div className="db-user-badge">
+            <div className="db-ub-av">{(profile?.username || user.email || '?')[0].toUpperCase()}</div>
+            <div className="db-ub-info">
+              <div className="db-ub-name">{profile?.username || 'Creator'}</div>
+              <div className="db-ub-email">{user.email}</div>
             </div>
-          )}
+            <button className="db-signout-btn" onClick={signOut} title="Sign out"><IcSignout size={14} /></button>
+          </div>
+        )}
 
-          <p className="db-section-lbl">MAIN</p>
-          <nav className="db-nav">
-            {MAIN_NAV.map(({ id, label, Icon, href }) =>
-              href ? (
-                <Link key={id} to={href} className="db-nav-item"><Icon size={17} />{label}</Link>
-              ) : (
-                <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
-                  <Icon size={17} />{label}
-                </button>
-              )
-            )}
-          </nav>
-
-          <p className="db-section-lbl">SUPPORT</p>
-          <nav className="db-nav">
-            {SUPPORT_NAV.map(({ id, label, Icon }) => (
+        <p className="db-section-lbl">MAIN</p>
+        <nav className="db-nav">
+          {MAIN_NAV.map(({ id, label, Icon, href }) =>
+            href ? (
+              <Link key={id} to={href} className="db-nav-item"><Icon size={17} />{label}</Link>
+            ) : (
               <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
                 <Icon size={17} />{label}
               </button>
-            ))}
-          </nav>
-        </div>
+            )
+          )}
+        </nav>
 
-        {/* Sidebar footer — Submit Clip is FIRST (most prominent) */}
+        <p className="db-section-lbl">SUPPORT</p>
+        <nav className="db-nav">
+          {SUPPORT_NAV.map(({ id, label, Icon }) => (
+            <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
+              <Icon size={17} />{label}
+            </button>
+          ))}
+        </nav>
+
         <div className="db-sidebar-foot">
-          <button className="db-submit-clip-btn" onClick={handleSubmitClip}>
+          <button className="db-submit-clip-btn" onClick={() => { setDrawerOpen(false); handleSubmitClip() }}>
             <IcUpload size={17} />Submit Clip
           </button>
           <div className="db-social-row">
@@ -741,10 +883,55 @@ export default function Dashboard() {
             </a>
           </div>
           {!user && (
-            <button className="db-signin-prompt" onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}>
+            <button className="db-signin-prompt" onClick={() => { setDrawerOpen(false); setAuthModal({ intent: 'Sign in to apply to campaigns' }) }}>
               Sign in / Sign up
             </button>
           )}
+        </div>
+      </>
+    )
+  }
+
+  return (
+    <div className="db-root">
+      {/* ──────── MOBILE TOP BAR (hamburger + logo) ──────── */}
+      <div className="db-mobile-topbar">
+        <button className="db-hamburger" onClick={() => setDrawerOpen(true)} aria-label="Open navigation">
+          <span /><span /><span />
+        </button>
+        <Link to="/" className="db-logo db-logo--topbar">
+          <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
+          <span>ClipSmart</span>
+        </Link>
+        <button className="db-topbar-clip-btn" onClick={handleSubmitClip}>
+          <IcUpload size={14} />Submit
+        </button>
+      </div>
+
+      {/* ──────── MOBILE DRAWER OVERLAY ──────── */}
+      <div className={`db-drawer-overlay${drawerOpen ? ' open' : ''}`} onClick={() => setDrawerOpen(false)}>
+        <aside className="db-drawer" onClick={(e) => e.stopPropagation()}>
+          <div className="db-drawer-hdr">
+            <Link to="/" className="db-logo" onClick={() => setDrawerOpen(false)}>
+              <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
+              <span>ClipSmart</span>
+            </Link>
+            <button className="db-drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Close navigation">
+              <IcClose size={20} />
+            </button>
+          </div>
+          <SidebarContent />
+        </aside>
+      </div>
+
+      {/* ──────── DESKTOP SIDEBAR ──────── */}
+      <aside className="db-sidebar">
+        <div className="db-sidebar-top">
+          <Link to="/" className="db-logo">
+            <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
+            <span>ClipSmart</span>
+          </Link>
+          <SidebarContent />
         </div>
       </aside>
 
@@ -763,6 +950,7 @@ export default function Dashboard() {
 
       {showSubmitModal && (
         <SubmitClipModal
+          user={user}
           onClose={() => setShowSubmitModal(false)}
           onSuccess={() => { setShowSubmitModal(false); showToast("Clip submitted! We'll review it within 24 hours.") }}
         />
