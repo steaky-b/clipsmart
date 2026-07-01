@@ -513,9 +513,22 @@ body::before {
   .mob-drawer { padding: 10px 16px 20px; }
 
   .section { padding: 36px var(--pad) !important; }
-  .section-eyebrow { margin-bottom: 8px !important; font-size: 9px !important; flex-wrap: wrap !important; gap: 6px !important; }
-  .section-h2 { font-size: clamp(22px,5.5vw,32px) !important; letter-spacing: -.3px !important; margin-bottom: 8px !important; }
-  .section-lead { font-size: 14px !important; margin-bottom: 24px !important; line-height: 1.6 !important; }
+
+  /* Center all section headings on mobile */
+  .section-eyebrow {
+    margin-bottom: 8px !important; font-size: 9px !important;
+    flex-wrap: wrap !important; gap: 6px !important;
+    justify-content: center !important;
+  }
+  .section-h2 {
+    font-size: clamp(22px,5.5vw,32px) !important; letter-spacing: -.3px !important;
+    margin-bottom: 8px !important; text-align: center !important;
+  }
+  .section-lead {
+    font-size: 14px !important; margin-bottom: 24px !important;
+    line-height: 1.6 !important; text-align: center !important;
+    margin-left: auto !important; margin-right: auto !important;
+  }
 
   .page-hero { padding: calc(var(--nav-h) + 24px) var(--pad) 28px !important; }
   .page-hero h1 { font-size: clamp(24px,6.5vw,36px) !important; letter-spacing: -1px !important; margin-bottom: 10px !important; }

@@ -787,8 +787,8 @@
 
   /* ── Active campaigns grid: 1-col ── */
   .hac-section { padding: 48px 0 56px !important; }
-  .hac-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; padding-bottom: 24px !important; }
-  .hac-grid { grid-template-columns: 1fr !important; max-width: 480px !important; }
+  .hac-header { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 12px !important; padding-bottom: 24px !important; }
+  .hac-grid { grid-template-columns: 1fr !important; max-width: 480px !important; margin-left: auto !important; margin-right: auto !important; }
   .hac-views { font-size: 28px !important; }
 
   /* ── Platform reach ── */
@@ -798,9 +798,12 @@
 
   /* ── Creator phones ── */
   .creator-section { padding: 40px 0 32px !important; }
-  .creator-header { padding: 0 var(--pad) 24px !important; }
-  .creator-lead { font-size: 14px !important; }
+  .creator-header { padding: 0 var(--pad) 24px !important; text-align: center !important; }
+  .creator-lead { font-size: 14px !important; text-align: center !important; max-width: 100% !important; }
   .phone-card { width: 155px !important; }
+  /* Prevent phone-wrap from clipping the horizontal scroll on narrow viewports */
+  .creator-phones-wrap { overflow: visible !important; }
+  .creator-phones { padding-left: var(--pad) !important; padding-right: var(--pad) !important; }
 
   /* ── How it works ── */
   .how-inner { padding: 40px var(--pad) !important; gap: 28px !important; }
@@ -812,8 +815,11 @@
   .how-step { padding: 18px 0 !important; }
   .step-b { font-size: 13px !important; }
 
+  /* ── Cases carousel header ── */
+  .cases-header { flex-direction: column !important; align-items: center !important; text-align: center !important; padding-bottom: 32px !important; gap: 14px !important; }
+
   /* ── Why different ── */
-  .why-header { flex-direction: column !important; gap: 24px !important; }
+  .why-header { flex-direction: column !important; gap: 24px !important; align-items: center !important; text-align: center !important; }
   .cpm-chart { max-width: 100% !important; min-width: 0 !important; }
 
   /* ── FAQ ── */

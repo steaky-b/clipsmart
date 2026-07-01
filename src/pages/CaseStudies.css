@@ -174,6 +174,9 @@
   .csfm-lbl { font-size: 11px !important; }
   .csf-quote { font-size: 13px !important; margin-bottom: 14px !important; }
 
+  /* Card grid: 1 column on phone screens */
+  .cs-grid { grid-template-columns: 1fr !important; }
+
   /* Card grid: 2 across stays — just tighten */
   .cs-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
   .cs-card-visual { min-height: 160px !important; }

@@ -60,38 +60,56 @@ export default function ActiveCampaigns() {
             const { slug, name, catLabel, subtitle, gradient, img } = campaign
             return (
               <Link key={slug} to={`/active-campaigns/${slug}`} className="ac-card fade-up">
+                {/* Full-card 16:9 thumbnail */}
                 <div
-                  className="ac-card-visual"
+                  className="ac-card-thumb"
                   style={img
-                    ? { backgroundImage: `url(${img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+                    ? { backgroundImage: `url(${img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
                     : { background: gradient }
                   }
                 >
-                  {img && <div className="ac-card-visual-overlay" />}
+                  <div className="ac-card-overlay" />
+
+                  {/* LIVE badge — top right */}
                   <div className="ac-live-badge">
-                    <span className="ac-live-dot-sm" />
-                    LIVE
+                    <span className="ac-live-dot-sm" />LIVE
                   </div>
-                  <div className="ac-card-cat">{catLabel}</div>
-                  <div className="ac-card-name">{name}</div>
-                </div>
-                <div className="ac-card-body">
-                  <div className="ac-card-sub">{subtitle}</div>
-                  <div className="ac-card-metrics">
-                    <div className="ac-metric">
-                      <div className="ac-metric-v">{formatViews(snap.views)}+</div>
-                      <div className="ac-metric-l">Views so far</div>
+
+                  {/* Bottom content */}
+                  <div className="ac-card-content">
+                    {/* Avatar + title row */}
+                    <div className="ac-card-head">
+                      <div className="ac-card-avatar">
+                        {img
+                          ? <img src={img} alt={name} className="ac-avatar-img" />
+                          : <span className="ac-avatar-letter">{name[0]}</span>
+                        }
+                      </div>
+                      <div className="ac-card-title-wrap">
+                        <div className="ac-card-name">{name}</div>
+                        <div className="ac-card-sub">{catLabel} · {subtitle}</div>
+                      </div>
                     </div>
-                    <div className="ac-metric">
-                      <div className="ac-metric-v">{formatFull(snap.posts)}+</div>
-                      <div className="ac-metric-l">Creator posts</div>
-                    </div>
-                    <div className="ac-metric">
-                      <div className="ac-metric-v">{formatMoney(campaign.budgetTotal)}</div>
-                      <div className="ac-metric-l">Budget</div>
+
+                    {/* Compact metrics + CTA */}
+                    <div className="ac-card-metrics-row">
+                      <div className="ac-foot-metric">
+                        <span className="ac-foot-v">{formatViews(snap.views)}+</span>
+                        <span className="ac-foot-l">Views</span>
+                      </div>
+                      <div className="ac-foot-div" />
+                      <div className="ac-foot-metric">
+                        <span className="ac-foot-v">{formatFull(snap.posts)}+</span>
+                        <span className="ac-foot-l">Posts</span>
+                      </div>
+                      <div className="ac-foot-div" />
+                      <div className="ac-foot-metric">
+                        <span className="ac-foot-v">{formatMoney(campaign.budgetTotal)}</span>
+                        <span className="ac-foot-l">Budget</span>
+                      </div>
+                      <span className="ac-card-cta-badge">View →</span>
                     </div>
                   </div>
-                  <div className="ac-card-cta">View live campaign →</div>
                 </div>
               </Link>
             )

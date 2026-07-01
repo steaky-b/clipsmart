@@ -88,8 +88,8 @@
   .cc-stat-v { font-size: 22px !important; }
   .cc-stat-l { font-size: 12px !important; }
 
-  /* Mechanics: 2-across stays */
-  .cc-mechanics-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  /* Mechanics: 1-col on phones */
+  .cc-mechanics-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
   .cc-mechanic-card { padding: 18px 14px !important; }
   .cc-mechanic-t { font-size: 15px !important; }
   .cc-mechanic-b { font-size: 13px !important; }

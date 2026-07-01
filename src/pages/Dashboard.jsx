@@ -777,22 +777,38 @@ const SUPPORT_NAV = [
   { id: 'support',   label: 'Live Support',     Icon: IcSupport },
 ]
 
+const DB_MOBILE_BP = 768
+
+function getVW() {
+  if (typeof window === 'undefined') return DB_MOBILE_BP + 1
+  return window.visualViewport ? window.visualViewport.width : window.innerWidth
+}
+
 export default function Dashboard() {
   const [activeView,      setActiveView]      = useState('campaigns')
   const [authModal,       setAuthModal]       = useState(null)
   const [toast,           setToast]           = useState(null)
   const [showSubmitModal, setShowSubmitModal] = useState(false)
   const [drawerOpen,      setDrawerOpen]      = useState(false)
+  const [isMobile,        setIsMobile]        = useState(() => getVW() <= DB_MOBILE_BP)
   const { user, profile, signOut } = useAuth()
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [])
 
-  // Close drawer on resize to desktop
+  // JS-based mobile detection — same pattern as Nav.jsx to bypass Chrome's auto-zoom
   useEffect(() => {
-    function onResize() { if (window.innerWidth > 768) setDrawerOpen(false) }
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
+    const update = () => setIsMobile(getVW() <= DB_MOBILE_BP)
+    const vv = window.visualViewport
+    if (vv) vv.addEventListener('resize', update)
+    window.addEventListener('resize', update)
+    return () => {
+      if (vv) vv.removeEventListener('resize', update)
+      window.removeEventListener('resize', update)
+    }
   }, [])
+
+  // Auto-close drawer when switching to desktop
+  useEffect(() => { if (!isMobile) setDrawerOpen(false) }, [isMobile])
 
   function showToast(msg) { setToast(msg); setTimeout(() => setToast(null), 3500) }
 
@@ -833,69 +849,68 @@ export default function Dashboard() {
     }
   }
 
-  /* Shared sidebar content — rendered in both desktop sidebar and mobile drawer */
-  function SidebarContent() {
-    return (
-      <>
-        {user && (
-          <div className="db-user-badge">
-            <div className="db-ub-av">{(profile?.username || user.email || '?')[0].toUpperCase()}</div>
-            <div className="db-ub-info">
-              <div className="db-ub-name">{profile?.username || 'Creator'}</div>
-              <div className="db-ub-email">{user.email}</div>
-            </div>
-            <button className="db-signout-btn" onClick={signOut} title="Sign out"><IcSignout size={14} /></button>
+  /* ── Shared nav items (no footer — rendered in sidebar-top and drawer-body) ── */
+  const sidebarNav = (
+    <>
+      {user && (
+        <div className="db-user-badge">
+          <div className="db-ub-av">{(profile?.username || user.email || '?')[0].toUpperCase()}</div>
+          <div className="db-ub-info">
+            <div className="db-ub-name">{profile?.username || 'Creator'}</div>
+            <div className="db-ub-email">{user.email}</div>
           </div>
-        )}
-
-        <p className="db-section-lbl">MAIN</p>
-        <nav className="db-nav">
-          {MAIN_NAV.map(({ id, label, Icon, href }) =>
-            href ? (
-              <Link key={id} to={href} className="db-nav-item"><Icon size={17} />{label}</Link>
-            ) : (
-              <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
-                <Icon size={17} />{label}
-              </button>
-            )
-          )}
-        </nav>
-
-        <p className="db-section-lbl">SUPPORT</p>
-        <nav className="db-nav">
-          {SUPPORT_NAV.map(({ id, label, Icon }) => (
+          <button className="db-signout-btn" onClick={signOut} title="Sign out"><IcSignout size={14} /></button>
+        </div>
+      )}
+      <p className="db-section-lbl">MAIN</p>
+      <nav className="db-nav">
+        {MAIN_NAV.map(({ id, label, Icon, href }) =>
+          href ? (
+            <Link key={id} to={href} className="db-nav-item"><Icon size={17} />{label}</Link>
+          ) : (
             <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
               <Icon size={17} />{label}
             </button>
-          ))}
-        </nav>
-
-        <div className="db-sidebar-foot">
-          <button className="db-submit-clip-btn" onClick={() => { setDrawerOpen(false); handleSubmitClip() }}>
-            <IcUpload size={17} />Submit Clip
+          )
+        )}
+      </nav>
+      <p className="db-section-lbl">SUPPORT</p>
+      <nav className="db-nav">
+        {SUPPORT_NAV.map(({ id, label, Icon }) => (
+          <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
+            <Icon size={17} />{label}
           </button>
-          <div className="db-social-row">
-            <a href="https://discord.gg/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Discord">
-              <IcDiscord size={15} /><span>Discord</span>
-            </a>
-            <a href="https://www.instagram.com/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Instagram">
-              <IcInstagram size={15} /><span>Instagram</span>
-            </a>
-          </div>
-          {!user && (
-            <button className="db-signin-prompt" onClick={() => { setDrawerOpen(false); setAuthModal({ intent: 'Sign in to apply to campaigns' }) }}>
-              Sign in / Sign up
-            </button>
-          )}
-        </div>
-      </>
-    )
-  }
+        ))}
+      </nav>
+    </>
+  )
+
+  /* ── Shared footer (submit clip, social links, sign in) ── */
+  const sidebarFoot = (
+    <div className="db-sidebar-foot">
+      <button className="db-submit-clip-btn" onClick={() => { setDrawerOpen(false); handleSubmitClip() }}>
+        <IcUpload size={17} />Submit Clip
+      </button>
+      <div className="db-social-row">
+        <a href="https://discord.gg/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Discord">
+          <IcDiscord size={15} /><span>Discord</span>
+        </a>
+        <a href="https://www.instagram.com/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Instagram">
+          <IcInstagram size={15} /><span>Instagram</span>
+        </a>
+      </div>
+      {!user && (
+        <button className="db-signin-prompt" onClick={() => { setDrawerOpen(false); setAuthModal({ intent: 'Sign in to apply to campaigns' }) }}>
+          Sign in / Sign up
+        </button>
+      )}
+    </div>
+  )
 
   return (
     <div className="db-root">
-      {/* ──────── MOBILE TOP BAR (hamburger + logo) ──────── */}
-      <div className="db-mobile-topbar">
+      {/* ──────── MOBILE TOP BAR (hamburger + logo) — JS-controlled ──────── */}
+      <div className="db-mobile-topbar" style={isMobile ? { display: 'flex' } : { display: 'none' }}>
         <button className="db-hamburger" onClick={() => setDrawerOpen(true)} aria-label="Open navigation">
           <span /><span /><span />
         </button>
@@ -920,22 +935,26 @@ export default function Dashboard() {
               <IcClose size={20} />
             </button>
           </div>
-          <SidebarContent />
+          <div className="db-drawer-body">{sidebarNav}</div>
+          {sidebarFoot}
         </aside>
       </div>
 
-      {/* ──────── DESKTOP SIDEBAR ──────── */}
-      <aside className="db-sidebar">
+      {/* ──────── DESKTOP SIDEBAR — JS-controlled ──────── */}
+      <aside className="db-sidebar" style={isMobile ? { display: 'none' } : {}}>
         <div className="db-sidebar-top">
           <Link to="/" className="db-logo">
             <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
             <span>ClipSmart</span>
           </Link>
-          <SidebarContent />
+          {sidebarNav}
         </div>
+        {sidebarFoot}
       </aside>
 
-      <main className="db-main">{renderView()}</main>
+      <main className="db-main" style={isMobile ? { width: '100%', paddingTop: '56px' } : {}}>
+        {renderView()}
+      </main>
 
       {/* Mobile floating Submit Clip button */}
       <button className="db-mobile-fab" onClick={handleSubmitClip}>
