@@ -14,57 +14,51 @@ import './Dashboard.css'
    DEMO DATA
 ───────────────────────────────────────────── */
 const DEMO_JOINED = [
-  {
-    campaignSlug:   'murdadale',
-    joinedDate:     'Jun 22, 2026',
-    status:         'Active',
-    postsSubmitted: 3,
-    acceptedPosts:  3,
-    earnings:       48.50,
-  },
-  {
-    campaignSlug:   'based-bodyworks',
-    joinedDate:     'Jun 25, 2026',
-    status:         'Active',
-    postsSubmitted: 1,
-    acceptedPosts:  1,
-    earnings:       12.40,
-  },
+  { campaignSlug: 'murdadale',     joinedDate: 'Jun 22, 2026', status: 'Active', postsSubmitted: 3, acceptedPosts: 3, earnings: 48.50 },
+  { campaignSlug: 'based-bodyworks', joinedDate: 'Jun 25, 2026', status: 'Active', postsSubmitted: 1, acceptedPosts: 1, earnings: 12.40 },
 ]
 
 const DEMO_WALLET = {
-  available:       142.30,
-  totalEarned:     218.50,
-  pendingEarnings:  76.20,
+  available: 142.30, totalEarned: 218.50, pendingEarnings: 76.20,
   transactions: [
-    { id: 1, campaign: 'NHC Murda',         date: 'Jun 28', views: 48500, amount: 48.50, status: 'paid'    },
-    { id: 2, campaign: 'Based Bodyworks',    date: 'Jun 27', views: 12400, amount: 12.40, status: 'paid'    },
-    { id: 3, campaign: 'NHC Murda',         date: 'Jun 26', views: 34200, amount: 34.20, status: 'pending' },
-    { id: 4, campaign: 'Growing Up Italian', date: 'Jun 25', views: 78600, amount: 78.60, status: 'paid'    },
-    { id: 5, campaign: 'Based Bodyworks',    date: 'Jun 24', views: 45000, amount: 45.00, status: 'pending' },
+    { id: 1, campaign: 'NHC Murda',          date: 'Jun 28', views: 48500, amount: 48.50, status: 'paid'    },
+    { id: 2, campaign: 'Based Bodyworks',     date: 'Jun 27', views: 12400, amount: 12.40, status: 'paid'    },
+    { id: 3, campaign: 'NHC Murda',          date: 'Jun 26', views: 34200, amount: 34.20, status: 'pending' },
+    { id: 4, campaign: 'Growing Up Italian',  date: 'Jun 25', views: 78600, amount: 78.60, status: 'paid'    },
+    { id: 5, campaign: 'Based Bodyworks',     date: 'Jun 24', views: 45000, amount: 45.00, status: 'pending' },
   ],
 }
 
 const DEMO_SUBMISSIONS = [
-  { id: 1, campaign: 'NHC Murda',         platform: 'TikTok',    date: 'Jun 28', status: 'accepted', views: 48500 },
-  { id: 2, campaign: 'NHC Murda',         platform: 'TikTok',    date: 'Jun 27', status: 'accepted', views: 34200 },
-  { id: 3, campaign: 'Based Bodyworks',    platform: 'Instagram', date: 'Jun 26', status: 'accepted', views: 12400 },
-  { id: 4, campaign: 'NHC Murda',         platform: 'TikTok',    date: 'Jun 25', status: 'denied',   views: 0     },
-  { id: 5, campaign: 'Growing Up Italian', platform: 'TikTok',    date: 'Jun 24', status: 'accepted', views: 78600 },
-  { id: 6, campaign: 'Based Bodyworks',    platform: 'TikTok',    date: 'Jun 22', status: 'pending',  views: 0     },
+  { id: 1, campaign: 'NHC Murda',          platform: 'TikTok',    date: 'Jun 28', status: 'accepted', views: 48500 },
+  { id: 2, campaign: 'NHC Murda',          platform: 'TikTok',    date: 'Jun 27', status: 'accepted', views: 34200 },
+  { id: 3, campaign: 'Based Bodyworks',     platform: 'Instagram', date: 'Jun 26', status: 'accepted', views: 12400 },
+  { id: 4, campaign: 'NHC Murda',          platform: 'TikTok',    date: 'Jun 25', status: 'denied',   views: 0     },
+  { id: 5, campaign: 'Growing Up Italian',  platform: 'TikTok',    date: 'Jun 24', status: 'accepted', views: 78600 },
+  { id: 6, campaign: 'Based Bodyworks',     platform: 'TikTok',    date: 'Jun 22', status: 'pending',  views: 0     },
 ]
 
 /* ─────────────────────────────────────────────
-   ICON FACTORY  (stroke icons via Ic; filled via individual fns)
+   CATEGORY GRADIENTS  (vibrant, for card banners)
+───────────────────────────────────────────── */
+const CAT_BANNER = {
+  music:    'linear-gradient(135deg, #14084a 0%, #3d1899 100%)',
+  health:   'linear-gradient(135deg, #041a0c 0%, #0b5230 100%)',
+  podcast:  'linear-gradient(135deg, #20120  3 0%, #5c370b 100%)',
+  ugc:      'linear-gradient(135deg, #041525 0%, #0a3d7c 100%)',
+  clipping: 'linear-gradient(135deg, #1f0a03 0%, #5c250b 100%)',
+  gaming:   'linear-gradient(135deg, #1a0330 0%, #4a0868 100%)',
+}
+
+/* ─────────────────────────────────────────────
+   ICON FACTORY
 ───────────────────────────────────────────── */
 function Ic({ c, size = 16, ...props }) {
   return (
-    <svg
-      width={size} height={size} viewBox="0 0 24 24"
-      fill="none" stroke="currentColor" strokeWidth="2"
-      strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden="true" {...props}
-    >{c}</svg>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+      {c}
+    </svg>
   )
 }
 
@@ -118,15 +112,9 @@ function IcXSocial({ size = 16, ...p }) {
   )
 }
 
-/* ─────────────────────────────────────────────
-   SHARED COMPONENTS
-───────────────────────────────────────────── */
-
 function PlatformIcons({ platformSplit, size = 13 }) {
   const platforms = Object.entries(platformSplit || {})
-    .filter(([, v]) => v > 0)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 4)
+    .filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).slice(0, 4)
   return (
     <div className="db-platform-icons">
       {platforms.map(([name]) => {
@@ -151,11 +139,7 @@ const CAT_COLORS = {
 }
 function CatBadge({ cat, label }) {
   const s = CAT_COLORS[cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
-  return (
-    <span className="db-cat-badge" style={{ color: s.color, background: s.bg, borderColor: s.border }}>
-      {label}
-    </span>
-  )
+  return <span className="db-cat-badge" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{label}</span>
 }
 
 function SignInPrompt({ onSignIn, message }) {
@@ -170,6 +154,44 @@ function SignInPrompt({ onSignIn, message }) {
 }
 
 /* ═══════════════════════════════════════════════════════
+   HERO ANALYTICS WIDGET (right side of hero banner)
+═══════════════════════════════════════════════════════ */
+const HA_BARS = [22, 35, 48, 30, 55, 42, 68, 85]
+
+function HeroAnalytics() {
+  return (
+    <div className="db-ha">
+      <div className="db-ha-float db-ha-float--tl">+$48.50 earned</div>
+      <div className="db-ha-float db-ha-float--br">3.85M views</div>
+      <div className="db-ha-card">
+        <div className="db-ha-head">
+          <span className="db-ha-title">Clip Performance</span>
+          <span className="db-ha-growth">+34% ↑</span>
+        </div>
+        <div className="db-ha-chart">
+          {HA_BARS.map((h, i) => (
+            <div key={i} className="db-ha-col">
+              <div className="db-ha-bar" style={{ height: `${h}%` }} />
+            </div>
+          ))}
+        </div>
+        <div className="db-ha-total">Week total: <strong>$60.70</strong></div>
+        <div className="db-ha-platforms">
+          <div className="db-ha-pltf">
+            <div className="db-ha-pltf-bar" style={{ width: '78%', background: '#2ECC71' }} />
+            <span>TikTok 78%</span>
+          </div>
+          <div className="db-ha-pltf">
+            <div className="db-ha-pltf-bar" style={{ width: '16%', background: '#e1306c' }} />
+            <span>Instagram 16%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════
    EXPLORE CAMPAIGNS VIEW
 ═══════════════════════════════════════════════════════ */
 const PLATFORM_TABS = [
@@ -179,11 +201,15 @@ const PLATFORM_TABS = [
   { id: 'YouTube',   Icon: IcYouTube        },
   { id: 'X',         Icon: IcXSocial        },
 ]
-
 const SORT_OPTIONS = [
   { id: 'cpm',    label: 'Highest CPM'    },
   { id: 'views',  label: 'Most Views'     },
   { id: 'budget', label: 'Largest Budget' },
+]
+const HOW_STEPS = [
+  { n: '01', icon: '🎯', t: 'Pick a Campaign', d: 'Browse active campaigns and choose one that fits your content style and audience.' },
+  { n: '02', icon: '📱', t: 'Post Your Clip',  d: 'Create and post your video, then submit the URL to us via the Submit Clip button.' },
+  { n: '03', icon: '💰', t: 'Earn Per View',   d: 'Get paid for every 1,000 views your accepted clips generate. Fully transparent.' },
 ]
 
 function CampaignsView({ onApply }) {
@@ -212,36 +238,37 @@ function CampaignsView({ onApply }) {
   if (sort === 'views')  filtered = [...filtered].sort((a, b) => b.snap.views - a.snap.views)
   if (sort === 'budget') filtered = [...filtered].sort((a, b) => b.campaign.budgetTotal - a.campaign.budgetTotal)
 
+  const totalViews  = snapshots.reduce((s, { snap }) => s + snap.views, 0)
+  const totalBudget = ACTIVE_CAMPAIGNS.reduce((s, c) => s + c.budgetTotal, 0)
+
   return (
     <div className="db-view db-explore">
-      {/* Top bar */}
+      {/* ── TOP BAR ── */}
       <div className="db-explore-topbar">
-        <h1 className="db-explore-h">Explore Campaigns</h1>
+        <div>
+          <h1 className="db-explore-h">Explore Campaigns</h1>
+          <p className="db-explore-sub">Find campaigns, post clips, and earn per view.</p>
+        </div>
         <div className="db-explore-controls">
           <label className="db-search-wrap">
-            <IcSearch size={14} className="db-search-icon" />
+            <IcSearch size={15} className="db-search-icon" />
             <input
               className="db-search"
-              placeholder="Search for a campaign..."
+              placeholder="Search campaigns..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </label>
           <div className="db-sort-wrap">
             <button className="db-filter-pill" onClick={() => setShowSortMenu(!showSortMenu)}>
-              Sort by: <strong>{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
+              Sort: <strong>{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
               <IcChevron size={12} />
             </button>
             {showSortMenu && (
               <div className="db-sort-menu">
                 {SORT_OPTIONS.map((o) => (
-                  <button
-                    key={o.id}
-                    className={'db-sort-item' + (sort === o.id ? ' active' : '')}
-                    onClick={() => { setSort(o.id); setShowSortMenu(false) }}
-                  >
-                    {o.label}
-                  </button>
+                  <button key={o.id} className={'db-sort-item' + (sort === o.id ? ' active' : '')}
+                    onClick={() => { setSort(o.id); setShowSortMenu(false) }}>{o.label}</button>
                 ))}
               </div>
             )}
@@ -249,134 +276,140 @@ function CampaignsView({ onApply }) {
         </div>
       </div>
 
-      {/* Platform filter tabs */}
+      {/* ── LIVE STATS STRIP ── */}
+      <div className="db-stats-strip">
+        <div className="db-stat-chip">
+          <span className="db-stat-chip-v">{ACTIVE_CAMPAIGNS.length}</span>
+          <span className="db-stat-chip-l">Active Campaigns</span>
+        </div>
+        <div className="db-stat-chip-div" />
+        <div className="db-stat-chip">
+          <span className="db-stat-chip-v">{formatMoney(totalBudget)}</span>
+          <span className="db-stat-chip-l">Total Budget</span>
+        </div>
+        <div className="db-stat-chip-div" />
+        <div className="db-stat-chip">
+          <span className="db-stat-chip-v db-green">{formatViews(totalViews)}</span>
+          <span className="db-stat-chip-l">Views Generated</span>
+          <span className="db-live-dot-sm" style={{ marginLeft: 6 }} />
+        </div>
+      </div>
+
+      {/* ── PLATFORM TABS ── */}
       <div className="db-platform-tabs">
         {PLATFORM_TABS.map(({ id, label, Icon }) => (
-          <button
-            key={id}
-            className={'db-platform-tab' + (platform === id ? ' active' : '')}
-            onClick={() => setPlatform(id)}
-          >
-            {Icon ? <Icon size={15} /> : label}
+          <button key={id} className={'db-platform-tab' + (platform === id ? ' active' : '')} onClick={() => setPlatform(id)}>
+            {Icon ? <><Icon size={15} /><span>{id}</span></> : label}
           </button>
         ))}
       </div>
 
-      <p className="db-showing-count">
-        Showing {filtered.length} active campaign{filtered.length !== 1 ? 's' : ''}
-      </p>
-
-      {/* Hero banner */}
+      {/* ── HERO BANNER ── */}
       <div className="db-hero-banner">
         <div className="db-hero-left">
-          <h2 className="db-hero-h">
-            Pick a campaign,<br />post clips, <em>get paid.</em>
-          </h2>
+          <h2 className="db-hero-h">Pick a campaign,<br />post clips, <em>get paid.</em></h2>
           <p className="db-hero-p">
             Join active ClipSmart campaigns, submit approved content, and earn based on
-            performance with transparent budgets and rates.
+            performance with transparent live budgets and rates.
           </p>
           <div className="db-hero-chips">
-            <div className="db-hero-chip">
-              <span className="db-hero-chip-ic">⚡</span>
-              <div>
-                <div className="db-hero-chip-t">Fast Payouts</div>
-                <div className="db-hero-chip-s">Tracked earnings</div>
-              </div>
-            </div>
-            <div className="db-hero-chip">
-              <span className="db-hero-chip-ic">📊</span>
-              <div>
-                <div className="db-hero-chip-t">Live Budgets</div>
-                <div className="db-hero-chip-s">Real campaign stats</div>
-              </div>
-            </div>
-            <div className="db-hero-chip">
-              <span className="db-hero-chip-ic">🎬</span>
-              <div>
-                <div className="db-hero-chip-t">Submit Clips</div>
-                <div className="db-hero-chip-s">Easy approvals</div>
-              </div>
-            </div>
+            <div className="db-hero-chip"><span className="db-hero-chip-ic">⚡</span><div><div className="db-hero-chip-t">Fast Payouts</div><div className="db-hero-chip-s">Tracked earnings</div></div></div>
+            <div className="db-hero-chip"><span className="db-hero-chip-ic">📊</span><div><div className="db-hero-chip-t">Live Budgets</div><div className="db-hero-chip-s">Real campaign stats</div></div></div>
+            <div className="db-hero-chip"><span className="db-hero-chip-ic">🎬</span><div><div className="db-hero-chip-t">Submit Clips</div><div className="db-hero-chip-s">Easy approvals</div></div></div>
           </div>
         </div>
         <div className="db-hero-right" aria-hidden="true">
-          <div className="db-hero-icon-wrap">
-            <div className="db-hero-icon-glow" />
-            <div className="db-hero-icon">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                <rect width="60" height="60" rx="16" fill="url(#dbHeroGrad)" />
-                <path d="M30 18v24M18 30h24" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" />
-                <defs>
-                  <linearGradient id="dbHeroGrad" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#2ECC71" />
-                    <stop offset="1" stopColor="#1a8a48" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-          </div>
+          <HeroAnalytics />
         </div>
       </div>
 
-      {/* Campaigns grid */}
+      {/* ── HOW IT WORKS ── */}
+      <div className="db-steps">
+        {HOW_STEPS.flatMap((step, i) => {
+          const items = [
+            <div key={step.n} className="db-step">
+              <div className="db-step-top">
+                <span className="db-step-num">{step.n}</span>
+                <span className="db-step-icon">{step.icon}</span>
+              </div>
+              <div className="db-step-t">{step.t}</div>
+              <div className="db-step-d">{step.d}</div>
+            </div>,
+          ]
+          if (i < HOW_STEPS.length - 1) items.push(<div key={'a' + i} className="db-step-arrow">→</div>)
+          return items
+        })}
+      </div>
+
+      {/* ── CAMPAIGNS SECTION ── */}
       <div className="db-campaigns-section">
         <div className="db-campaigns-sh">
-          <span className="db-campaigns-sh-title">Active Campaigns</span>
-          <span className="db-campaigns-sh-count">
-            <span className="db-live-dot-sm" />{filtered.length} Active
-          </span>
+          <div className="db-campaigns-sh-left">
+            <span className="db-campaigns-sh-title">Active Campaigns</span>
+            <span className="db-campaigns-sh-count"><span className="db-live-dot-sm" />{filtered.length} Active</span>
+          </div>
+          <p className="db-campaigns-sh-sub">Showing {filtered.length} campaign{filtered.length !== 1 ? 's' : ''} · updated live</p>
         </div>
 
         {filtered.length === 0 ? (
-          <div className="db-empty">
-            <div className="db-empty-icon">🔍</div>
-            <h3>No campaigns match</h3>
-            <p>Try adjusting your search or platform filter.</p>
-          </div>
+          <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns match</h3><p>Try adjusting your search or platform filter.</p></div>
         ) : (
           <div className="db-compact-grid">
             {filtered.map(({ campaign: c, snap }) => {
               const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
+              const bannerBg  = CAT_BANNER[c.cat] || c.gradient
               return (
                 <div key={c.slug} className="db-compact-card">
-                  <div className="db-compact-top">
-                    <div className="db-compact-icon">
-                      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-                        <rect width="30" height="30" rx="9" fill="rgba(46,204,113,0.16)" />
-                        <path d="M15 8v14M8 15h14" stroke="#2ECC71" strokeWidth="2.5" strokeLinecap="round" />
-                      </svg>
-                    </div>
-                    <div className="db-compact-meta">
-                      <div className="db-compact-name">{c.name}</div>
-                      <PlatformIcons platformSplit={c.platformSplit} size={12} />
-                    </div>
-                  </div>
-
-                  <CatBadge cat={c.cat} label={c.catLabel} />
-
-                  <div className="db-compact-stats">
-                    <div className="db-compact-stat">
-                      <div className="db-compact-stat-l">Active</div>
-                      <div className="db-compact-stat-v">
-                        {activePct}%<span className="db-compact-stat-budget"> / {formatMoney(c.budgetTotal)}</span>
-                      </div>
-                    </div>
-                    <div className="db-compact-stat db-compact-stat--r">
-                      <div className="db-compact-stat-l">Rate</div>
-                      <div className="db-compact-stat-v db-compact-stat-rate">
-                        ${c.clientRpm.toFixed(2)}<span className="db-compact-stat-per">/1K</span>
+                  {/* Gradient banner header */}
+                  <div className="db-card-banner" style={{ background: bannerBg }}>
+                    <div className="db-card-banner-dots" />
+                    <div className="db-card-banner-content">
+                      <div className="db-compact-top">
+                        <div className="db-compact-icon">
+                          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="9" fill="rgba(255,255,255,0.18)" />
+                            <path d="M16 8v16M8 16h16" stroke="#fff" strokeWidth="2.8" strokeLinecap="round" />
+                          </svg>
+                        </div>
+                        <div className="db-compact-meta">
+                          <div className="db-compact-name">{c.name}</div>
+                          <PlatformIcons platformSplit={c.platformSplit} size={13} />
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="db-progress">
-                    <div className="db-progress-bar" style={{ width: `${activePct}%` }} />
-                  </div>
+                  {/* Card body */}
+                  <div className="db-card-body">
+                    <div className="db-card-top-row">
+                      <CatBadge cat={c.cat} label={c.catLabel} />
+                      <span className="db-badge db-badge--active">● Active</span>
+                    </div>
 
-                  <button className="db-apply-btn" onClick={() => onApply(c)}>
-                    Apply to campaign →
-                  </button>
+                    <div className="db-card-views">
+                      <span className="db-card-views-n">{formatViews(snap.views)}</span>
+                      <span className="db-card-views-l">views generated</span>
+                    </div>
+
+                    <div className="db-compact-stats">
+                      <div className="db-compact-stat">
+                        <div className="db-compact-stat-l">Budget Used</div>
+                        <div className="db-compact-stat-v">{activePct}%<span className="db-compact-stat-budget"> / {formatMoney(c.budgetTotal)}</span></div>
+                      </div>
+                      <div className="db-compact-stat db-compact-stat--r">
+                        <div className="db-compact-stat-l">Rate</div>
+                        <div className="db-compact-stat-v db-compact-stat-rate">${c.clientRpm.toFixed(2)}<span className="db-compact-stat-per">/1K</span></div>
+                      </div>
+                    </div>
+
+                    <div className="db-progress">
+                      <div className="db-progress-bar" style={{ width: `${activePct}%` }} />
+                    </div>
+
+                    <button className="db-apply-btn" onClick={() => onApply(c)}>
+                      Apply to campaign →
+                    </button>
+                  </div>
                 </div>
               )
             })}
@@ -399,19 +432,16 @@ function JoinedCampaignsView({ user, onSignIn }) {
           <h1 className="db-view-h">Your Campaigns</h1>
           <p className="db-view-sub">Campaigns you have been accepted to work with.</p>
         </div>
-        <SignInPrompt onSignIn={onSignIn} message="Sign in to see the campaigns you have been accepted to and track your progress." />
+        <SignInPrompt onSignIn={onSignIn} message="Sign in to see campaigns you have been accepted to and track your progress." />
       </div>
     )
   }
-
   return (
     <div className="db-view">
       <div className="db-view-header">
         <div className="db-view-eyebrow"><IcJoined size={13} /> Joined Campaigns</div>
         <h1 className="db-view-h">Your Campaigns</h1>
-        <p className="db-view-sub">
-          {DEMO_JOINED.length} active campaign{DEMO_JOINED.length !== 1 ? 's' : ''} you have been accepted to. Keep posting to earn.
-        </p>
+        <p className="db-view-sub">{DEMO_JOINED.length} active campaign{DEMO_JOINED.length !== 1 ? 's' : ''} you have been accepted to. Keep posting to earn.</p>
       </div>
       <div className="db-joined-grid">
         {DEMO_JOINED.map((j) => {
@@ -419,45 +449,28 @@ function JoinedCampaignsView({ user, onSignIn }) {
           if (!c) return null
           const snap = computeSnapshot(c, Date.now())
           const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
+          const bannerBg  = CAT_BANNER[c.cat] || c.gradient
           return (
             <div key={j.campaignSlug} className="db-joined-card">
-              <div
-                className="db-joined-visual"
-                style={c.img
-                  ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-                  : { background: c.gradient }
-                }
-              >
-                {c.img && <div className="db-joined-overlay" />}
-                <div className="db-joined-visual-name">{c.name}</div>
+              <div className="db-card-banner db-card-banner--tall" style={{ background: bannerBg }}>
+                <div className="db-card-banner-dots" />
+                <div className="db-card-banner-content">
+                  <div className="db-joined-visual-name">{c.name}</div>
+                  <PlatformIcons platformSplit={c.platformSplit} size={14} />
+                </div>
               </div>
               <div className="db-joined-body">
                 <div className="db-joined-row">
                   <CatBadge cat={c.cat} label={c.catLabel} />
                   <span className="db-badge db-badge--active">● {j.status}</span>
                 </div>
-                <PlatformIcons platformSplit={c.platformSplit} size={14} />
                 <div className="db-joined-stats">
-                  <div className="db-joined-stat">
-                    <div className="db-joined-stat-v">{j.postsSubmitted}</div>
-                    <div className="db-joined-stat-l">Posts</div>
-                  </div>
-                  <div className="db-joined-stat">
-                    <div className="db-joined-stat-v">{j.acceptedPosts}</div>
-                    <div className="db-joined-stat-l">Accepted</div>
-                  </div>
-                  <div className="db-joined-stat">
-                    <div className="db-joined-stat-v db-green">${j.earnings.toFixed(2)}</div>
-                    <div className="db-joined-stat-l">Earned</div>
-                  </div>
-                  <div className="db-joined-stat">
-                    <div className="db-joined-stat-v">${c.clientRpm.toFixed(2)}</div>
-                    <div className="db-joined-stat-l">Rate/1K</div>
-                  </div>
+                  <div className="db-joined-stat"><div className="db-joined-stat-v">{j.postsSubmitted}</div><div className="db-joined-stat-l">Posts</div></div>
+                  <div className="db-joined-stat"><div className="db-joined-stat-v">{j.acceptedPosts}</div><div className="db-joined-stat-l">Accepted</div></div>
+                  <div className="db-joined-stat"><div className="db-joined-stat-v db-green">${j.earnings.toFixed(2)}</div><div className="db-joined-stat-l">Earned</div></div>
+                  <div className="db-joined-stat"><div className="db-joined-stat-v">${c.clientRpm.toFixed(2)}</div><div className="db-joined-stat-l">Rate/1K</div></div>
                 </div>
-                <div className="db-progress" style={{ marginTop: 6 }}>
-                  <div className="db-progress-bar" style={{ width: `${activePct}%` }} />
-                </div>
+                <div className="db-progress"><div className="db-progress-bar" style={{ width: `${activePct}%` }} /></div>
                 <p className="db-joined-meta">Joined {j.joinedDate}</p>
               </div>
             </div>
@@ -484,7 +497,6 @@ function WalletView({ user, onSignIn, onWithdraw }) {
       </div>
     )
   }
-
   return (
     <div className="db-view">
       <div className="db-view-header">
@@ -492,7 +504,6 @@ function WalletView({ user, onSignIn, onWithdraw }) {
         <h1 className="db-view-h">Your Wallet</h1>
         <p className="db-view-sub">Track your earnings and withdraw your available balance.</p>
       </div>
-
       <div className="db-stat-cards">
         <div className="db-stat-card db-stat-card--primary">
           <div className="db-stat-card-label">Available to Withdraw</div>
@@ -511,29 +522,18 @@ function WalletView({ user, onSignIn, onWithdraw }) {
           <div className="db-stat-card-sub">Processing now</div>
         </div>
       </div>
-
       <div className="db-tx-section">
         <h3 className="db-section-h3">Transaction History</h3>
         <div className="db-tx-table-wrap">
           <div className="db-tx-table">
-            <div className="db-tx-head">
-              <span>Date</span>
-              <span>Campaign</span>
-              <span>Views</span>
-              <span>Amount</span>
-              <span>Status</span>
-            </div>
+            <div className="db-tx-head"><span>Date</span><span>Campaign</span><span>Views</span><span>Amount</span><span>Status</span></div>
             {DEMO_WALLET.transactions.map((t) => (
               <div key={t.id} className="db-tx-row">
                 <span className="db-tx-date">{t.date}</span>
                 <span className="db-tx-campaign">{t.campaign}</span>
                 <span className="db-tx-views">{formatViews(t.views)}</span>
                 <span className="db-tx-amount">+${t.amount.toFixed(2)}</span>
-                <span>
-                  <span className={'db-badge db-badge--' + t.status}>
-                    {t.status === 'paid' ? 'Paid' : 'Pending'}
-                  </span>
-                </span>
+                <span><span className={'db-badge db-badge--' + t.status}>{t.status === 'paid' ? 'Paid' : 'Pending'}</span></span>
               </div>
             ))}
           </div>
@@ -559,13 +559,11 @@ function SubmissionsView({ user, onSignIn }) {
       </div>
     )
   }
-
   const counts = {
     accepted: DEMO_SUBMISSIONS.filter((s) => s.status === 'accepted').length,
     pending:  DEMO_SUBMISSIONS.filter((s) => s.status === 'pending').length,
     denied:   DEMO_SUBMISSIONS.filter((s) => s.status === 'denied').length,
   }
-
   return (
     <div className="db-view">
       <div className="db-view-header">
@@ -573,35 +571,21 @@ function SubmissionsView({ user, onSignIn }) {
         <h1 className="db-view-h">My Submissions</h1>
         <p className="db-view-sub">All {DEMO_SUBMISSIONS.length} clip submissions across campaigns.</p>
       </div>
-
       <div className="db-sub-summary">
         <span className="db-badge db-badge--accepted">{counts.accepted} Accepted</span>
         <span className="db-badge db-badge--pending">{counts.pending} Pending</span>
         <span className="db-badge db-badge--denied">{counts.denied} Denied</span>
       </div>
-
       <div className="db-subs-table-wrap">
         <div className="db-subs-table">
-          <div className="db-subs-head">
-            <span>Campaign</span>
-            <span>Platform</span>
-            <span>Date</span>
-            <span>Status</span>
-            <span>Views</span>
-          </div>
+          <div className="db-subs-head"><span>Campaign</span><span>Platform</span><span>Date</span><span>Status</span><span>Views</span></div>
           {DEMO_SUBMISSIONS.map((s) => (
             <div key={s.id} className="db-subs-row">
               <span className="db-subs-campaign">{s.campaign}</span>
               <span className="db-subs-platform">{s.platform}</span>
               <span className="db-subs-date">{s.date}</span>
-              <span>
-                <span className={'db-badge db-badge--' + s.status}>
-                  {s.status.charAt(0).toUpperCase() + s.status.slice(1)}
-                </span>
-              </span>
-              <span className={s.views > 0 ? 'db-subs-views' : 'db-subs-views-none'}>
-                {s.views > 0 ? formatViews(s.views) : '—'}
-              </span>
+              <span><span className={'db-badge db-badge--' + s.status}>{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</span></span>
+              <span className={s.views > 0 ? 'db-subs-views' : 'db-subs-views-none'}>{s.views > 0 ? formatViews(s.views) : '—'}</span>
             </div>
           ))}
         </div>
@@ -638,42 +622,24 @@ function SubmitClipModal({ onClose, onSuccess }) {
           <div className="db-modal-field">
             <label className="db-modal-lbl">Campaign</label>
             <select className="db-modal-sel" value={campaign} onChange={(e) => setCampaign(e.target.value)}>
-              {ACTIVE_CAMPAIGNS.map((c) => (
-                <option key={c.slug} value={c.slug}>{c.name}</option>
-              ))}
+              {ACTIVE_CAMPAIGNS.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
             </select>
           </div>
           <div className="db-modal-field">
             <label className="db-modal-lbl">Platform</label>
             <div className="db-modal-pltf-row">
               {['TikTok', 'Instagram', 'YouTube'].map((p) => (
-                <button
-                  key={p} type="button"
-                  className={'db-modal-pltf-btn' + (platform === p ? ' active' : '')}
-                  onClick={() => setPlatform(p)}
-                >{p}</button>
+                <button key={p} type="button" className={'db-modal-pltf-btn' + (platform === p ? ' active' : '')} onClick={() => setPlatform(p)}>{p}</button>
               ))}
             </div>
           </div>
           <div className="db-modal-field">
             <label className="db-modal-lbl">Video URL</label>
-            <input
-              className="db-modal-inp"
-              placeholder="https://tiktok.com/@yourhandle/video/..."
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              required
-            />
+            <input className="db-modal-inp" placeholder="https://tiktok.com/@yourhandle/video/..." value={url} onChange={(e) => setUrl(e.target.value)} required />
           </div>
           <div className="db-modal-field">
             <label className="db-modal-lbl">Note <span className="db-modal-opt">(optional)</span></label>
-            <textarea
-              className="db-modal-txt"
-              placeholder="Any notes for the review team..."
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              rows={3}
-            />
+            <textarea className="db-modal-txt" placeholder="Any notes for the review team..." value={note} onChange={(e) => setNote(e.target.value)} rows={3} />
           </div>
           <button className="db-modal-submit" type="submit" disabled={loading || !url.trim()}>
             {loading ? 'Submitting...' : 'Submit Clip'}
@@ -689,11 +655,10 @@ function SubmitClipModal({ onClose, onSuccess }) {
 ═══════════════════════════════════════════════════════ */
 const MAIN_NAV = [
   { id: 'home',        label: 'Home',            Icon: IcHome,   href: '/' },
-  { id: 'joined',      label: 'Joined Campaigns', Icon: IcJoined             },
-  { id: 'wallet',      label: 'Wallet',           Icon: IcWallet             },
-  { id: 'submissions', label: 'My Submissions',   Icon: IcClips              },
+  { id: 'joined',      label: 'Joined Campaigns', Icon: IcJoined            },
+  { id: 'wallet',      label: 'Wallet',           Icon: IcWallet            },
+  { id: 'submissions', label: 'My Submissions',   Icon: IcClips             },
 ]
-
 const SUPPORT_NAV = [
   { id: 'campaigns', label: 'Active Campaigns', Icon: IcZap     },
   { id: 'support',   label: 'Live Support',     Icon: IcSupport },
@@ -706,18 +671,11 @@ export default function Dashboard() {
   const [showSubmitModal, setShowSubmitModal] = useState(false)
   const { user, profile, signOut } = useAuth()
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [])
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [])
 
-  function showToast(msg) {
-    setToast(msg)
-    setTimeout(() => setToast(null), 3500)
-  }
+  function showToast(msg) { setToast(msg); setTimeout(() => setToast(null), 3500) }
 
-  function openSupport() {
-    if (typeof window !== 'undefined' && window.Tawk_API) window.Tawk_API.toggle()
-  }
+  function openSupport() { if (typeof window !== 'undefined' && window.Tawk_API) window.Tawk_API.toggle() }
 
   function handleApply(campaign) {
     if (!user) { setAuthModal({ intent: `Apply to ${campaign.name}` }); return }
@@ -729,9 +687,7 @@ export default function Dashboard() {
     setShowSubmitModal(true)
   }
 
-  function handleWithdraw() {
-    showToast('Withdrawal request sent — funds arrive within 3–5 business days.')
-  }
+  function handleWithdraw() { showToast('Withdrawal request sent — funds arrive within 3–5 business days.') }
 
   function handleNavClick(id) {
     if (id === 'support') { openSupport(); return }
@@ -753,73 +709,50 @@ export default function Dashboard() {
       {/* ──────── SIDEBAR ──────── */}
       <aside className="db-sidebar">
         <div className="db-sidebar-top">
-          {/* Logo */}
           <Link to="/" className="db-logo">
             <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
             <span>ClipSmart</span>
           </Link>
 
-          {/* User badge when signed in */}
           {user && (
             <div className="db-user-badge">
-              <div className="db-ub-av">
-                {(profile?.username || user.email || '?')[0].toUpperCase()}
-              </div>
+              <div className="db-ub-av">{(profile?.username || user.email || '?')[0].toUpperCase()}</div>
               <div className="db-ub-info">
                 <div className="db-ub-name">{profile?.username || 'Creator'}</div>
                 <div className="db-ub-email">{user.email}</div>
               </div>
-              <button className="db-signout-btn" onClick={signOut} title="Sign out">
-                <IcSignout size={14} />
-              </button>
+              <button className="db-signout-btn" onClick={signOut} title="Sign out"><IcSignout size={14} /></button>
             </div>
           )}
 
-          {/* MAIN nav */}
           <p className="db-section-lbl">MAIN</p>
           <nav className="db-nav">
             {MAIN_NAV.map(({ id, label, Icon, href }) =>
               href ? (
-                <Link key={id} to={href} className="db-nav-item">
-                  <Icon size={16} />{label}
-                </Link>
+                <Link key={id} to={href} className="db-nav-item"><Icon size={17} />{label}</Link>
               ) : (
-                <button
-                  key={id}
-                  className={'db-nav-item' + (activeView === id ? ' active' : '')}
-                  onClick={() => handleNavClick(id)}
-                >
-                  <Icon size={16} />{label}
+                <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
+                  <Icon size={17} />{label}
                 </button>
               )
             )}
           </nav>
 
-          {/* SUPPORT nav */}
           <p className="db-section-lbl">SUPPORT</p>
           <nav className="db-nav">
             {SUPPORT_NAV.map(({ id, label, Icon }) => (
-              <button
-                key={id}
-                className={'db-nav-item' + (activeView === id ? ' active' : '')}
-                onClick={() => handleNavClick(id)}
-              >
-                <Icon size={16} />{label}
+              <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
+                <Icon size={17} />{label}
               </button>
             ))}
           </nav>
         </div>
 
-        {/* ──────── SIDEBAR FOOT ──────── */}
+        {/* Sidebar footer — Submit Clip is FIRST (most prominent) */}
         <div className="db-sidebar-foot">
-          {!user && (
-            <button
-              className="db-signin-prompt"
-              onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}
-            >
-              Sign in / Sign up
-            </button>
-          )}
+          <button className="db-submit-clip-btn" onClick={handleSubmitClip}>
+            <IcUpload size={17} />Submit Clip
+          </button>
           <div className="db-social-row">
             <a href="https://discord.gg/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Discord">
               <IcDiscord size={15} /><span>Discord</span>
@@ -828,39 +761,26 @@ export default function Dashboard() {
               <IcInstagram size={15} /><span>Instagram</span>
             </a>
           </div>
-          <button className="db-submit-clip-btn" onClick={handleSubmitClip}>
-            <IcUpload size={16} />Submit Clip
-          </button>
+          {!user && (
+            <button className="db-signin-prompt" onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}>
+              Sign in / Sign up
+            </button>
+          )}
         </div>
       </aside>
 
-      {/* ──────── MAIN CONTENT ──────── */}
       <main className="db-main">{renderView()}</main>
 
-      {/* ──────── TOAST ──────── */}
-      {toast && (
-        <div className="db-toast">
-          <span className="db-live-dot-sm" />{toast}
-        </div>
-      )}
+      {toast && <div className="db-toast"><span className="db-live-dot-sm" />{toast}</div>}
 
-      {/* ──────── AUTH MODAL ──────── */}
       {authModal && (
-        <AuthModal
-          intent={authModal.intent}
-          onClose={() => setAuthModal(null)}
-          onSuccess={() => setAuthModal(null)}
-        />
+        <AuthModal intent={authModal.intent} onClose={() => setAuthModal(null)} onSuccess={() => setAuthModal(null)} />
       )}
 
-      {/* ──────── SUBMIT CLIP MODAL ──────── */}
       {showSubmitModal && (
         <SubmitClipModal
           onClose={() => setShowSubmitModal(false)}
-          onSuccess={() => {
-            setShowSubmitModal(false)
-            showToast("Clip submitted! We'll review it within 24 hours.")
-          }}
+          onSuccess={() => { setShowSubmitModal(false); showToast("Clip submitted! We'll review it within 24 hours.") }}
         />
       )}
     </div>
