@@ -78,9 +78,9 @@ body::before {
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--pad);
-  background: #1c2220;
+  background: #0d0e0f;
   backdrop-filter: none;
-  border-bottom: 1px solid rgba(255,255,255,0.09);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 .nav-logo {
   display: flex;
@@ -144,6 +144,58 @@ body::before {
   box-shadow: 0 8px 24px rgba(46,204,113,.3);
 }
 
+/* ── Nav auth (sign-in / user chip) ── */
+.nav-signin {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 20px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13.5px; font-weight: 700;
+  transition: all .2s; white-space: nowrap;
+}
+.nav-signin:hover {
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.nav-user-wrap { position: relative; }
+.nav-user-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 6px; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.nav-user-btn:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); }
+.nav-user-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--g); color: #000;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+}
+.nav-user-name { max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-user-chevron { color: rgba(255,255,255,0.5); font-size: 11px; }
+.nav-user-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: #1a1c1e; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px; overflow: hidden; z-index: 600;
+  box-shadow: 0 10px 36px rgba(0,0,0,.6); min-width: 160px;
+}
+.nav-user-item {
+  display: block; width: 100%; padding: 12px 18px; text-align: left;
+  font-size: 14px; font-family: inherit; color: rgba(255,255,255,0.75);
+  background: none; border: none; cursor: pointer;
+  transition: background .12s, color .12s; text-decoration: none;
+}
+.nav-user-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+.nav-user-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 0; }
+.nav-user-signout { color: #f87171 !important; }
+.nav-user-signout:hover { background: rgba(248,113,113,0.1) !important; }
+
 /* ── Hamburger button ── */
 .mob-menu-btn {
   display: none;
@@ -177,8 +229,8 @@ body::before {
   position: fixed;
   top: var(--nav-h);
   left: 0; right: 0;
-  background: #1c2220;
-  border-bottom: 1px solid rgba(255,255,255,0.09);
+  background: #0d0e0f;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
   z-index: 490;
   padding: 10px 14px 18px;
   flex-direction: column;
