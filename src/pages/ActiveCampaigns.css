@@ -55,6 +55,19 @@
   );
 }
 
+/* Completed badge (past campaigns) */
+.ac-completed-badge {
+  position: absolute;
+  top: 12px; right: 12px; z-index: 3;
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(6px);
+  border-radius: 100px; padding: 4px 10px;
+  font-size: 9px; font-weight: 800; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.7); text-transform: uppercase;
+}
+.ac-grid--past { margin-top: 28px; }
+
 /* LIVE badge */
 .ac-live-badge {
   position: absolute;

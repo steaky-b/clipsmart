@@ -49,6 +49,10 @@
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
+.hiw-hub-inner--two {
+  max-width: 860px;
+  grid-template-columns: 1fr 1fr;
+}
 .hiw-hub-card {
   display: flex;
   flex-direction: column;

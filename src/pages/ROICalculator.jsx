@@ -41,20 +41,16 @@ function CPMChart({ rpm }) {
   )
 }
 
-const PRESETS = [
-  { label: 'Starter', budget: 1000 },
-  { label: 'Growth', budget: 2500 },
-  { label: 'Scale', budget: 5000 },
-  { label: 'Custom', budget: null },
-]
+const BUDGET_STEPS = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
+const RPM_OPTIONS  = [0.50, 0.75, 1.00, 1.25, 1.50, 2.00, 2.50, 3.00]
 
 export default function ROICalculator() {
-  const [budget, setBudget] = useState(2500)
+  const [budget,       setBudget]       = useState(2500)
   const [customBudget, setCustomBudget] = useState('')
-  const [activePreset, setActivePreset] = useState(1)
-  const [rpm, setRpm] = useState(1)
+  const [showCustom,   setShowCustom]   = useState(false)
+  const [rpm,          setRpm]          = useState(1.00)
 
-  const activeBudget = activePreset === 3 ? Number(customBudget) || 0 : budget
+  const activeBudget = showCustom ? (Number(customBudget) || 0) : budget
 
   const calc = useMemo(() => {
     const b = activeBudget
@@ -77,7 +73,7 @@ export default function ROICalculator() {
       <div className="page-hero">
         <div className="section-eyebrow" style={{ justifyContent: 'center' }}>ROI Calculator</div>
         <h1>See exactly what your<br /><em>budget buys you.</em></h1>
-        <p>Adjust your budget and RPM rate to see your guaranteed views and how much you save compared to paid ads.</p>
+        <p>Pick your budget and rate to see guaranteed views and how much you save vs paid ads.</p>
       </div>
 
       <div className="calc-section">
@@ -85,53 +81,60 @@ export default function ROICalculator() {
           {/* Controls */}
           <div className="calc-controls fade-up">
             <div className="calc-card">
+              {/* Budget selector */}
               <div className="calc-card-head">
-                <h3>Your Campaign Budget</h3>
-                <p>Select a preset or enter a custom amount</p>
+                <h3>Campaign Budget</h3>
+                <p>Select in £500 increments or enter a custom amount</p>
               </div>
-              <div className="calc-presets">
-                {PRESETS.map(({ label, budget: b }, i) => (
+              <div className="calc-budget-grid">
+                {BUDGET_STEPS.map((b) => (
                   <button
-                    key={label}
-                    className={'calc-preset' + (activePreset === i ? ' on' : '')}
-                    onClick={() => {
-                      setActivePreset(i)
-                      if (b !== null) setBudget(b)
-                    }}
+                    key={b}
+                    className={'calc-budget-pill' + (!showCustom && budget === b ? ' on' : '')}
+                    onClick={() => { setBudget(b); setShowCustom(false) }}
                   >
-                    {label}
-                    {b && <span>${b.toLocaleString()}</span>}
+                    ${b.toLocaleString()}
                   </button>
                 ))}
+                <button
+                  className={'calc-budget-pill calc-budget-pill--custom' + (showCustom ? ' on' : '')}
+                  onClick={() => setShowCustom(true)}
+                >
+                  Custom
+                </button>
               </div>
-              {activePreset === 3 && (
+              {showCustom && (
                 <div className="calc-custom-input">
                   <label>Custom amount ($)</label>
                   <input
                     type="number"
-                    min="100"
-                    step="100"
-                    placeholder="e.g. 3500"
+                    min="500"
+                    step="500"
+                    placeholder="e.g. 7500"
                     value={customBudget}
                     onChange={(e) => setCustomBudget(e.target.value)}
                   />
                 </div>
               )}
-              <div className="calc-slider-wrap">
-                <div className="calc-slider-labels">
-                  <span>Cost per 1,000 views</span>
-                  <span className="calc-rpm-val">${rpm} per 1K views</span>
+
+              {/* RPM picker */}
+              <div className="calc-rpm-section">
+                <div className="calc-rpm-header">
+                  <span>Rate per 1,000 views</span>
+                  <span className="calc-rpm-val">${rpm.toFixed(2)} / 1K</span>
                 </div>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="3"
-                  step="0.5"
-                  value={rpm}
-                  onChange={(e) => setRpm(Number(e.target.value))}
-                  className="calc-slider"
-                />
-                <div className="calc-slider-note">Standard rate is $1 per 1,000 views. A higher rate incentivises more creators to post.</div>
+                <div className="calc-rpm-pills">
+                  {RPM_OPTIONS.map((r) => (
+                    <button
+                      key={r}
+                      className={'calc-rpm-pill' + (rpm === r ? ' on' : '')}
+                      onClick={() => setRpm(r)}
+                    >
+                      ${r.toFixed(2)}
+                    </button>
+                  ))}
+                </div>
+                <div className="calc-slider-note">Standard rate is $1.00 per 1,000 views. A higher rate incentivises more creators to post.</div>
               </div>
             </div>
           </div>

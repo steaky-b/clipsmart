@@ -7,6 +7,7 @@ import {
   formatFull,
   formatMoney,
 } from '../data/activeCampaigns'
+import { PAST_CAMPAIGNS } from '../data/pastCampaigns'
 
 export default function ActiveCampaigns() {
   const now = Date.now()
@@ -117,27 +118,48 @@ export default function ActiveCampaigns() {
         </div>
       </div>
 
-      {/* PAST CAMPAIGNS LINK */}
-      <div className="section" style={{ paddingTop: 0 }}>
-        <div className="ac-past-link fade-up">
-          <div className="ac-past-left">
-            <div className="section-eyebrow">Archive</div>
-            <h2 className="section-h2">Want to see what we've<br /><em>already delivered?</em></h2>
-            <p style={{ fontSize: '15px', color: 'var(--t1)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '480px' }}>
-              Every number on the Past Campaigns page is verified — real budgets, real creators, real views.
-            </p>
-            <Link to="/case-studies" className="btn-primary">View past campaigns →</Link>
-          </div>
-          <div className="ac-past-stats">
-            <div className="ac-past-stat">
-              <div className="ac-past-stat-v">2.3B+</div>
-              <div className="ac-past-stat-l">Total views delivered across all past campaigns</div>
-            </div>
-            <div className="ac-past-stat">
-              <div className="ac-past-stat-v">9</div>
-              <div className="ac-past-stat-l">Completed campaigns across music, health, and more</div>
-            </div>
-          </div>
+      {/* PAST CAMPAIGNS */}
+      <div className="section" style={{ paddingTop: '28px' }}>
+        <div className="section-eyebrow fade-up">Archive</div>
+        <h2 className="section-h2 fade-up">Past campaigns.<br /><em>Real results.</em></h2>
+        <div className="ac-grid ac-grid--past">
+          {PAST_CAMPAIGNS.map((c) => (
+            <Link key={c.id} to="/case-studies" state={{ modalId: c.id }} className="ac-card fade-up">
+              <div
+                className="ac-card-thumb"
+                style={c.img
+                  ? { backgroundImage: `url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
+                  : { background: c.gradient }
+                }
+              >
+                <div className="ac-card-overlay" />
+                <div className="ac-completed-badge">✓ Completed</div>
+                <div className="ac-card-content">
+                  <div className="ac-card-head">
+                    <div className="ac-card-avatar">
+                      {c.img
+                        ? <img src={c.img} alt={c.name} className="ac-avatar-img" />
+                        : <span className="ac-avatar-letter">{c.name[0]}</span>
+                      }
+                    </div>
+                    <div className="ac-card-title-wrap">
+                      <div className="ac-card-name">{c.name}</div>
+                      <div className="ac-card-sub">{c.catLabel} · {c.subtitle}</div>
+                    </div>
+                  </div>
+                  <div className="ac-card-metrics-row">
+                    {c.results.map(({ v, l }) => (
+                      <div key={l} className="ac-foot-metric">
+                        <span className="ac-foot-v">{v}</span>
+                        <span className="ac-foot-l">{l}</span>
+                      </div>
+                    ))}
+                    <span className="ac-card-cta-badge">View →</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
 

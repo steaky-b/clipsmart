@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from '../components/AuthModal'
 import { supabase, isSupabaseReady } from '../lib/supabase'
@@ -162,6 +162,52 @@ function DemoBanner({ onSignIn }) {
         <span className="db-demo-text">Sample data — sign in to see your real activity.</span>
       </div>
       <button className="db-demo-signin-btn" onClick={onSignIn}>Sign in →</button>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════
+   USER AVATAR DROPDOWN (top-right of main area)
+═══════════════════════════════════════════════════════ */
+function UserAvatarDropdown({ user, profile, signOut }) {
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef(null)
+
+  useEffect(() => {
+    function outside(e) { if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', outside)
+    return () => document.removeEventListener('mousedown', outside)
+  }, [])
+
+  const name    = profile?.username || user.email?.split('@')[0] || 'User'
+  const initial = name[0].toUpperCase()
+  const avatar  = profile?.avatar_url || null
+
+  return (
+    <div className="db-av-wrap" ref={wrapRef}>
+      <button className="db-av-btn" onClick={() => setOpen((o) => !o)} aria-label="Profile menu">
+        {avatar
+          ? <img src={avatar} alt={name} className="db-av-img" />
+          : <span className="db-av-circle">{initial}</span>
+        }
+      </button>
+      {open && (
+        <div className="db-av-menu">
+          <div className="db-av-menu-head">
+            <span className="db-av-menu-init">{initial}</span>
+            <div>
+              <div className="db-av-menu-name">{name}</div>
+              <div className="db-av-menu-email">{user.email}</div>
+            </div>
+          </div>
+          <div className="db-av-divider" />
+          <button className="db-av-item" onClick={() => setOpen(false)}>My Profile</button>
+          <button className="db-av-item" onClick={() => setOpen(false)}>Account Settings</button>
+          <button className="db-av-item" onClick={() => setOpen(false)}>Connected Accounts</button>
+          <div className="db-av-divider" />
+          <button className="db-av-item db-av-item--danger" onClick={() => { signOut(); setOpen(false) }}>Log Out</button>
+        </div>
+      )}
     </div>
   )
 }
@@ -387,23 +433,6 @@ function CampaignsView({ onApply }) {
         </div>
       )}
 
-      {/* ── HOW IT WORKS (below grid) ── */}
-      <div className="db-steps">
-        {HOW_STEPS.flatMap((step, i) => {
-          const items = [
-            <div key={step.n} className="db-step">
-              <div className="db-step-top">
-                <span className="db-step-num">{step.n}</span>
-                <span className="db-step-icon">{step.icon}</span>
-              </div>
-              <div className="db-step-t">{step.t}</div>
-              <div className="db-step-d">{step.d}</div>
-            </div>,
-          ]
-          if (i < HOW_STEPS.length - 1) items.push(<div key={'a' + i} className="db-step-arrow">→</div>)
-          return items
-        })}
-      </div>
     </div>
   )
 }
@@ -411,7 +440,7 @@ function CampaignsView({ onApply }) {
 /* ═══════════════════════════════════════════════════════
    JOINED CAMPAIGNS VIEW
 ═══════════════════════════════════════════════════════ */
-function JoinedCampaignsView({ user, onSignIn }) {
+function JoinedCampaignsView({ user, onSignIn, onSubmitClip }) {
   const [realData, setRealData]   = useState(null) // null=not loaded
   const [fetching, setFetching]   = useState(false)
   const isDemo = !user || !isSupabaseReady || realData === null
@@ -458,36 +487,77 @@ function JoinedCampaignsView({ user, onSignIn }) {
           <p className="db-empty-sub">Browse Active Campaigns and apply to get started.</p>
         </div>
       )}
-      <div className="db-joined-grid">
+      <div className="db-compact-grid">
         {displayData.map((j) => {
           const c = ACTIVE_CAMPAIGNS.find((x) => x.slug === j.campaignSlug)
           if (!c) return null
-          const snap = computeSnapshot(c, Date.now())
+          const snap     = computeSnapshot(c, Date.now())
           const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
-          const bannerBg  = CAT_BANNER[c.cat] || c.gradient
+          const cs = CAT_COLORS[c.cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
           return (
-            <div key={j.campaignSlug} className="db-joined-card">
-              <div className="db-card-banner db-card-banner--tall" style={{ background: bannerBg }}>
-                <div className="db-card-banner-dots" />
-                <div className="db-card-banner-content">
-                  <div className="db-joined-visual-name">{c.name}</div>
-                  <PlatformIcons platformSplit={c.platformSplit} size={14} />
-                </div>
-              </div>
-              <div className="db-joined-body">
-                <div className="db-joined-row">
-                  <CatBadge cat={c.cat} label={c.catLabel} />
+            <div key={j.campaignSlug} className="db-compact-card">
+              {/* Top row */}
+              <div className="db-ccard-top">
+                <CatBadge cat={c.cat} label={c.catLabel.toUpperCase()} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <span className="db-badge db-badge--active">● {j.status}</span>
+                  <PlatformIcons platformSplit={c.platformSplit} size={12} />
                 </div>
-                <div className="db-joined-stats">
-                  <div className="db-joined-stat"><div className="db-joined-stat-v">{j.postsSubmitted}</div><div className="db-joined-stat-l">Posts</div></div>
-                  <div className="db-joined-stat"><div className="db-joined-stat-v">{j.acceptedPosts}</div><div className="db-joined-stat-l">Accepted</div></div>
-                  <div className="db-joined-stat"><div className="db-joined-stat-v db-green">${j.earnings.toFixed(2)}</div><div className="db-joined-stat-l">Earned</div></div>
-                  <div className="db-joined-stat"><div className="db-joined-stat-v">${c.clientRpm.toFixed(2)}</div><div className="db-joined-stat-l">Rate/1K</div></div>
-                </div>
-                <div className="db-progress"><div className="db-progress-bar" style={{ width: `${activePct}%` }} /></div>
-                <p className="db-joined-meta">Joined {j.joinedDate}</p>
               </div>
+
+              {/* Identity */}
+              <div className="db-ccard-ident">
+                <div className="db-ccard-icon" style={{ background: cs.bg, border: `1px solid ${cs.border}` }}>
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                    <path d="M11 4v14M4 11h14" stroke={cs.color} strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <div className="db-ccard-name-wrap">
+                  <div className="db-compact-name">{c.name}</div>
+                  <div className="db-ccard-cat-lbl" style={{ color: cs.color }}>Partner since {j.joinedDate}</div>
+                </div>
+              </div>
+
+              {/* Partner stats */}
+              <div className="db-ccard-partner-stats">
+                <div className="db-ccard-pstat">
+                  <div className="db-ccard-pstat-v" style={{ color: '#2ECC71' }}>${j.earnings.toFixed(2)}</div>
+                  <div className="db-ccard-pstat-l">Earned</div>
+                </div>
+                <div className="db-ccard-pstat">
+                  <div className="db-ccard-pstat-v">{formatViews(snap.views)}</div>
+                  <div className="db-ccard-pstat-l">Camp. Views</div>
+                </div>
+                <div className="db-ccard-pstat">
+                  <div className="db-ccard-pstat-v">{j.acceptedPosts}/{j.postsSubmitted}</div>
+                  <div className="db-ccard-pstat-l">Clips OK</div>
+                </div>
+              </div>
+
+              {/* Progress */}
+              <div className="db-ccard-progress-lbl">
+                <span>Campaign Progress</span>
+                <span style={{ color: cs.color, fontWeight: 700 }}>{activePct}%</span>
+              </div>
+              <div className="db-progress">
+                <div className="db-progress-bar" style={{ width: `${activePct}%`, background: cs.color }} />
+              </div>
+
+              {/* Rate */}
+              <div className="db-ccard-stats">
+                <div className="db-ccard-stat">
+                  <div className="db-ccard-stat-v">${c.clientRpm.toFixed(2)}</div>
+                  <div className="db-ccard-stat-l">Per 1k Views</div>
+                </div>
+                <div className="db-ccard-stat">
+                  <div className="db-ccard-stat-v">{formatMoney(c.budgetTotal)}</div>
+                  <div className="db-ccard-stat-l">Total Budget</div>
+                </div>
+              </div>
+
+              <button className="db-apply-btn" onClick={onSubmitClip}>
+                Submit Clip →
+              </button>
             </div>
           )
         })}
@@ -742,10 +812,10 @@ function SubmitClipModal({ onClose, onSuccess, user }) {
    MAIN DASHBOARD
 ═══════════════════════════════════════════════════════ */
 const MAIN_NAV = [
-  { id: 'home',        label: 'Home',            Icon: IcHome,   href: '/' },
-  { id: 'joined',      label: 'Joined Campaigns', Icon: IcJoined            },
-  { id: 'wallet',      label: 'Wallet',           Icon: IcWallet            },
-  { id: 'submissions', label: 'My Submissions',   Icon: IcClips             },
+  { id: 'return',      label: 'Return',           Icon: IcHome,   isBack: true },
+  { id: 'joined',      label: 'Joined Campaigns', Icon: IcJoined               },
+  { id: 'wallet',      label: 'Wallet',           Icon: IcWallet               },
+  { id: 'submissions', label: 'My Submissions',   Icon: IcClips                },
 ]
 const SUPPORT_NAV = [
   { id: 'campaigns', label: 'Active Campaigns', Icon: IcZap     },
@@ -767,6 +837,7 @@ export default function Dashboard() {
   const [drawerOpen,      setDrawerOpen]      = useState(false)
   const [isMobile,        setIsMobile]        = useState(() => getVW() <= DB_MOBILE_BP)
   const { user, profile, signOut } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [])
 
@@ -817,7 +888,7 @@ export default function Dashboard() {
   function renderView() {
     switch (activeView) {
       case 'campaigns':    return <CampaignsView onApply={handleApply} />
-      case 'joined':       return <JoinedCampaignsView user={user} onSignIn={() => setAuthModal({ intent: 'View joined campaigns' })} />
+      case 'joined':       return <JoinedCampaignsView user={user} onSignIn={() => setAuthModal({ intent: 'View joined campaigns' })} onSubmitClip={handleSubmitClip} />
       case 'wallet':       return <WalletView user={user} onSignIn={() => setAuthModal({ intent: 'View your wallet' })} onWithdraw={handleWithdraw} />
       case 'submissions':  return <SubmissionsView user={user} onSignIn={() => setAuthModal({ intent: 'View your submissions' })} />
       default:             return <CampaignsView onApply={handleApply} />
@@ -839,9 +910,11 @@ export default function Dashboard() {
       )}
       <p className="db-section-lbl">MAIN</p>
       <nav className="db-nav">
-        {MAIN_NAV.map(({ id, label, Icon, href }) =>
-          href ? (
-            <Link key={id} to={href} className="db-nav-item"><Icon size={17} />{label}</Link>
+        {MAIN_NAV.map(({ id, label, Icon, isBack }) =>
+          isBack ? (
+            <button key={id} className="db-nav-item" onClick={() => navigate(-1)}>
+              <Icon size={17} />{label}
+            </button>
           ) : (
             <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
               <Icon size={17} />{label}
@@ -860,7 +933,7 @@ export default function Dashboard() {
     </>
   )
 
-  /* ── Shared footer (submit clip, social links, sign in) ── */
+  /* ── Shared footer (submit clip, social links) ── */
   const sidebarFoot = (
     <div className="db-sidebar-foot">
       <button className="db-submit-clip-btn" onClick={() => { setDrawerOpen(false); handleSubmitClip() }}>
@@ -874,11 +947,6 @@ export default function Dashboard() {
           <IcInstagram size={15} /><span>Instagram</span>
         </a>
       </div>
-      {!user && (
-        <button className="db-signin-prompt" onClick={() => { setDrawerOpen(false); setAuthModal({ intent: 'Sign in to apply to campaigns' }) }}>
-          Sign in / Sign up
-        </button>
-      )}
     </div>
   )
 
@@ -893,9 +961,12 @@ export default function Dashboard() {
           <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
           <span>ClipSmart</span>
         </Link>
-        <button className="db-topbar-clip-btn" onClick={handleSubmitClip}>
-          <IcUpload size={14} />Submit
-        </button>
+        <div className="db-mobile-topbar-auth">
+          {user
+            ? <UserAvatarDropdown user={user} profile={profile} signOut={signOut} />
+            : <button className="db-topbar-clip-btn" onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}>Sign In</button>
+          }
+        </div>
       </div>
 
       {/* ──────── MOBILE DRAWER OVERLAY ──────── */}
@@ -928,6 +999,20 @@ export default function Dashboard() {
       </aside>
 
       <main className="db-main" style={isMobile ? { width: '100%', paddingTop: '56px' } : {}}>
+        {/* Desktop auth topbar */}
+        {!isMobile && (
+          <div className="db-desktop-topbar">
+            <div />
+            <div className="db-dtb-auth">
+              {user
+                ? <UserAvatarDropdown user={user} profile={profile} signOut={signOut} />
+                : <button className="db-dtb-signin" onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}>
+                    Sign In / Sign Up →
+                  </button>
+              }
+            </div>
+          </div>
+        )}
         {renderView()}
       </main>
 

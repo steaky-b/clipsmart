@@ -4,17 +4,19 @@
 .calc-card-head { margin-bottom: 28px; }
 .calc-card-head h3 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
 .calc-card-head p { font-size: 14px; color: var(--t2); }
-.calc-presets { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 24px; }
-.calc-preset {
-  padding: 16px 12px; border-radius: 12px; background: var(--s2);
-  border: 1px solid var(--bd); font-size: 14px; font-weight: 600; color: var(--t2);
-  display: flex; flex-direction: column; gap: 4px; align-items: center;
-  transition: all .2s;
+/* Budget grid */
+.calc-budget-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px;
 }
-.calc-preset span { font-size: 12px; color: var(--t3); font-weight: 400; }
-.calc-preset:hover { border-color: var(--g-bdr); color: var(--t1); }
-.calc-preset.on { border-color: var(--g); background: var(--g-glow); color: var(--g); }
-.calc-preset.on span { color: var(--g); }
+.calc-budget-pill {
+  padding: 11px 6px; border-radius: 10px; background: var(--s2);
+  border: 1px solid var(--bd); font-size: 13px; font-weight: 600; color: var(--t2);
+  transition: all .18s; cursor: pointer; font-family: inherit;
+}
+.calc-budget-pill:hover { border-color: var(--g-bdr); color: var(--t1); }
+.calc-budget-pill.on { border-color: var(--g); background: var(--g-glow); color: var(--g); }
+.calc-budget-pill--custom { grid-column: span 2; }
+
 .calc-custom-input { margin-bottom: 20px; }
 .calc-custom-input label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--t3); margin-bottom: 8px; }
 .calc-custom-input input {
@@ -23,15 +25,20 @@
   outline: none; transition: border-color .2s;
 }
 .calc-custom-input input:focus { border-color: var(--g); }
-.calc-slider-wrap { }
-.calc-slider-labels { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--t2); font-weight: 500; }
+
+/* RPM picker */
+.calc-rpm-section { margin-top: 4px; }
+.calc-rpm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--t2); font-weight: 500; }
 .calc-rpm-val { color: var(--g); font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif; }
-.calc-slider {
-  width: 100%; accent-color: var(--g); height: 4px; cursor: pointer;
-  -webkit-appearance: none; appearance: none;
-  touch-action: pan-x;
+.calc-rpm-pills { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+.calc-rpm-pill {
+  padding: 8px 14px; border-radius: 9px; background: var(--s2);
+  border: 1px solid var(--bd); font-size: 13px; font-weight: 600; color: var(--t2);
+  transition: all .18s; cursor: pointer; font-family: inherit;
 }
-.calc-slider-note { font-size: 12px; color: var(--t3); margin-top: 10px; line-height: 1.6; }
+.calc-rpm-pill:hover { border-color: var(--g-bdr); color: var(--t1); }
+.calc-rpm-pill.on { border-color: var(--g); background: var(--g-glow); color: var(--g); }
+.calc-slider-note { font-size: 12px; color: var(--t3); margin-top: 6px; line-height: 1.6; }
 
 /* Results panel */
 .calc-results {
@@ -167,8 +174,8 @@
   .ct-val { font-size: clamp(14px,4vw,20px) !important; }
   .ct-lbl { font-size: 10px !important; }
   .ct-sub { font-size: 9.5px !important; }
-  .calc-presets { grid-template-columns: repeat(2,1fr) !important; gap: 8px !important; }
-  .calc-preset { padding: 12px 8px !important; font-size: 13px !important; }
+  .calc-budget-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .calc-budget-pill--custom { grid-column: span 1 !important; }
   .cpm-chart { padding: 20px 14px 14px !important; }
   .cpm-bars { height: 140px !important; gap: 8px !important; }
   .cpm-bar-amount { font-size: 11px !important; }
@@ -181,7 +188,7 @@
   .ct-val { font-size: clamp(13px,3.5vw,18px) !important; }
   .ct-lbl { font-size: 9px !important; }
   .ct-sub { display: none !important; }
-  .calc-presets { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+  .calc-budget-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .cpm-bars { height: 120px !important; gap: 6px !important; }
   .cpm-bar-amount { font-size: 10px !important; }
   .cpm-bar-name { font-size: 9px !important; }
