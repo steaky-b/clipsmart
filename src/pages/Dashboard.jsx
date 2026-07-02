@@ -225,6 +225,9 @@ const HOW_STEPS = [
   { n: '03', icon: '💰', t: 'Earn Per View',   d: 'Get paid for every 1,000 views your accepted clips generate. Fully transparent.' },
 ]
 
+const CAT_LABELS = ['all', 'music', 'health', 'podcast', 'ugc', 'clipping', 'gaming']
+const CAT_DISPLAY = { all: 'All', music: 'Music', health: 'Health', podcast: 'Podcast', ugc: 'UGC', clipping: 'Clipping', gaming: 'Gaming' }
+
 function CampaignsView({ onApply }) {
   const [snapshots, setSnapshots] = useState(() =>
     ACTIVE_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
@@ -232,7 +235,9 @@ function CampaignsView({ onApply }) {
   const [search,       setSearch]       = useState('')
   const [platform,     setPlatform]     = useState('all')
   const [sort,         setSort]         = useState('cpm')
+  const [catFilter,    setCatFilter]    = useState('all')
   const [showSortMenu, setShowSortMenu] = useState(false)
+  const [showCatMenu,  setShowCatMenu]  = useState(false)
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -245,66 +250,66 @@ function CampaignsView({ onApply }) {
     const q = search.trim().toLowerCase()
     if (q && !c.name.toLowerCase().includes(q) && !c.catLabel.toLowerCase().includes(q)) return false
     if (platform !== 'all' && !(c.platformSplit || {})[platform]) return false
+    if (catFilter !== 'all' && c.cat !== catFilter) return false
     return true
   })
   if (sort === 'cpm')    filtered = [...filtered].sort((a, b) => b.campaign.clientRpm - a.campaign.clientRpm)
   if (sort === 'views')  filtered = [...filtered].sort((a, b) => b.snap.views - a.snap.views)
   if (sort === 'budget') filtered = [...filtered].sort((a, b) => b.campaign.budgetTotal - a.campaign.budgetTotal)
 
-  const totalViews  = snapshots.reduce((s, { snap }) => s + snap.views, 0)
-  const totalBudget = ACTIVE_CAMPAIGNS.reduce((s, c) => s + c.budgetTotal, 0)
-
   return (
     <div className="db-view db-explore">
-      {/* ── TOP BAR ── */}
-      <div className="db-explore-topbar">
-        <div>
-          <h1 className="db-explore-h">Explore Campaigns</h1>
-          <p className="db-explore-sub">Find campaigns, post clips, and earn per view.</p>
-        </div>
-        <div className="db-explore-controls">
-          <label className="db-search-wrap">
-            <IcSearch size={15} className="db-search-icon" />
-            <input
-              className="db-search"
-              placeholder="Search campaigns..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </label>
-          <div className="db-sort-wrap">
-            <button className="db-filter-pill" onClick={() => setShowSortMenu(!showSortMenu)}>
-              Sort: <strong>{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
-              <IcChevron size={12} />
-            </button>
-            {showSortMenu && (
-              <div className="db-sort-menu">
-                {SORT_OPTIONS.map((o) => (
-                  <button key={o.id} className={'db-sort-item' + (sort === o.id ? ' active' : '')}
-                    onClick={() => { setSort(o.id); setShowSortMenu(false) }}>{o.label}</button>
-                ))}
-              </div>
-            )}
+      {/* ── TITLE ROW ── */}
+      <div className="db-explore-title-row">
+        <div className="db-explore-title-left">
+          <h1 className="db-explore-h">Active Campaigns</h1>
+          <div className="db-explore-live-pill">
+            <span className="db-live-dot-sm" />
+            {ACTIVE_CAMPAIGNS.length} Active
           </div>
         </div>
       </div>
 
-      {/* ── LIVE STATS STRIP ── */}
-      <div className="db-stats-strip">
-        <div className="db-stat-chip">
-          <span className="db-stat-chip-v">{ACTIVE_CAMPAIGNS.length}</span>
-          <span className="db-stat-chip-l">Active Campaigns</span>
+      {/* ── CONTROLS ROW (search + dropdowns) ── */}
+      <div className="db-controls-bar">
+        <label className="db-search-wrap">
+          <IcSearch size={14} />
+          <input
+            className="db-search"
+            placeholder="Search for a campaign..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </label>
+        {/* Campaign type dropdown */}
+        <div className="db-ctrl-dd" style={{ position: 'relative' }}>
+          <button className="db-ctrl-btn" onClick={() => { setShowCatMenu(!showCatMenu); setShowSortMenu(false) }}>
+            Campaign type: <strong>{CAT_DISPLAY[catFilter]}</strong>
+            <IcChevron size={12} />
+          </button>
+          {showCatMenu && (
+            <div className="db-sort-menu">
+              {CAT_LABELS.map((id) => (
+                <button key={id} className={'db-sort-item' + (catFilter === id ? ' active' : '')}
+                  onClick={() => { setCatFilter(id); setShowCatMenu(false) }}>{CAT_DISPLAY[id]}</button>
+              ))}
+            </div>
+          )}
         </div>
-        <div className="db-stat-chip-div" />
-        <div className="db-stat-chip">
-          <span className="db-stat-chip-v">{formatMoney(totalBudget)}</span>
-          <span className="db-stat-chip-l">Total Budget</span>
-        </div>
-        <div className="db-stat-chip-div" />
-        <div className="db-stat-chip">
-          <span className="db-stat-chip-v db-green">{formatViews(totalViews)}</span>
-          <span className="db-stat-chip-l">Views Generated</span>
-          <span className="db-live-dot-sm" style={{ marginLeft: 6 }} />
+        {/* Sort dropdown */}
+        <div className="db-ctrl-dd" style={{ position: 'relative' }}>
+          <button className="db-ctrl-btn" onClick={() => { setShowSortMenu(!showSortMenu); setShowCatMenu(false) }}>
+            Sort by: <strong>{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
+            <IcChevron size={12} />
+          </button>
+          {showSortMenu && (
+            <div className="db-sort-menu">
+              {SORT_OPTIONS.map((o) => (
+                <button key={o.id} className={'db-sort-item' + (sort === o.id ? ' active' : '')}
+                  onClick={() => { setSort(o.id); setShowSortMenu(false) }}>{o.label}</button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -312,107 +317,77 @@ function CampaignsView({ onApply }) {
       <div className="db-platform-tabs">
         {PLATFORM_TABS.map(({ id, label, Icon }) => (
           <button key={id} className={'db-platform-tab' + (platform === id ? ' active' : '')} onClick={() => setPlatform(id)}>
-            {Icon ? <><Icon size={15} /><span>{id}</span></> : label}
+            {Icon ? <><Icon size={14} /><span>{id}</span></> : label}
           </button>
         ))}
       </div>
 
-      {/* ── HERO BANNER ── */}
-      <div className="db-hero-banner">
-        <div className="db-hero-left">
-          <h2 className="db-hero-h">Pick a campaign,<br />post clips, <em>get paid.</em></h2>
-          <p className="db-hero-p">
-            Join active ClipSmart campaigns, submit approved content, and earn based on
-            performance with transparent live budgets and rates.
-          </p>
-          <div className="db-hero-chips">
-            <div className="db-hero-chip"><span className="db-hero-chip-ic">⚡</span><div><div className="db-hero-chip-t">Fast Payouts</div><div className="db-hero-chip-s">Tracked earnings</div></div></div>
-            <div className="db-hero-chip"><span className="db-hero-chip-ic">📊</span><div><div className="db-hero-chip-t">Live Budgets</div><div className="db-hero-chip-s">Real campaign stats</div></div></div>
-            <div className="db-hero-chip"><span className="db-hero-chip-ic">🎬</span><div><div className="db-hero-chip-t">Submit Clips</div><div className="db-hero-chip-s">Easy approvals</div></div></div>
-          </div>
-        </div>
-        <div className="db-hero-right" aria-hidden="true">
-          <HeroAnalytics />
-        </div>
-      </div>
+      {/* ── SHOWING COUNT ── */}
+      <p className="db-showing-count">Showing {filtered.length} of {ACTIVE_CAMPAIGNS.length} campaigns</p>
 
-      {/* ── CAMPAIGNS SECTION ── */}
-      <div className="db-campaigns-section">
-        <div className="db-campaigns-sh">
-          <div className="db-campaigns-sh-left">
-            <span className="db-campaigns-sh-title">Active Campaigns</span>
-            <span className="db-campaigns-sh-count"><span className="db-live-dot-sm" />{filtered.length} Active</span>
-          </div>
-          <p className="db-campaigns-sh-sub">Showing {filtered.length} campaign{filtered.length !== 1 ? 's' : ''} · updated live</p>
-        </div>
+      {/* ── CAMPAIGN GRID ── */}
+      {filtered.length === 0 ? (
+        <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns match</h3><p>Try adjusting your search or filters.</p></div>
+      ) : (
+        <div className="db-compact-grid">
+          {filtered.map(({ campaign: c, snap }) => {
+            const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
+            const cs = CAT_COLORS[c.cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
+            return (
+              <div key={c.slug} className="db-compact-card">
+                {/* Top row: category badge + platform icons */}
+                <div className="db-ccard-top">
+                  <CatBadge cat={c.cat} label={c.catLabel.toUpperCase()} />
+                  <PlatformIcons platformSplit={c.platformSplit} size={12} />
+                </div>
 
-        {filtered.length === 0 ? (
-          <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns match</h3><p>Try adjusting your search or platform filter.</p></div>
-        ) : (
-          <div className="db-compact-grid">
-            {filtered.map(({ campaign: c, snap }) => {
-              const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
-              const bannerBg  = CAT_BANNER[c.cat] || c.gradient
-              return (
-                <div key={c.slug} className="db-compact-card">
-                  {/* Gradient banner header */}
-                  <div className="db-card-banner" style={{ background: bannerBg }}>
-                    <div className="db-card-banner-dots" />
-                    <div className="db-card-banner-content">
-                      <div className="db-compact-top">
-                        <div className="db-compact-icon">
-                          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                            <rect width="32" height="32" rx="9" fill="rgba(255,255,255,0.18)" />
-                            <path d="M16 8v16M8 16h16" stroke="#fff" strokeWidth="2.8" strokeLinecap="round" />
-                          </svg>
-                        </div>
-                        <div className="db-compact-meta">
-                          <div className="db-compact-name">{c.name}</div>
-                          <PlatformIcons platformSplit={c.platformSplit} size={13} />
-                        </div>
-                      </div>
-                    </div>
+                {/* App icon + campaign name */}
+                <div className="db-ccard-ident">
+                  <div className="db-ccard-icon" style={{ background: cs.bg, border: `1px solid ${cs.border}` }}>
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                      <path d="M11 4v14M4 11h14" stroke={cs.color} strokeWidth="2.5" strokeLinecap="round" />
+                    </svg>
                   </div>
-
-                  {/* Card body */}
-                  <div className="db-card-body">
-                    <div className="db-card-top-row">
-                      <CatBadge cat={c.cat} label={c.catLabel} />
-                      <span className="db-badge db-badge--active">● Active</span>
-                    </div>
-
-                    <div className="db-card-views">
-                      <span className="db-card-views-n">{formatViews(snap.views)}</span>
-                      <span className="db-card-views-l">views generated</span>
-                    </div>
-
-                    <div className="db-compact-stats">
-                      <div className="db-compact-stat">
-                        <div className="db-compact-stat-l">Budget Used</div>
-                        <div className="db-compact-stat-v">{activePct}%<span className="db-compact-stat-budget"> / {formatMoney(c.budgetTotal)}</span></div>
-                      </div>
-                      <div className="db-compact-stat db-compact-stat--r">
-                        <div className="db-compact-stat-l">Rate</div>
-                        <div className="db-compact-stat-v db-compact-stat-rate">${c.clientRpm.toFixed(2)}<span className="db-compact-stat-per">/1K</span></div>
-                      </div>
-                    </div>
-
-                    <div className="db-progress">
-                      <div className="db-progress-bar" style={{ width: `${activePct}%` }} />
-                    </div>
-
-                    <button className="db-apply-btn" onClick={() => onApply(c)}>
-                      Apply to campaign →
-                    </button>
+                  <div className="db-ccard-name-wrap">
+                    <div className="db-compact-name">{c.name}</div>
+                    <div className="db-ccard-cat-lbl" style={{ color: cs.color }}>{c.catLabel.toUpperCase()}</div>
                   </div>
                 </div>
-              )
-            })}
-          </div>
-        )}
-      </div>
 
-      {/* ── HOW IT WORKS ── */}
+                {/* Description */}
+                <p className="db-ccard-desc">{c.subtitle}</p>
+
+                {/* Progress */}
+                <div className="db-ccard-progress-lbl">
+                  <span>Progress</span>
+                  <span style={{ color: cs.color, fontWeight: 700 }}>{activePct}%</span>
+                </div>
+                <div className="db-progress">
+                  <div className="db-progress-bar" style={{ width: `${activePct}%`, background: cs.color }} />
+                </div>
+
+                {/* Stats row */}
+                <div className="db-ccard-stats">
+                  <div className="db-ccard-stat">
+                    <div className="db-ccard-stat-v">{formatMoney(c.budgetTotal)}</div>
+                    <div className="db-ccard-stat-l">Total Budget</div>
+                  </div>
+                  <div className="db-ccard-stat">
+                    <div className="db-ccard-stat-v">${c.clientRpm.toFixed(2)}</div>
+                    <div className="db-ccard-stat-l">Per 1k Views</div>
+                  </div>
+                </div>
+
+                <button className="db-apply-btn" onClick={() => onApply(c)}>
+                  Apply to campaign →
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* ── HOW IT WORKS (below grid) ── */}
       <div className="db-steps">
         {HOW_STEPS.flatMap((step, i) => {
           const items = [
