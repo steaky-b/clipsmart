@@ -9,6 +9,29 @@ import {
   formatViews,
   formatMoney,
 } from '../data/activeCampaigns'
+import { PAST_CAMPAIGNS } from '../data/pastCampaigns'
+
+// Augment past campaigns with the fields CampaignsView needs
+const PAST_AS_ACTIVE = PAST_CAMPAIGNS.map((p) => ({
+  slug:            p.id,
+  name:            p.name,
+  cat:             p.cat,
+  catLabel:        p.catLabel,
+  subtitle:        p.subtitle,
+  img:             p.img,
+  gradient:        p.gradient,
+  clientRpm:       1.00,
+  budgetTotal:     2500,
+  viewsGuaranteed: 2000000,
+  baseViews:       0,
+  basePosts:       0,
+  baseCreators:    0,
+  anchorISO:       '2025-06-01T00:00:00Z',
+  platformSplit:   { TikTok: 60, Instagram: 30, YouTube: 10 },
+  isPast:          true,
+}))
+
+const ALL_CAMPAIGNS = [...ACTIVE_CAMPAIGNS, ...PAST_AS_ACTIVE]
 import './Dashboard.css'
 
 /* ─────────────────────────────────────────────
@@ -63,7 +86,8 @@ function Ic({ c, size = 16, ...props }) {
   )
 }
 
-const IcHome    = (p) => <Ic {...p} c={<><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>} />
+const IcHome     = (p) => <Ic {...p} c={<><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>} />
+const IcArrowLeft = (p) => <Ic {...p} c={<><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></>} />
 const IcJoined  = (p) => <Ic {...p} c={<><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></>} />
 const IcWallet  = (p) => <Ic {...p} c={<><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></>} />
 const IcClips   = (p) => <Ic {...p} c={<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></>} />
@@ -137,6 +161,7 @@ const CAT_COLORS = {
   ugc:      { color: '#38bdf8', bg: 'rgba(56,189,248,0.12)',  border: 'rgba(56,189,248,0.3)'  },
   clipping: { color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)'  },
   gaming:   { color: '#f472b6', bg: 'rgba(244,114,182,0.12)', border: 'rgba(244,114,182,0.3)' },
+  crypto:   { color: '#22d3ee', bg: 'rgba(34,211,238,0.12)',  border: 'rgba(34,211,238,0.3)'  },
 }
 function CatBadge({ cat, label }) {
   const s = CAT_COLORS[cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
@@ -272,11 +297,11 @@ const HOW_STEPS = [
 ]
 
 const CAT_LABELS = ['all', 'music', 'health', 'podcast', 'ugc', 'clipping', 'gaming']
-const CAT_DISPLAY = { all: 'All', music: 'Music', health: 'Health', podcast: 'Podcast', ugc: 'UGC', clipping: 'Clipping', gaming: 'Gaming' }
+const CAT_DISPLAY = { all: 'All', music: 'Music', health: 'Health', podcast: 'Podcast', ugc: 'UGC', clipping: 'Clipping', gaming: 'Gaming', crypto: 'Crypto' }
 
 function CampaignsView({ onApply }) {
   const [snapshots, setSnapshots] = useState(() =>
-    ACTIVE_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
+    ALL_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
   )
   const [search,       setSearch]       = useState('')
   const [platform,     setPlatform]     = useState('all')
@@ -287,7 +312,7 @@ function CampaignsView({ onApply }) {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setSnapshots(ACTIVE_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) })))
+      setSnapshots(ALL_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) })))
     }, 3000)
     return () => clearInterval(id)
   }, [])
@@ -311,7 +336,7 @@ function CampaignsView({ onApply }) {
           <h1 className="db-explore-h">Active Campaigns</h1>
           <div className="db-explore-live-pill">
             <span className="db-live-dot-sm" />
-            {ACTIVE_CAMPAIGNS.length} Active
+            {ALL_CAMPAIGNS.length} Campaigns
           </div>
         </div>
       </div>
@@ -369,7 +394,7 @@ function CampaignsView({ onApply }) {
       </div>
 
       {/* ── SHOWING COUNT ── */}
-      <p className="db-showing-count">Showing {filtered.length} of {ACTIVE_CAMPAIGNS.length} campaigns</p>
+      <p className="db-showing-count">Showing {filtered.length} of {ALL_CAMPAIGNS.length} campaigns</p>
 
       {/* ── CAMPAIGN GRID ── */}
       {filtered.length === 0 ? (
@@ -379,20 +404,28 @@ function CampaignsView({ onApply }) {
           {filtered.map(({ campaign: c, snap }) => {
             const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
             const cs = CAT_COLORS[c.cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
+            const cardGrad = `linear-gradient(135deg, ${cs.color}1a 0%, var(--s1) 55%)`
             return (
-              <div key={c.slug} className="db-compact-card">
+              <div key={c.slug} className="db-compact-card" style={{ background: cardGrad }}>
                 {/* Top row: category badge + platform icons */}
                 <div className="db-ccard-top">
                   <CatBadge cat={c.cat} label={c.catLabel.toUpperCase()} />
                   <PlatformIcons platformSplit={c.platformSplit} size={12} />
                 </div>
 
-                {/* App icon + campaign name */}
+                {/* Campaign logo + name */}
                 <div className="db-ccard-ident">
-                  <div className="db-ccard-icon" style={{ background: cs.bg, border: `1px solid ${cs.border}` }}>
-                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                      <path d="M11 4v14M4 11h14" stroke={cs.color} strokeWidth="2.5" strokeLinecap="round" />
-                    </svg>
+                  <div className="db-ccard-icon" style={c.img
+                    ? { padding: 0, overflow: 'hidden', border: `1px solid ${cs.border}` }
+                    : { background: cs.bg, border: `1px solid ${cs.border}` }
+                  }>
+                    {c.img ? (
+                      <img src={c.img} alt={c.name} className="db-ccard-icon-img" />
+                    ) : (
+                      <span className="db-ccard-icon-letter" style={{ color: cs.color }}>
+                        {c.name[0]}
+                      </span>
+                    )}
                   </div>
                   <div className="db-ccard-name-wrap">
                     <div className="db-compact-name">{c.name}</div>
@@ -812,7 +845,7 @@ function SubmitClipModal({ onClose, onSuccess, user }) {
    MAIN DASHBOARD
 ═══════════════════════════════════════════════════════ */
 const MAIN_NAV = [
-  { id: 'return',      label: 'Return',           Icon: IcHome,   isBack: true },
+  { id: 'return',      label: 'Return',           Icon: IcArrowLeft, isBack: true },
   { id: 'joined',      label: 'Joined Campaigns', Icon: IcJoined               },
   { id: 'wallet',      label: 'Wallet',           Icon: IcWallet               },
   { id: 'submissions', label: 'My Submissions',   Icon: IcClips                },
