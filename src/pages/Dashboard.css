@@ -246,7 +246,7 @@
   width: 100%;
   padding: 5% 5% 80px 5%;
 }
-.db-explore { max-width: 900px; }
+.db-explore { max-width: 100%; }
 
 .db-view-header { margin-bottom: 32px; }
 .db-view-eyebrow {
