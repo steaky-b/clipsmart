@@ -652,6 +652,93 @@
 .db-tx-section  { }
 
 /* ═══════════════════════════════════════════════════════
+   PAYPAL PAYOUT ACCOUNT
+═══════════════════════════════════════════════════════ */
+.db-paypal-section {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 28px;
+}
+.db-paypal-hdr {
+  margin-bottom: 18px;
+}
+.db-paypal-hdr-left {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 6px;
+}
+.db-paypal-title {
+  font-size: 15px; font-weight: 700; color: var(--white); margin: 0;
+}
+.db-paypal-desc {
+  font-size: 13px; color: var(--t2); margin: 0;
+}
+/* Linked state */
+.db-paypal-linked {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: 10px; padding: 12px 16px;
+  gap: 12px;
+}
+.db-paypal-linked-info {
+  display: flex; align-items: center; gap: 10px;
+}
+.db-paypal-check {
+  display: flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(46,204,113,0.15); color: var(--g);
+  flex-shrink: 0;
+}
+.db-paypal-linked-email {
+  font-size: 14px; color: var(--t1); font-weight: 500;
+}
+.db-paypal-change-btn {
+  font-size: 13px; font-weight: 600; color: var(--t2);
+  background: none; border: 1px solid var(--bd);
+  border-radius: 8px; padding: 6px 14px; cursor: pointer;
+  transition: color .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.db-paypal-change-btn:hover { color: var(--white); border-color: var(--bd2); }
+/* Form state */
+.db-paypal-form { display: flex; flex-direction: column; gap: 10px; }
+.db-paypal-input-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.db-paypal-input {
+  flex: 1; min-width: 200px;
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: 10px; padding: 10px 14px;
+  font-size: 14px; color: var(--t1);
+  font-family: inherit; outline: none;
+  transition: border-color .15s;
+}
+.db-paypal-input::placeholder { color: var(--t3); }
+.db-paypal-input:focus { border-color: rgba(46,204,113,0.5); }
+.db-paypal-save-btn {
+  padding: 10px 20px; border-radius: 10px;
+  background: var(--g); color: #000;
+  border: none; font-size: 13.5px; font-weight: 700;
+  cursor: pointer; transition: opacity .15s; white-space: nowrap;
+}
+.db-paypal-save-btn:hover { opacity: .85; }
+.db-paypal-save-btn:disabled { opacity: .5; cursor: default; }
+.db-paypal-cancel-btn {
+  padding: 10px 16px; border-radius: 10px;
+  background: none; border: 1px solid var(--bd);
+  color: var(--t2); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: color .15s;
+  white-space: nowrap;
+}
+.db-paypal-cancel-btn:hover { color: var(--white); }
+.db-paypal-msg {
+  font-size: 13px; margin: 0; padding: 0;
+}
+.db-paypal-msg.ok  { color: var(--g); }
+.db-paypal-msg.err { color: #f87171; }
+
+/* ═══════════════════════════════════════════════════════
    MY SUBMISSIONS
 ═══════════════════════════════════════════════════════ */
 .db-sub-summary { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }

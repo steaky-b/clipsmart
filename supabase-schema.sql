@@ -9,11 +9,15 @@
 --  Extended user info, linked to Supabase Auth (auth.users)
 -- ───────────────────────────
 create table if not exists public.profiles (
-  id          uuid primary key references auth.users (id) on delete cascade,
-  username    text unique not null,
-  avatar_url  text,
-  created_at  timestamptz default now()
+  id           uuid primary key references auth.users (id) on delete cascade,
+  username     text unique not null,
+  avatar_url   text,
+  paypal_email text,
+  created_at   timestamptz default now()
 );
+
+-- If the table already exists, add the column (safe to run multiple times):
+alter table public.profiles add column if not exists paypal_email text;
 
 -- ───────────────────────────
 --  APPLICATIONS

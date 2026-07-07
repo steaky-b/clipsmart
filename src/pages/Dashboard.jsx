@@ -98,6 +98,8 @@ const IcSearch  = (p) => <Ic {...p} c={<><circle cx="11" cy="11" r="8"/><line x1
 const IcChevron = (p) => <Ic {...p} c={<polyline points="6 9 12 15 18 9"/>} />
 const IcClose   = (p) => <Ic {...p} c={<><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>} />
 const IcSignout = (p) => <Ic {...p} c={<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></>} />
+const IcLink    = (p) => <Ic {...p} c={<><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></>} />
+const IcCheck   = (p) => <Ic {...p} c={<polyline points="20 6 9 17 4 12"/>} />
 
 function IcDiscord({ size = 16, ...p }) {
   return (
@@ -603,10 +605,16 @@ function JoinedCampaignsView({ user, onSignIn, onSubmitClip }) {
    WALLET VIEW
 ═══════════════════════════════════════════════════════ */
 function WalletView({ user, onSignIn, onWithdraw }) {
-  const [walletData, setWalletData] = useState(null)
-  const [fetching, setFetching]     = useState(false)
+  const [walletData, setWalletData]     = useState(null)
+  const [fetching, setFetching]         = useState(false)
+  const [paypalEmail, setPaypalEmail]   = useState(null)   // null = not loaded yet
+  const [paypalInput, setPaypalInput]   = useState('')
+  const [paypalEditing, setPaypalEditing] = useState(false)
+  const [paypalSaving, setPaypalSaving] = useState(false)
+  const [paypalMsg, setPaypalMsg]       = useState({ text: '', ok: true })
   const isDemo = !user || !isSupabaseReady || walletData === null
 
+  /* Load transactions */
   useEffect(() => {
     if (!user || !isSupabaseReady) return
     setFetching(true)
@@ -638,6 +646,43 @@ function WalletView({ user, onSignIn, onWithdraw }) {
       })
   }, [user])
 
+  /* Load saved PayPal email */
+  useEffect(() => {
+    if (!user || !isSupabaseReady) return
+    supabase
+      .from('profiles')
+      .select('paypal_email')
+      .eq('id', user.id)
+      .single()
+      .then(({ data }) => {
+        const saved = data?.paypal_email || ''
+        setPaypalEmail(saved)
+        setPaypalInput(saved)
+      })
+  }, [user])
+
+  async function savePaypal() {
+    const trimmed = paypalInput.trim()
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setPaypalMsg({ text: 'Please enter a valid email address.', ok: false })
+      return
+    }
+    setPaypalSaving(true)
+    const { error } = await supabase
+      .from('profiles')
+      .update({ paypal_email: trimmed })
+      .eq('id', user.id)
+    setPaypalSaving(false)
+    if (error) {
+      setPaypalMsg({ text: 'Could not save — please try again.', ok: false })
+    } else {
+      setPaypalEmail(trimmed)
+      setPaypalEditing(false)
+      setPaypalMsg({ text: 'PayPal account linked successfully!', ok: true })
+      setTimeout(() => setPaypalMsg({ text: '', ok: true }), 3500)
+    }
+  }
+
   const w = isDemo ? DEMO_WALLET : walletData
   if (!w) return null
 
@@ -650,6 +695,8 @@ function WalletView({ user, onSignIn, onWithdraw }) {
       </div>
       {isDemo && <DemoBanner onSignIn={onSignIn} />}
       {fetching && <div className="db-loading">Loading wallet data…</div>}
+
+      {/* ── BALANCE CARDS ── */}
       <div className="db-stat-cards">
         <div className="db-stat-card db-stat-card--primary">
           <div className="db-stat-card-label">Available to Withdraw</div>
@@ -668,6 +715,67 @@ function WalletView({ user, onSignIn, onWithdraw }) {
           <div className="db-stat-card-sub">Processing now</div>
         </div>
       </div>
+
+      {/* ── PAYPAL PAYOUT ACCOUNT ── */}
+      {user && !isDemo && (
+        <div className="db-paypal-section">
+          <div className="db-paypal-hdr">
+            <div className="db-paypal-hdr-left">
+              {/* PayPal wordmark SVG */}
+              <svg height="20" viewBox="0 0 101 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal">
+                <path d="M12.237 2.6H5.318C4.85 2.6 4.45 2.94 4.376 3.402L1.6 21.27c-.056.35.215.666.57.666h3.307c.467 0 .867-.34.94-.803l.742-4.702c.073-.463.474-.803.94-.803h2.215c4.608 0 7.27-2.228 7.963-6.644.313-1.931.013-3.447-.893-4.508-.995-1.165-2.76-1.876-5.147-1.876zm.807 6.55c-.382 2.51-2.302 2.51-4.158 2.51H7.83l.741-4.694c.044-.28.286-.487.57-.487h.487c1.265 0 2.459 0 3.076.72.368.43.48 1.07.34 1.95zM33.456 9.074H30.14c-.284 0-.526.207-.57.487l-.146.926-.232-.336c-.718-1.043-2.319-1.392-3.917-1.392-3.665 0-6.796 2.777-7.405 6.676-.317 1.944.133 3.802 1.236 5.097.01.01.02.022.029.033 1.013 1.189 2.457 1.684 4.179 1.684 2.952 0 4.59-1.898 4.59-1.898l-.148.92c-.057.35.215.667.57.667h2.983c.467 0 .866-.34.94-.803l1.791-11.348c.057-.352-.215-.669-.57-.669l-.014.156zm-4.62 6.463c-.32 1.896-1.826 3.169-3.743 3.169-.963 0-1.733-.31-2.228-.896-.491-.583-.676-1.413-.521-2.338.3-1.882 1.831-3.196 3.718-3.196.942 0 1.708.312 2.213.903.508.594.708 1.43.561 2.358zM51.348 9.074h-3.334c-.32 0-.62.16-.8.426l-4.618 6.8-1.959-6.536c-.123-.41-.5-.69-.928-.69H37.07c-.396 0-.672.39-.543.764l3.688 10.82-3.469 4.896c-.271.383.003.91.467.91h3.33c.318 0 .616-.156.797-.42l11.14-16.082c.265-.382-.009-.908-.472-.908l-.66.02z" fill="#253B80"/>
+                <path d="M62.193 2.6h-6.92c-.466 0-.866.34-.939.803l-2.778 17.868c-.056.35.215.666.57.666h3.545c.326 0 .604-.237.655-.56l.788-4.945c.073-.463.474-.803.94-.803h2.215c4.607 0 7.27-2.228 7.963-6.644.313-1.931.012-3.447-.894-4.508-.994-1.165-2.76-1.876-5.145-1.876zm.807 6.55c-.382 2.51-2.302 2.51-4.158 2.51h-1.056l.741-4.694c.044-.28.286-.487.57-.487h.487c1.265 0 2.459 0 3.076.72.368.43.48 1.07.34 1.95zM83.41 9.074H80.1c-.284 0-.527.207-.57.487l-.147.926-.232-.336c-.718-1.043-2.318-1.392-3.916-1.392-3.665 0-6.797 2.777-7.405 6.676-.317 1.944.133 3.802 1.235 5.097l.03.033c1.013 1.189 2.456 1.684 4.178 1.684 2.953 0 4.59-1.898 4.59-1.898l-.148.92c-.056.35.215.667.57.667h2.983c.467 0 .866-.34.94-.803l1.791-11.348c.057-.352-.215-.669-.57-.669l-.018.156zm-4.62 6.463c-.32 1.896-1.826 3.169-3.743 3.169-.963 0-1.733-.31-2.229-.896-.49-.583-.675-1.413-.52-2.338.3-1.882 1.83-3.196 3.717-3.196.942 0 1.709.312 2.214.903.507.594.707 1.43.561 2.358zM87.317 3.046l-2.82 17.955c-.056.35.215.666.57.666h2.853c.467 0 .867-.34.94-.803L91.64 3.016c.057-.35-.215-.667-.57-.667h-3.18c-.283 0-.526.207-.57.697z" fill="#179BD7"/>
+              </svg>
+              <h3 className="db-paypal-title">Payout Account</h3>
+            </div>
+            <p className="db-paypal-desc">Your earnings will be sent to this PayPal account when you withdraw.</p>
+          </div>
+
+          {paypalEmail && !paypalEditing ? (
+            /* Linked state */
+            <div className="db-paypal-linked">
+              <div className="db-paypal-linked-info">
+                <span className="db-paypal-check"><IcCheck size={14} /></span>
+                <span className="db-paypal-linked-email">{paypalEmail}</span>
+              </div>
+              <button className="db-paypal-change-btn" onClick={() => { setPaypalEditing(true); setPaypalMsg({ text: '', ok: true }) }}>
+                Change
+              </button>
+            </div>
+          ) : (
+            /* Link / Edit form */
+            <div className="db-paypal-form">
+              <div className="db-paypal-input-row">
+                <input
+                  className="db-paypal-input"
+                  type="email"
+                  placeholder="your-paypal@email.com"
+                  value={paypalInput}
+                  onChange={(e) => setPaypalInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && savePaypal()}
+                />
+                <button className="db-paypal-save-btn" onClick={savePaypal} disabled={paypalSaving}>
+                  {paypalSaving ? 'Saving…' : paypalEditing ? 'Update' : 'Link PayPal'}
+                </button>
+                {paypalEditing && (
+                  <button className="db-paypal-cancel-btn" onClick={() => { setPaypalEditing(false); setPaypalInput(paypalEmail || '') }}>
+                    Cancel
+                  </button>
+                )}
+              </div>
+              {paypalMsg.text && (
+                <p className={`db-paypal-msg${paypalMsg.ok ? ' ok' : ' err'}`}>{paypalMsg.text}</p>
+              )}
+            </div>
+          )}
+
+          {paypalMsg.text && !paypalEditing && (
+            <p className={`db-paypal-msg${paypalMsg.ok ? ' ok' : ' err'}`}>{paypalMsg.text}</p>
+          )}
+        </div>
+      )}
+
+      {/* ── TRANSACTION HISTORY ── */}
       <div className="db-tx-section">
         <h3 className="db-section-h3">Transaction History</h3>
         {w.transactions.length === 0 && user && !isDemo ? (
