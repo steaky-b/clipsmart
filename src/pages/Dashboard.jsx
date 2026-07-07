@@ -1031,21 +1031,19 @@ export default function Dashboard() {
         {sidebarFoot}
       </aside>
 
+      {/* Floating auth button — top-right, desktop only */}
+      {!isMobile && (
+        <div className="db-auth-float">
+          {user
+            ? <UserAvatarDropdown user={user} profile={profile} signOut={signOut} />
+            : <button className="db-dtb-signin" onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}>
+                Sign In / Sign Up →
+              </button>
+          }
+        </div>
+      )}
+
       <main className="db-main" style={isMobile ? { width: '100%', paddingTop: '56px' } : {}}>
-        {/* Desktop auth topbar */}
-        {!isMobile && (
-          <div className="db-desktop-topbar">
-            <div />
-            <div className="db-dtb-auth">
-              {user
-                ? <UserAvatarDropdown user={user} profile={profile} signOut={signOut} />
-                : <button className="db-dtb-signin" onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}>
-                    Sign In / Sign Up →
-                  </button>
-              }
-            </div>
-          </div>
-        )}
         {renderView()}
       </main>
 
