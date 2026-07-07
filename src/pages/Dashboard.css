@@ -181,14 +181,14 @@
 .db-dtb-auth { display: flex; align-items: center; gap: 10px; }
 .db-dtb-signin {
   padding: 9px 20px; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.14);
+  background: #1e2124;
+  color: rgba(255,255,255,0.9);
   font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 13.5px; font-weight: 700;
   cursor: pointer; transition: all .2s; white-space: nowrap;
 }
-.db-dtb-signin:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #fff; }
+.db-dtb-signin:hover { border-color: rgba(255,255,255,0.28); background: #262a2e; color: #fff; }
 
 /* Avatar button + dropdown */
 .db-av-wrap { position: relative; }
@@ -241,10 +241,10 @@
    VIEW BASE
 ═══════════════════════════════════════════════════════ */
 .db-view {
-  max-width: 960px;
+  max-width: 100%;
   margin: 0;
   width: 100%;
-  padding: 5% 40px 80px 5%;
+  padding: 5% 5% 80px 5%;
 }
 .db-explore { max-width: 900px; }
 
