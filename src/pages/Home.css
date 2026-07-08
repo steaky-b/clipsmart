@@ -99,6 +99,9 @@
   justify-content: center;
 }
 
+/* Ensure the hero itself never overflows viewport */
+.hero-right { max-width: 100%; }
+
 /* ═══════════════ HOME STATS (smaller, centred) ═══════════════ */
 .home-stats { background: var(--s1); overflow: hidden; }
 .home-stats .stats-inner {
@@ -447,7 +450,7 @@
   margin-bottom: 8px;
 }
 .view-all:hover { background: rgba(46,204,113,.18); }
-.cases-track-wrap { overflow: hidden; }
+.cases-track-wrap { overflow: hidden; position: relative; } /* position:relative forces GPU layer on iOS, ensuring overflow:hidden clips the translateX animation */
 .cases-track {
   display: flex; gap: 20px; padding: 0 var(--pad);
   width: max-content;
@@ -801,8 +804,8 @@
   .creator-header { padding: 0 var(--pad) 24px !important; text-align: center !important; }
   .creator-lead { font-size: 14px !important; text-align: center !important; max-width: 100% !important; }
   .phone-card { width: 155px !important; }
-  /* Prevent phone-wrap from clipping the horizontal scroll on narrow viewports */
-  .creator-phones-wrap { overflow: visible !important; }
+  /* Allow the phone cards to scroll horizontally without clipping */
+  .creator-phones-wrap { overflow: hidden !important; }
   .creator-phones { padding-left: var(--pad) !important; padding-right: var(--pad) !important; }
 
   /* ── How it works ── */

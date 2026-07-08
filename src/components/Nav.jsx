@@ -12,11 +12,14 @@ const LINKS = [
   { to: '/work-with-us', label: 'Work With Us' },
 ]
 
-const MOBILE_BREAKPOINT = 900
+const MOBILE_BREAKPOINT = 1024
 
 function getViewportWidth() {
   if (typeof window === 'undefined') return MOBILE_BREAKPOINT + 1
-  return window.innerWidth  // layout viewport — matches CSS media queries exactly
+  // visualViewport.width is the physical visible width — it returns the real
+  // device size even if iOS has zoomed out the layout viewport. This ensures
+  // the hamburger shows on phones even when some element caused layout inflation.
+  return window.visualViewport ? window.visualViewport.width : window.innerWidth
 }
 
 /* ── User chip shown when logged in ── */
