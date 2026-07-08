@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import AuthModal from './AuthModal'
 
 const LINKS = [
   { to: '/how-it-works', label: 'How It Works' },
@@ -15,7 +16,7 @@ const MOBILE_BREAKPOINT = 900
 
 function getViewportWidth() {
   if (typeof window === 'undefined') return MOBILE_BREAKPOINT + 1
-  return (window.visualViewport ? window.visualViewport.width : window.innerWidth)
+  return window.innerWidth  // layout viewport — matches CSS media queries exactly
 }
 
 /* ── User chip shown when logged in ── */
@@ -67,6 +68,7 @@ function UserChip({ user, profile, signOut }) {
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(() => getViewportWidth() <= MOBILE_BREAKPOINT)
+  const [authModal, setAuthModal] = useState(null)
   const { pathname } = useLocation()
   const { user, profile, signOut } = useAuth()
 
@@ -74,13 +76,8 @@ export default function Nav() {
 
   useEffect(() => {
     const update = () => setIsMobile(getViewportWidth() <= MOBILE_BREAKPOINT)
-    const vv = window.visualViewport
-    if (vv) vv.addEventListener('resize', update)
     window.addEventListener('resize', update)
-    return () => {
-      if (vv) vv.removeEventListener('resize', update)
-      window.removeEventListener('resize', update)
-    }
+    return () => window.removeEventListener('resize', update)
   }, [])
 
   useEffect(() => { if (!isMobile) setOpen(false) }, [isMobile])
@@ -136,23 +133,46 @@ export default function Nav() {
           </NavLink>
         ))}
         {user ? (
-          <button
-            className="mob-book"
-            style={{ textAlign: 'center', background: 'rgba(255,255,255,0.07)', color: '#f87171', border: '1px solid rgba(248,113,113,0.3)' }}
-            onClick={() => { signOut(); setOpen(false) }}
-          >
-            Sign Out ({profile?.username || user.email?.split('@')[0]})
-          </button>
+          <>
+            <Link to="/active-campaigns" className="mob-book" onClick={() => setOpen(false)}
+              style={{ background: 'rgba(46,204,113,0.1)', color: '#2ECC71', border: '1px solid rgba(46,204,113,0.3)' }}>
+              Dashboard →
+            </Link>
+            <button
+              className="mob-book"
+              style={{ textAlign: 'center', background: 'rgba(255,255,255,0.07)', color: '#f87171', border: '1px solid rgba(248,113,113,0.3)' }}
+              onClick={() => { signOut(); setOpen(false) }}
+            >
+              Sign Out ({profile?.username || user.email?.split('@')[0]})
+            </button>
+          </>
         ) : (
-          <Link
-            to="/active-campaigns"
-            className="mob-book"
-            onClick={() => setOpen(false)}
-          >
-            Sign In →
-          </Link>
+          <>
+            <button
+              className="mob-book"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}
+              onClick={() => { setOpen(false); setAuthModal({ initialTab: 'signin' }) }}
+            >
+              Login
+            </button>
+            <button
+              className="mob-book"
+              style={{ background: '#2ECC71', color: '#000', border: 'none', fontWeight: 700 }}
+              onClick={() => { setOpen(false); setAuthModal({ initialTab: 'signup' }) }}
+            >
+              Register
+            </button>
+          </>
         )}
       </div>
+
+      {authModal && (
+        <AuthModal
+          initialTab={authModal.initialTab}
+          onClose={() => setAuthModal(null)}
+          onSuccess={() => setAuthModal(null)}
+        />
+      )}
     </>
   )
 }

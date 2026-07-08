@@ -315,9 +315,7 @@ function CampaignsView({ onApply }) {
   useEffect(() => {
     const upd = () => setIsMob(getVW() <= DB_MOBILE_BP)
     window.addEventListener('resize', upd)
-    const vv = window.visualViewport
-    if (vv) vv.addEventListener('resize', upd)
-    return () => { window.removeEventListener('resize', upd); if (vv) vv.removeEventListener('resize', upd) }
+    return () => window.removeEventListener('resize', upd)
   }, [])
 
   function scrollCarousel(dir) {
@@ -1023,16 +1021,11 @@ export default function Dashboard() {
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [])
 
-  // JS-based mobile detection — same pattern as Nav.jsx to bypass Chrome's auto-zoom
+  // JS-based mobile detection — uses window.innerWidth to match CSS media queries
   useEffect(() => {
     const update = () => setIsMobile(getVW() <= DB_MOBILE_BP)
-    const vv = window.visualViewport
-    if (vv) vv.addEventListener('resize', update)
     window.addEventListener('resize', update)
-    return () => {
-      if (vv) vv.removeEventListener('resize', update)
-      window.removeEventListener('resize', update)
-    }
+    return () => window.removeEventListener('resize', update)
   }, [])
 
   // Auto-close drawer when switching to desktop
