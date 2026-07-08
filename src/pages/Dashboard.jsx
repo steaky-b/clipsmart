@@ -100,6 +100,8 @@ const IcClose   = (p) => <Ic {...p} c={<><line x1="18" y1="6" x2="6" y2="18"/><l
 const IcSignout = (p) => <Ic {...p} c={<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></>} />
 const IcLink    = (p) => <Ic {...p} c={<><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></>} />
 const IcCheck   = (p) => <Ic {...p} c={<polyline points="20 6 9 17 4 12"/>} />
+const IcFilter  = (p) => <Ic {...p} c={<><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></>} />
+const IcSortAz  = (p) => <Ic {...p} c={<><path d="M11 5h9M11 9h7M11 13h5"/><polyline points="3 8 6 5 9 8"/><line x1="6" y1="5" x2="6" y2="19"/></>} />
 
 function IcDiscord({ size = 16, ...p }) {
   return (
@@ -357,7 +359,8 @@ function CampaignsView({ onApply }) {
         {/* Campaign type dropdown */}
         <div className="db-ctrl-dd" style={{ position: 'relative' }}>
           <button className="db-ctrl-btn" onClick={() => { setShowCatMenu(!showCatMenu); setShowSortMenu(false) }}>
-            Campaign type: <strong>{CAT_DISPLAY[catFilter]}</strong>
+            <IcFilter size={13} />
+            <span className="db-ctrl-text">Type: </span><strong>{CAT_DISPLAY[catFilter]}</strong>
             <IcChevron size={12} />
           </button>
           {showCatMenu && (
@@ -372,7 +375,8 @@ function CampaignsView({ onApply }) {
         {/* Sort dropdown */}
         <div className="db-ctrl-dd" style={{ position: 'relative' }}>
           <button className="db-ctrl-btn" onClick={() => { setShowSortMenu(!showSortMenu); setShowCatMenu(false) }}>
-            Sort by: <strong>{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
+            <IcSortAz size={13} />
+            <span className="db-ctrl-text">Sort: </span><strong className="db-ctrl-sort-val">{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
             <IcChevron size={12} />
           </button>
           {showSortMenu && (
@@ -1082,10 +1086,10 @@ export default function Dashboard() {
       </button>
       <div className="db-social-row">
         <a href="https://discord.gg/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Discord">
-          <IcDiscord size={15} /><span>Discord</span>
+          <IcDiscord size={16} />
         </a>
         <a href="https://www.instagram.com/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Instagram">
-          <IcInstagram size={15} /><span>Instagram</span>
+          <IcInstagram size={16} />
         </a>
       </div>
     </div>
@@ -1139,14 +1143,19 @@ export default function Dashboard() {
         {sidebarFoot}
       </aside>
 
-      {/* Floating auth button — top-right, desktop only */}
+      {/* Floating auth buttons — top-right, desktop only */}
       {!isMobile && (
         <div className="db-auth-float">
           {user
             ? <UserAvatarDropdown user={user} profile={profile} signOut={signOut} />
-            : <button className="db-dtb-signin" onClick={() => setAuthModal({ intent: 'Sign in to apply to campaigns' })}>
-                Sign In / Sign Up →
-              </button>
+            : <>
+                <button className="db-dtb-signin" onClick={() => setAuthModal({ intent: 'Sign in to your account', initialTab: 'signin' })}>
+                  Login
+                </button>
+                <button className="db-dtb-register" onClick={() => setAuthModal({ intent: 'Create your free account', initialTab: 'signup' })}>
+                  Register
+                </button>
+              </>
           }
         </div>
       )}
@@ -1163,7 +1172,7 @@ export default function Dashboard() {
       {toast && <div className="db-toast"><span className="db-live-dot-sm" />{toast}</div>}
 
       {authModal && (
-        <AuthModal intent={authModal.intent} onClose={() => setAuthModal(null)} onSuccess={() => setAuthModal(null)} />
+        <AuthModal intent={authModal.intent} initialTab={authModal.initialTab} onClose={() => setAuthModal(null)} onSuccess={() => setAuthModal(null)} />
       )}
 
       {showSubmitModal && (

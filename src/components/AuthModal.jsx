@@ -13,8 +13,8 @@ function GoogleIcon() {
   )
 }
 
-export default function AuthModal({ onClose, onSuccess, intent }) {
-  const [tab, setTab] = useState('signup')
+export default function AuthModal({ onClose, onSuccess, intent, initialTab }) {
+  const [tab, setTab] = useState(initialTab || 'signup')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')

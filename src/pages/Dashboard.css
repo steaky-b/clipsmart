@@ -189,6 +189,16 @@
   cursor: pointer; transition: all .2s; white-space: nowrap;
 }
 .db-dtb-signin:hover { border-color: rgba(255,255,255,0.28); background: #262a2e; color: #fff; }
+.db-dtb-register {
+  padding: 9px 20px; border-radius: 10px;
+  border: none;
+  background: #2ECC71;
+  color: #000;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13.5px; font-weight: 700;
+  cursor: pointer; transition: opacity .2s; white-space: nowrap;
+}
+.db-dtb-register:hover { opacity: .85; }
 
 /* Avatar button + dropdown */
 .db-av-wrap { position: relative; }
@@ -1109,9 +1119,11 @@
   /* Content */
   .db-view         { padding: 20px 14px 100px; }
   .db-view-h       { font-size: 26px; }
-  .db-controls-bar { flex-direction: column; align-items: stretch; gap: 8px; }
-  .db-search-wrap  { width: 100%; flex: 1; min-width: 0; }
-  .db-ctrl-btn     { font-size: 12px; padding: 9px 12px; }
+  .db-controls-bar { flex-direction: row; align-items: center; gap: 8px; flex-wrap: nowrap; }
+  .db-search-wrap  { flex: 1; min-width: 0; }
+  .db-ctrl-text    { display: none; }
+  .db-ctrl-sort-val { display: none; }
+  .db-ctrl-btn     { font-size: 12px; padding: 9px 10px; }
   .db-platform-tabs { gap: 5px; }
   .db-platform-tab { padding: 7px 12px; font-size: 12px; }
   .db-compact-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
