@@ -1005,7 +1005,10 @@ const DB_MOBILE_BP = 768
 
 function getVW() {
   if (typeof window === 'undefined') return DB_MOBILE_BP + 1
-  return window.visualViewport ? window.visualViewport.width : window.innerWidth
+  // Use window.innerWidth — this is the layout viewport, exactly what CSS
+  // media queries use. visualViewport.width is the visual viewport (smaller
+  // when iOS browser chrome is visible) and causes a mismatch with CSS.
+  return window.innerWidth
 }
 
 export default function Dashboard() {
@@ -1132,7 +1135,7 @@ export default function Dashboard() {
   return (
     <div className="db-root">
       {/* ──────── MOBILE TOP BAR (hamburger + logo) — JS-controlled ──────── */}
-      <div className="db-mobile-topbar" style={isMobile ? { display: 'flex' } : { display: 'none' }}>
+      <div className="db-mobile-topbar">
         <button className="db-hamburger" onClick={() => setDrawerOpen(true)} aria-label="Open navigation">
           <span /><span /><span />
         </button>
@@ -1166,7 +1169,7 @@ export default function Dashboard() {
       </div>
 
       {/* ──────── DESKTOP SIDEBAR — JS-controlled ──────── */}
-      <aside className="db-sidebar" style={isMobile ? { display: 'none' } : {}}>
+      <aside className="db-sidebar">
         <div className="db-sidebar-top">
           <Link to="/" className="db-logo">
             <img src="/logo.png" alt="ClipSmart" className="db-logo-img" />
@@ -1194,7 +1197,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <main className="db-main" style={isMobile ? { width: '100%', paddingTop: '56px' } : {}}>
+      <main className="db-main">
         {renderView()}
       </main>
 

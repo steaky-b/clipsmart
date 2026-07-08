@@ -27,10 +27,9 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html {
   scroll-behavior: smooth;
-  /* Clip horizontal overflow so no element can push the page wider than the
-     device, which would prevent the 900px hamburger media query from firing.
-     minimum-scale=1.0 in the viewport meta stops Chrome from zooming out. */
-  overflow-x: hidden;
+  /* overflow-x: clip (not hidden) — clip does NOT create a scroll container,
+     so it truly prevents any child from widening the page on iOS Chrome. */
+  overflow-x: clip;
   width: 100%;
 }
 body {
@@ -42,7 +41,7 @@ body {
   color: var(--white);
   font-family: 'Instrument Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   /* Support iPhone notch / home indicator */
   padding-left: env(safe-area-inset-left);
