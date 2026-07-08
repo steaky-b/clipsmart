@@ -450,7 +450,7 @@
   margin-bottom: 8px;
 }
 .view-all:hover { background: rgba(46,204,113,.18); }
-.cases-track-wrap { overflow: hidden; position: relative; } /* position:relative forces GPU layer on iOS, ensuring overflow:hidden clips the translateX animation */
+.cases-track-wrap { overflow: hidden; position: relative; -webkit-transform: translateZ(0); transform: translateZ(0); } /* translateZ forces own GPU compositor layer on iOS so overflow:hidden correctly clips the wide animated track */
 .cases-track {
   display: flex; gap: 20px; padding: 0 var(--pad);
   width: max-content;
@@ -515,7 +515,7 @@
   font-size: 16px; line-height: 1.75; color: var(--t1);
   max-width: 580px; margin-top: 10px;
 }
-.creator-phones-wrap { overflow: hidden; max-width: var(--max); margin: 0 auto; }
+.creator-phones-wrap { overflow: hidden; max-width: var(--max); margin: 0 auto; -webkit-transform: translateZ(0); transform: translateZ(0); }
 .creator-phones {
   display: flex; gap: 20px;
   padding: 8px var(--pad) 16px;
@@ -713,9 +713,14 @@
 @media (max-width: 1100px) {
   .hero-inner { gap: 40px; }
   .hw-views { font-size: 34px; }
-  .platform-reach-inner { gap: 40px; }
   .why-header { gap: 28px; }
   .cpm-chart { min-width: 260px; max-width: 340px; }
+
+  /* Force single-column at the same breakpoint as the nav hamburger so
+     iOS viewport inflation never leaves these in a multi-column desktop layout */
+  .hac-grid { grid-template-columns: 1fr !important; }
+  .platform-reach-inner { grid-template-columns: 1fr !important; gap: 36px; }
+  .platform-reach-cards { justify-content: center; }
 }
 
 /* ─── 900px ─── */

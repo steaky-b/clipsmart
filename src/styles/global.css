@@ -336,6 +336,8 @@ body::before {
   padding: 18px 0;
   overflow: hidden;
   position: relative;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0); /* own GPU layer so overflow:hidden clips the animated ticker on iOS */
   z-index: 1;
   -webkit-overflow-scrolling: touch;
 }
