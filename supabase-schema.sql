@@ -69,26 +69,35 @@ create table if not exists public.transactions (
 
 -- ═══════════════════════════════════════════════════════
 --  ROW-LEVEL SECURITY
+--  Drop before recreating so this file is safe to re-run.
 -- ═══════════════════════════════════════════════════════
 alter table public.profiles     enable row level security;
 alter table public.applications enable row level security;
 alter table public.submissions  enable row level security;
 alter table public.transactions enable row level security;
 
--- profiles: each user can only see and edit their own row
+-- profiles
+drop policy if exists "profiles_select_own" on public.profiles;
+drop policy if exists "profiles_insert_own" on public.profiles;
+drop policy if exists "profiles_update_own" on public.profiles;
 create policy "profiles_select_own"  on public.profiles for select  using (auth.uid() = id);
 create policy "profiles_insert_own"  on public.profiles for insert  with check (auth.uid() = id);
 create policy "profiles_update_own"  on public.profiles for update  using (auth.uid() = id);
 
--- applications: users can view and insert their own applications
+-- applications
+drop policy if exists "apps_select_own" on public.applications;
+drop policy if exists "apps_insert_own" on public.applications;
 create policy "apps_select_own"  on public.applications for select  using (auth.uid() = user_id);
 create policy "apps_insert_own"  on public.applications for insert  with check (auth.uid() = user_id);
 
--- submissions: users can view and insert their own submissions
+-- submissions
+drop policy if exists "subs_select_own" on public.submissions;
+drop policy if exists "subs_insert_own" on public.submissions;
 create policy "subs_select_own"  on public.submissions for select  using (auth.uid() = user_id);
 create policy "subs_insert_own"  on public.submissions for insert  with check (auth.uid() = user_id);
 
--- transactions: users can only READ their own (ClipSmart team writes these)
+-- transactions
+drop policy if exists "tx_select_own" on public.transactions;
 create policy "tx_select_own"    on public.transactions for select  using (auth.uid() = user_id);
 
 -- ═══════════════════════════════════════════════════════
@@ -152,6 +161,11 @@ create table if not exists public.campaigns (
 
 -- Row-level security
 alter table public.campaigns enable row level security;
+
+-- Drop before recreating (safe to re-run)
+drop policy if exists "campaigns_read_active"            on public.campaigns;
+drop policy if exists "campaigns_client_owns"            on public.campaigns;
+drop policy if exists "subs_client_reads_their_campaign" on public.submissions;
 
 -- Anyone (even anonymous) can read active campaigns
 create policy "campaigns_read_active"

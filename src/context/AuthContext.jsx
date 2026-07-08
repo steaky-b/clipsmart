@@ -35,16 +35,21 @@ export function AuthProvider({ children }) {
   }
 
   async function signUp({ email, password, username }) {
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { username } }, // passed to the handle_new_user trigger
+    })
     if (error) throw error
 
+    // The database trigger (handle_new_user) auto-creates the profile row.
+    // We upsert here only to set the username if the trigger beat us to it,
+    // or to set it for the first time. No display_name column needed.
     if (data.user) {
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        username,
-        display_name: username,
-      })
-      if (profileError) throw profileError
+      await supabase.from('profiles').upsert(
+        { id: data.user.id, username },
+        { onConflict: 'id', ignoreDuplicates: false }
+      )
     }
     return data
   }

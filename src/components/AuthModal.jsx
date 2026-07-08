@@ -19,6 +19,7 @@ export default function AuthModal({ onClose, onSuccess, intent, initialTab }) {
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const { signIn, signUp, signInWithGoogle } = useAuth()
@@ -32,10 +33,18 @@ export default function AuthModal({ onClose, onSuccess, intent, initialTab }) {
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
+    setSuccess('')
     setLoading(true)
     try {
       if (tab === 'signup') {
-        await signUp({ email, password, username })
+        const result = await signUp({ email, password, username })
+        // Supabase returns a session immediately only if email confirm is off.
+        // If session is null the user needs to confirm their email first.
+        if (!result?.session) {
+          setSuccess(`✓ Account created! Check ${email} for a confirmation link, then log in.`)
+          setLoading(false)
+          return
+        }
       } else {
         await signIn({ email, password })
       }
@@ -145,7 +154,8 @@ export default function AuthModal({ onClose, onSuccess, intent, initialTab }) {
             />
           </div>
 
-          {error && <div className="auth-error">{error}</div>}
+          {error   && <div className="auth-error">{error}</div>}
+          {success && <div className="auth-success">{success}</div>}
 
           <button type="submit" className="auth-submit btn-primary" disabled={loading || googleLoading}>
             {loading ? 'Please wait…' : tab === 'signup' ? 'Create account →' : 'Sign in →'}
