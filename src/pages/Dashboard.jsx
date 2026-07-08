@@ -197,6 +197,207 @@ function DemoBanner({ onSignIn }) {
 }
 
 /* ═══════════════════════════════════════════════════════
+   HELPERS — normalise a Supabase campaign row → JS camelCase
+═══════════════════════════════════════════════════════ */
+function normalizeCampaign(row) {
+  return {
+    slug:            row.slug,
+    name:            row.name,
+    cat:             row.cat,
+    catLabel:        row.cat_label,
+    subtitle:        row.subtitle || '',
+    img:             row.img || null,
+    gradient:        row.gradient || 'linear-gradient(135deg,#0d0d1a,#05050a)',
+    clientRpm:       Number(row.client_rpm)    || 1,
+    budgetTotal:     Number(row.budget_total)  || 2500,
+    viewsGuaranteed: Number(row.views_guaranteed) || 2000000,
+    baseViews:       Number(row.base_views)    || 0,
+    basePosts:       Number(row.base_posts)    || 0,
+    baseCreators:    Number(row.base_creators) || 0,
+    anchorISO:       row.anchor_iso || new Date().toISOString(),
+    platformSplit:   row.platform_split || { TikTok: 60, Instagram: 30, YouTube: 10 },
+    isPast:          row.is_past || false,
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   CLIENT DASHBOARD VIEW
+   Shown when profile.role === 'client'
+   Loads the campaign linked to this user's account.
+═══════════════════════════════════════════════════════ */
+function ClientView({ user, profile }) {
+  const [campaign, setCampaign]       = useState(null)
+  const [submissions, setSubmissions] = useState([])
+  const [snap, setSnap]               = useState(null)
+  const [loading, setLoading]         = useState(true)
+
+  useEffect(() => {
+    if (!user || !isSupabaseReady) { setLoading(false); return }
+    async function load() {
+      const { data: camps } = await supabase
+        .from('campaigns')
+        .select('*')
+        .eq('client_user_id', user.id)
+        .limit(1)
+      if (camps && camps.length) {
+        const c = normalizeCampaign(camps[0])
+        setCampaign(c)
+        setSnap(computeSnapshot(c, Date.now()))
+        const { data: subs } = await supabase
+          .from('submissions')
+          .select('*')
+          .eq('campaign_slug', c.slug)
+          .order('submitted_at', { ascending: false })
+          .limit(50)
+        setSubmissions(subs || [])
+      }
+      setLoading(false)
+    }
+    load()
+  }, [user])
+
+  // Refresh live snapshot every 3s
+  useEffect(() => {
+    if (!campaign) return
+    const id = setInterval(() => setSnap(computeSnapshot(campaign, Date.now())), 3000)
+    return () => clearInterval(id)
+  }, [campaign])
+
+  if (loading) {
+    return (
+      <div className="db-view" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+        <div style={{ color: 'var(--t2)', fontSize: 15 }}>Loading campaign data…</div>
+      </div>
+    )
+  }
+
+  if (!campaign) {
+    return (
+      <div className="db-view">
+        <div className="db-client-empty">
+          <div style={{ fontSize: 40, marginBottom: 12 }}>📊</div>
+          <h2 style={{ color: 'var(--white)', marginBottom: 8 }}>No campaign linked yet</h2>
+          <p style={{ color: 'var(--t2)', maxWidth: 380, textAlign: 'center' }}>
+            Your account hasn't been linked to a campaign yet. Contact the ClipSmart team to get set up.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  const budgetPct = snap ? Math.min(100, Math.round((snap.budgetSpent / campaign.budgetTotal) * 100)) : 0
+  const accepted  = submissions.filter(s => s.status === 'accepted')
+  const pending   = submissions.filter(s => s.status === 'pending')
+  const denied    = submissions.filter(s => s.status === 'denied')
+
+  const PLAT_COLORS = { TikTok: '#2ECC71', Instagram: '#e1306c', YouTube: '#ff0000', X: '#1da1f2' }
+
+  return (
+    <div className="db-view db-client-view">
+      {/* Header */}
+      <div className="db-client-header">
+        <div className="db-client-header-left">
+          <div className="db-client-badge">CLIENT PORTAL</div>
+          <h1 className="db-client-title">{profile?.company_name || campaign.name}</h1>
+          <p className="db-client-subtitle">{campaign.name} — {campaign.subtitle}</p>
+        </div>
+        <div className="db-client-header-right">
+          <div className="db-client-live-pill"><span className="db-live-dot-sm" />Live</div>
+        </div>
+      </div>
+
+      {/* 4 stat cards */}
+      <div className="db-client-stats">
+        {[
+          { label: 'Total Views',      value: snap ? formatViews(snap.views)            : '—', sub: `${snap ? formatViews(snap.viewsPerDay) : '—'} / day`, color: '#2ECC71' },
+          { label: 'Budget Used',      value: snap ? formatMoney(snap.budgetSpent)      : '—', sub: `${budgetPct}% of ${formatMoney(campaign.budgetTotal)}`, color: '#38bdf8' },
+          { label: 'Active Creators',  value: snap ? snap.creators.toLocaleString()     : '—', sub: 'Posting for your campaign', color: '#a78bfa' },
+          { label: 'Total Clips',      value: submissions.length.toString(),             sub: `${accepted.length} accepted · ${pending.length} pending`, color: '#f59e0b' },
+        ].map(({ label, value, sub, color }) => (
+          <div key={label} className="db-client-stat-card">
+            <div className="db-client-stat-value" style={{ color }}>{value}</div>
+            <div className="db-client-stat-label">{label}</div>
+            <div className="db-client-stat-sub">{sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Budget progress */}
+      <div className="db-client-budget-wrap">
+        <div className="db-client-budget-head">
+          <span className="db-client-budget-lbl">Budget Progress</span>
+          <span className="db-client-budget-nums">
+            {snap ? formatMoney(snap.budgetSpent) : '$0'} spent of {formatMoney(campaign.budgetTotal)}
+          </span>
+        </div>
+        <div className="db-client-budget-bar-bg">
+          <div className="db-client-budget-bar-fill" style={{ width: `${budgetPct}%` }} />
+        </div>
+        <div className="db-client-budget-foot">
+          <span>{budgetPct}% used</span>
+          <span>{snap ? formatMoney(snap.budgetRemaining) : formatMoney(campaign.budgetTotal)} remaining</span>
+        </div>
+      </div>
+
+      {/* Platform split */}
+      <div className="db-client-plat-row">
+        {Object.entries(campaign.platformSplit || {}).filter(([, v]) => v > 0).map(([name, pct]) => (
+          <div key={name} className="db-client-plat-pill">
+            <span style={{ color: PLAT_COLORS[name] || '#888' }}>●</span>
+            {name} <strong>{pct}%</strong>
+          </div>
+        ))}
+      </div>
+
+      {/* Submissions table */}
+      <div className="db-client-subs-section">
+        <h2 className="db-client-subs-title">
+          Creator Submissions
+          <span className="db-client-subs-count">{submissions.length}</span>
+        </h2>
+        {submissions.length === 0 ? (
+          <div className="db-client-subs-empty">No clips submitted yet — creators are getting started.</div>
+        ) : (
+          <div className="db-client-subs-table-wrap">
+            <table className="db-client-subs-table">
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Submitted</th>
+                  <th>Views</th>
+                  <th>Status</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submissions.map((s) => (
+                  <tr key={s.id}>
+                    <td><span style={{ color: PLAT_COLORS[s.platform] || '#888' }}>{s.platform}</span></td>
+                    <td>{new Date(s.submitted_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</td>
+                    <td>{s.views_count ? formatViews(s.views_count) : '—'}</td>
+                    <td>
+                      <span className={`db-sub-status db-sub-status--${s.status}`}>
+                        {s.status.charAt(0).toUpperCase() + s.status.slice(1)}
+                      </span>
+                    </td>
+                    <td>
+                      {s.video_url
+                        ? <a href={s.video_url} target="_blank" rel="noopener noreferrer" className="db-client-sub-link">View ↗</a>
+                        : '—'
+                      }
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════
    USER AVATAR DROPDOWN (top-right of main area)
 ═══════════════════════════════════════════════════════ */
 function UserAvatarDropdown({ user, profile, signOut }) {
@@ -305,12 +506,37 @@ const CAT_LABELS = ['all', 'music', 'health', 'podcast', 'ugc', 'clipping', 'gam
 const CAT_DISPLAY = { all: 'All', music: 'Music', health: 'Health', podcast: 'Podcast', ugc: 'UGC', clipping: 'Clipping', gaming: 'Gaming', crypto: 'Crypto' }
 
 function CampaignsView({ onApply }) {
+  // Live campaigns: try Supabase first, fall back to bundled data
+  const [liveCampaigns, setLiveCampaigns] = useState(ALL_CAMPAIGNS)
+
+  useEffect(() => {
+    if (!isSupabaseReady) return
+    supabase
+      .from('campaigns')
+      .select('*')
+      .eq('is_active', true)
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          const normalized = data.map(normalizeCampaign)
+          // Merge: Supabase rows override same-slug local entries; extras appended
+          const slugSet = new Set(normalized.map((c) => c.slug))
+          const merged  = [...normalized, ...ALL_CAMPAIGNS.filter((c) => !slugSet.has(c.slug))]
+          setLiveCampaigns(merged)
+        }
+      })
+  }, [])
+
   const [snapshots, setSnapshots] = useState(() =>
-    ALL_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
+    liveCampaigns.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
   )
   const [viewAll, setViewAll]   = useState(false)
   const [isMob, setIsMob]       = useState(() => getVW() <= DB_MOBILE_BP)
   const carouselRef             = useRef(null)
+
+  // Re-seed snapshots when liveCampaigns change (Supabase load)
+  useEffect(() => {
+    setSnapshots(liveCampaigns.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) })))
+  }, [liveCampaigns])
 
   useEffect(() => {
     const upd = () => setIsMob(getVW() <= DB_MOBILE_BP)
@@ -331,10 +557,10 @@ function CampaignsView({ onApply }) {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setSnapshots(ALL_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) })))
+      setSnapshots(liveCampaigns.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) })))
     }, 3000)
     return () => clearInterval(id)
-  }, [])
+  }, [liveCampaigns])
 
   let filtered = snapshots.filter(({ campaign: c }) => {
     const q = search.trim().toLowerCase()
@@ -355,7 +581,7 @@ function CampaignsView({ onApply }) {
           <h1 className="db-explore-h">Active Campaigns</h1>
           <div className="db-explore-live-pill">
             <span className="db-live-dot-sm" />
-            {ALL_CAMPAIGNS.length} Campaigns
+            {liveCampaigns.length} Campaigns
           </div>
         </div>
         {isMob && (
@@ -420,7 +646,7 @@ function CampaignsView({ onApply }) {
       </div>
 
       {/* ── SHOWING COUNT ── */}
-      <p className="db-showing-count">Showing {filtered.length} of {ALL_CAMPAIGNS.length} campaigns</p>
+      <p className="db-showing-count">Showing {filtered.length} of {liveCampaigns.length} campaigns</p>
 
       {/* ── CAROUSEL ARROWS (mobile only, non-viewAll) ── */}
       {isMob && !viewAll && filtered.length > 0 && (
@@ -1060,7 +1286,11 @@ export default function Dashboard() {
     setDrawerOpen(false)
   }
 
+  const isClient = profile?.role === 'client'
+
   function renderView() {
+    // Client users always see their campaign dashboard
+    if (isClient) return <ClientView user={user} profile={profile} />
     switch (activeView) {
       case 'campaigns':    return <CampaignsView onApply={handleApply} />
       case 'joined':       return <JoinedCampaignsView user={user} onSignIn={() => setAuthModal({ intent: 'View joined campaigns' })} onSubmitClip={handleSubmitClip} />
@@ -1075,45 +1305,73 @@ export default function Dashboard() {
     <>
       {user && (
         <div className="db-user-badge">
-          <div className="db-ub-av">{(profile?.username || user.email || '?')[0].toUpperCase()}</div>
+          <div className="db-ub-av">{(profile?.company_name || profile?.username || user.email || '?')[0].toUpperCase()}</div>
           <div className="db-ub-info">
-            <div className="db-ub-name">{profile?.username || 'Creator'}</div>
+            <div className="db-ub-name">{isClient ? (profile?.company_name || 'Client') : (profile?.username || 'Creator')}</div>
             <div className="db-ub-email">{user.email}</div>
           </div>
           <button className="db-signout-btn" onClick={signOut} title="Sign out"><IcSignout size={14} /></button>
         </div>
       )}
-      <p className="db-section-lbl">MAIN</p>
-      <nav className="db-nav">
-        {MAIN_NAV.map(({ id, label, Icon, isBack }) =>
-          isBack ? (
-            <button key={id} className="db-nav-item" onClick={() => navigate(-1)}>
-              <Icon size={17} />{label}
-            </button>
-          ) : (
-            <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
-              <Icon size={17} />{label}
-            </button>
-          )
-        )}
-      </nav>
-      <p className="db-section-lbl">SUPPORT</p>
-      <nav className="db-nav">
-        {SUPPORT_NAV.map(({ id, label, Icon }) => (
-          <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
-            <Icon size={17} />{label}
-          </button>
-        ))}
-      </nav>
+
+      {isClient ? (
+        /* ── CLIENT nav ── */
+        <>
+          <p className="db-section-lbl">CAMPAIGN</p>
+          <nav className="db-nav">
+            <button className="db-nav-item active"><IcZap size={17} />My Campaign</button>
+          </nav>
+          <p className="db-section-lbl">SUPPORT</p>
+          <nav className="db-nav">
+            {SUPPORT_NAV.map(({ id, label, Icon }) => (
+              <button key={id} className="db-nav-item" onClick={() => { openSupport(); setDrawerOpen(false) }}>
+                <Icon size={17} />{label}
+              </button>
+            ))}
+          </nav>
+          <p className="db-section-lbl">NAVIGATE</p>
+          <nav className="db-nav">
+            <button className="db-nav-item" onClick={() => navigate(-1)}><IcArrowLeft size={17} />Return</button>
+          </nav>
+        </>
+      ) : (
+        /* ── CREATOR nav ── */
+        <>
+          <p className="db-section-lbl">MAIN</p>
+          <nav className="db-nav">
+            {MAIN_NAV.map(({ id, label, Icon, isBack }) =>
+              isBack ? (
+                <button key={id} className="db-nav-item" onClick={() => navigate(-1)}>
+                  <Icon size={17} />{label}
+                </button>
+              ) : (
+                <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
+                  <Icon size={17} />{label}
+                </button>
+              )
+            )}
+          </nav>
+          <p className="db-section-lbl">SUPPORT</p>
+          <nav className="db-nav">
+            {SUPPORT_NAV.map(({ id, label, Icon }) => (
+              <button key={id} className={'db-nav-item' + (activeView === id ? ' active' : '')} onClick={() => handleNavClick(id)}>
+                <Icon size={17} />{label}
+              </button>
+            ))}
+          </nav>
+        </>
+      )}
     </>
   )
 
-  /* ── Shared footer (submit clip, social links) ── */
+  /* ── Shared footer (submit clip for creators, social links for all) ── */
   const sidebarFoot = (
     <div className="db-sidebar-foot">
-      <button className="db-submit-clip-btn" onClick={() => { setDrawerOpen(false); handleSubmitClip() }}>
-        <IcUpload size={17} />Submit Clip
-      </button>
+      {!isClient && (
+        <button className="db-submit-clip-btn" onClick={() => { setDrawerOpen(false); handleSubmitClip() }}>
+          <IcUpload size={17} />Submit Clip
+        </button>
+      )}
       <div className="db-social-row">
         <a href="https://discord.gg/clipsmart" target="_blank" rel="noopener noreferrer" className="db-social-link" title="Discord">
           <IcDiscord size={16} />

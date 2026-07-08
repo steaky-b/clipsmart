@@ -13,11 +13,15 @@ create table if not exists public.profiles (
   username     text unique not null,
   avatar_url   text,
   paypal_email text,
+  role         text not null default 'creator',  -- creator | client | admin
+  company_name text,
   created_at   timestamptz default now()
 );
 
--- If the table already exists, add the column (safe to run multiple times):
-alter table public.profiles add column if not exists paypal_email text;
+-- If the table already exists, add these columns (safe to run multiple times):
+alter table public.profiles add column if not exists paypal_email  text;
+alter table public.profiles add column if not exists role          text not null default 'creator';
+alter table public.profiles add column if not exists company_name  text;
 
 -- ───────────────────────────
 --  APPLICATIONS
@@ -118,3 +122,105 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row
   execute procedure public.handle_new_user();
+
+-- ═══════════════════════════════════════════════════════
+--  CAMPAIGNS  (admin-managed via Supabase Table Editor)
+--  Benny edits rows here; the website reads them live.
+-- ═══════════════════════════════════════════════════════
+create table if not exists public.campaigns (
+  id               uuid primary key default gen_random_uuid(),
+  slug             text unique not null,
+  name             text not null,
+  client_user_id   uuid references auth.users (id) on delete set null,
+  cat              text not null default 'clipping',
+  cat_label        text not null default 'Clipping Campaign',
+  subtitle         text,
+  img              text,
+  gradient         text default 'linear-gradient(135deg,#0d0d1a,#05050a)',
+  client_rpm       numeric(6,3) default 1.00,
+  budget_total     numeric(10,2) default 2500,
+  views_guaranteed bigint default 2000000,
+  base_views       bigint default 0,
+  base_posts       int default 0,
+  base_creators    int default 0,
+  anchor_iso       text default to_char(now() at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'),
+  platform_split   jsonb default '{"TikTok":60,"Instagram":30,"YouTube":10}',
+  is_active        boolean default true,
+  is_past          boolean default false,
+  created_at       timestamptz default now()
+);
+
+-- Row-level security
+alter table public.campaigns enable row level security;
+
+-- Anyone (even anonymous) can read active campaigns
+create policy "campaigns_read_active"
+  on public.campaigns for select
+  using (is_active = true or client_user_id = auth.uid());
+
+-- The client linked to a campaign can see it even when inactive
+create policy "campaigns_client_owns"
+  on public.campaigns for select
+  using (client_user_id = auth.uid());
+
+-- Allow clients to read ALL submissions for their campaign (not just their own)
+create policy "subs_client_reads_their_campaign"
+  on public.submissions for select
+  using (
+    campaign_slug in (
+      select slug from public.campaigns where client_user_id = auth.uid()
+    )
+  );
+
+-- ═══════════════════════════════════════════════════════
+--  ZULACHAT CAMPAIGN  (Jack's campaign)
+--  Run this to insert the campaign.
+--  After Jack's account is created, run the UPDATE below
+--  to link client_user_id to his auth.users row.
+-- ═══════════════════════════════════════════════════════
+insert into public.campaigns (
+  slug, name, cat, cat_label, subtitle,
+  client_rpm, budget_total, views_guaranteed,
+  base_views, base_posts, base_creators,
+  anchor_iso, platform_split,
+  gradient, is_active, is_past
+) values (
+  'zulachat',
+  'Zulachat',
+  'ugc',
+  'UGC Campaign',
+  'AI Chat Platform — UGC Push',
+  1.00,
+  3000.00,
+  3000000,
+  0,
+  0,
+  0,
+  '2026-07-08T00:00:00Z',
+  '{"TikTok":55,"Instagram":35,"YouTube":10}'::jsonb,
+  'linear-gradient(135deg,#041525 0%,#0a3d7c 100%)',
+  true,
+  false
+) on conflict (slug) do nothing;
+
+-- ═══════════════════════════════════════════════════════
+--  JACK'S ACCOUNT SETUP
+--
+--  Step 1 — Create Jack's account (you do this in Supabase):
+--    Supabase Dashboard → Authentication → Users → "Invite user"
+--    Email: (Jack's real email)
+--    Jack will receive a magic-link invite to set his password.
+--
+--  Step 2 — After Jack has confirmed his account, run the SQL
+--    below (replace the email with Jack's real email):
+-- ═══════════════════════════════════════════════════════
+
+-- Set Jack's profile role and company (run AFTER he's signed up):
+-- update public.profiles
+-- set role = 'client', company_name = 'Zulachat'
+-- where id = (select id from auth.users where email = 'jack@zulachat.com');
+
+-- Link Zulachat campaign to Jack's account:
+-- update public.campaigns
+-- set client_user_id = (select id from auth.users where email = 'jack@zulachat.com')
+-- where slug = 'zulachat';
