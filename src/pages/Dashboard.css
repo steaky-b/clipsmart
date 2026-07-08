@@ -354,6 +354,44 @@
 /* Showing count */
 .db-showing-count { font-size: 12.5px; color: var(--t3); margin-bottom: 18px; }
 
+/* View All button (mobile only — always hidden on desktop) */
+.db-view-all-btn {
+  display: none;
+  font-size: 12px; font-weight: 700;
+  color: var(--g); background: var(--g-glow);
+  border: 1px solid var(--g-bdr); border-radius: 8px;
+  padding: 5px 12px; cursor: pointer; white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Carousel arrows (mobile only — always hidden on desktop) */
+.db-carousel-arrows { display: none; gap: 8px; margin-bottom: 10px; }
+.db-carousel-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--s2); border: 1px solid var(--bd);
+  color: var(--t1); cursor: pointer; transition: border-color .15s, color .15s;
+}
+.db-carousel-arrow:hover { border-color: var(--g-bdr); color: var(--g); }
+
+/* Carousel mode — applied on mobile when not viewAll */
+.db-compact-carousel {
+  display: flex !important;
+  grid-template-columns: unset !important;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 8px;
+}
+.db-compact-carousel::-webkit-scrollbar { display: none; }
+.db-compact-carousel .db-compact-card {
+  min-width: 82% !important;
+  max-width: 82% !important;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
 .db-green { color: var(--g) !important; }
 
 /* ═══════════════════════════════════════════════════════
@@ -1119,11 +1157,19 @@
   /* Content */
   .db-view         { padding: 20px 14px 100px; }
   .db-view-h       { font-size: 26px; }
-  .db-controls-bar { flex-direction: row; align-items: center; gap: 8px; flex-wrap: nowrap; }
-  .db-search-wrap  { flex: 1; min-width: 0; }
-  .db-ctrl-text    { display: none; }
-  .db-ctrl-sort-val { display: none; }
-  .db-ctrl-btn     { font-size: 12px; padding: 9px 10px; }
+  /* Controls bar: search full-width on row 1, type+sort side-by-side on row 2 */
+  .db-controls-bar { flex-wrap: wrap; gap: 8px; }
+  .db-search-wrap  { flex: 0 0 100%; }
+  .db-ctrl-dd      { flex: 1; }
+  .db-ctrl-btn     { width: 100%; justify-content: space-between; font-size: 12px; padding: 9px 10px; }
+  .db-ctrl-text    { display: inline; }
+  .db-ctrl-sort-val { display: inline; }
+  /* Platform tabs: icon only */
+  .db-ptab-txt     { display: none; }
+  .db-platform-tab { padding: 8px 11px; }
+  /* Carousel controls visible */
+  .db-view-all-btn    { display: block; }
+  .db-carousel-arrows { display: flex; }
   .db-platform-tabs { gap: 5px; }
   .db-platform-tab { padding: 7px 12px; font-size: 12px; }
   .db-compact-grid { grid-template-columns: 1fr 1fr; gap: 10px; }

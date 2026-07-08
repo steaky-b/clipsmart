@@ -100,8 +100,9 @@ const IcClose   = (p) => <Ic {...p} c={<><line x1="18" y1="6" x2="6" y2="18"/><l
 const IcSignout = (p) => <Ic {...p} c={<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></>} />
 const IcLink    = (p) => <Ic {...p} c={<><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></>} />
 const IcCheck   = (p) => <Ic {...p} c={<polyline points="20 6 9 17 4 12"/>} />
-const IcFilter  = (p) => <Ic {...p} c={<><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></>} />
-const IcSortAz  = (p) => <Ic {...p} c={<><path d="M11 5h9M11 9h7M11 13h5"/><polyline points="3 8 6 5 9 8"/><line x1="6" y1="5" x2="6" y2="19"/></>} />
+const IcFilter    = (p) => <Ic {...p} c={<><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></>} />
+const IcSortAz    = (p) => <Ic {...p} c={<><path d="M11 5h9M11 9h7M11 13h5"/><polyline points="3 8 6 5 9 8"/><line x1="6" y1="5" x2="6" y2="19"/></>} />
+const IcArrowRight = (p) => <Ic {...p} c={<><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></>} />
 
 function IcDiscord({ size = 16, ...p }) {
   return (
@@ -307,6 +308,22 @@ function CampaignsView({ onApply }) {
   const [snapshots, setSnapshots] = useState(() =>
     ALL_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
   )
+  const [viewAll, setViewAll]   = useState(false)
+  const [isMob, setIsMob]       = useState(() => getVW() <= DB_MOBILE_BP)
+  const carouselRef             = useRef(null)
+
+  useEffect(() => {
+    const upd = () => setIsMob(getVW() <= DB_MOBILE_BP)
+    window.addEventListener('resize', upd)
+    const vv = window.visualViewport
+    if (vv) vv.addEventListener('resize', upd)
+    return () => { window.removeEventListener('resize', upd); if (vv) vv.removeEventListener('resize', upd) }
+  }, [])
+
+  function scrollCarousel(dir) {
+    if (!carouselRef.current) return
+    carouselRef.current.scrollBy({ left: dir * carouselRef.current.offsetWidth * 0.85, behavior: 'smooth' })
+  }
   const [search,       setSearch]       = useState('')
   const [platform,     setPlatform]     = useState('all')
   const [sort,         setSort]         = useState('cpm')
@@ -343,6 +360,11 @@ function CampaignsView({ onApply }) {
             {ALL_CAMPAIGNS.length} Campaigns
           </div>
         </div>
+        {isMob && (
+          <button className="db-view-all-btn" onClick={() => setViewAll(!viewAll)}>
+            {viewAll ? '← Carousel' : 'View All →'}
+          </button>
+        )}
       </div>
 
       {/* ── CONTROLS ROW (search + dropdowns) ── */}
@@ -394,7 +416,7 @@ function CampaignsView({ onApply }) {
       <div className="db-platform-tabs">
         {PLATFORM_TABS.map(({ id, label, Icon }) => (
           <button key={id} className={'db-platform-tab' + (platform === id ? ' active' : '')} onClick={() => setPlatform(id)}>
-            {Icon ? <><Icon size={14} /><span>{id}</span></> : label}
+            {Icon ? <><Icon size={14} /><span className="db-ptab-txt">{id}</span></> : label}
           </button>
         ))}
       </div>
@@ -402,11 +424,23 @@ function CampaignsView({ onApply }) {
       {/* ── SHOWING COUNT ── */}
       <p className="db-showing-count">Showing {filtered.length} of {ALL_CAMPAIGNS.length} campaigns</p>
 
-      {/* ── CAMPAIGN GRID ── */}
+      {/* ── CAROUSEL ARROWS (mobile only, non-viewAll) ── */}
+      {isMob && !viewAll && filtered.length > 0 && (
+        <div className="db-carousel-arrows">
+          <button className="db-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Previous">
+            <IcArrowLeft size={15} />
+          </button>
+          <button className="db-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Next">
+            <IcArrowRight size={15} />
+          </button>
+        </div>
+      )}
+
+      {/* ── CAMPAIGN GRID / CAROUSEL ── */}
       {filtered.length === 0 ? (
         <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns match</h3><p>Try adjusting your search or filters.</p></div>
       ) : (
-        <div className="db-compact-grid">
+        <div className={`db-compact-grid${isMob && !viewAll ? ' db-compact-carousel' : ''}`} ref={carouselRef}>
           {filtered.map(({ campaign: c, snap }) => {
             const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
             const cs = CAT_COLORS[c.cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
