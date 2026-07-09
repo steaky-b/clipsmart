@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import AuthModal from './AuthModal'
 
 const LINKS = [
   { to: '/how-it-works', label: 'How It Works' },
@@ -71,7 +70,6 @@ function UserChip({ user, profile, signOut }) {
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(() => getViewportWidth() <= MOBILE_BREAKPOINT)
-  const [authModal, setAuthModal] = useState(null)
   const { pathname } = useLocation()
   const { user, profile, signOut } = useAuth()
 
@@ -113,14 +111,8 @@ export default function Nav() {
           <span /><span /><span />
         </button>
 
-        {/* Auth button — replaces Book a Call */}
-        {user ? (
-          <UserChip user={user} profile={profile} signOut={signOut} />
-        ) : (
-          <Link to="/active-campaigns" className="nav-signin">
-            Sign In →
-          </Link>
-        )}
+        {/* Only show user chip when already logged in; no sign-in button on main site */}
+        {user && <UserChip user={user} profile={profile} signOut={signOut} />}
       </nav>
 
       <div className={'mob-drawer' + (open ? ' open' : '')}>
@@ -150,32 +142,11 @@ export default function Nav() {
             </button>
           </>
         ) : (
-          <>
-            <button
-              className="mob-book"
-              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}
-              onClick={() => { setOpen(false); setAuthModal({ initialTab: 'signin' }) }}
-            >
-              Login
-            </button>
-            <button
-              className="mob-book"
-              style={{ background: '#2ECC71', color: '#000', border: 'none', fontWeight: 700 }}
-              onClick={() => { setOpen(false); setAuthModal({ initialTab: 'signup' }) }}
-            >
-              Register
-            </button>
+          <>{/* No login/register on the main site — use /active-campaigns */}
           </>
         )}
       </div>
 
-      {authModal && (
-        <AuthModal
-          initialTab={authModal.initialTab}
-          onClose={() => setAuthModal(null)}
-          onSuccess={() => setAuthModal(null)}
-        />
-      )}
     </>
   )
 }
