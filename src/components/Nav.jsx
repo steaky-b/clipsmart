@@ -111,8 +111,11 @@ export default function Nav() {
           <span /><span /><span />
         </button>
 
-        {/* Only show user chip when already logged in; no sign-in button on main site */}
-        {user && <UserChip user={user} profile={profile} signOut={signOut} />}
+        {/* Right-side slot: user chip when logged in, empty spacer otherwise so links stay centred */}
+        {user
+          ? <UserChip user={user} profile={profile} signOut={signOut} />
+          : <div className="nav-right-spacer" aria-hidden="true" />
+        }
       </nav>
 
       <div className={'mob-drawer' + (open ? ' open' : '')}>

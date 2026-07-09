@@ -142,6 +142,10 @@ body::before {
 }
 
 /* ── Nav auth (sign-in / user chip) ── */
+/* Invisible spacer — same approximate width as the old sign-in button so
+   nav-links stay centred when no user is logged in */
+.nav-right-spacer { min-width: 110px; flex-shrink: 0; }
+
 .nav-signin {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 9px 20px; border-radius: 10px;
