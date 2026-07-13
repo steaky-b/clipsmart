@@ -6,7 +6,7 @@ const LINKS = [
   { to: '/how-it-works', label: 'How It Works' },
   { to: '/calculator', label: 'ROI Calculator' },
   { to: '/creators', label: 'Creators' },
-  { to: '/active-campaigns', label: 'Active Campaigns' },
+  { to: 'https://clipsmartapp.lovable.app/active-campaigns', label: 'Active Campaigns', external: true },
   { to: '/case-studies', label: 'Past Campaigns' },
   { to: '/work-with-us', label: 'Work With Us' },
 ]
@@ -92,15 +92,21 @@ export default function Nav() {
         </Link>
 
         <div className="nav-links">
-          {LINKS.map(({ to, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}
-            >
-              {label}
-            </NavLink>
-          ))}
+          {LINKS.map(({ to, label, external }) =>
+            external ? (
+              <a key={to} href={to} target="_blank" rel="noopener noreferrer" className="nav-link">
+                {label}
+              </a>
+            ) : (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}
+              >
+                {label}
+              </NavLink>
+            )
+          )}
         </div>
 
         <button
@@ -120,16 +126,22 @@ export default function Nav() {
 
       <div className={'mob-drawer' + (open ? ' open' : '')}>
         <NavLink to="/" end onClick={() => setOpen(false)} className={({ isActive }) => isActive ? 'mob-active' : ''}>Home</NavLink>
-        {LINKS.map(({ to, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            onClick={() => setOpen(false)}
-            className={({ isActive }) => isActive ? 'mob-active' : ''}
-          >
-            {label}
-          </NavLink>
-        ))}
+        {LINKS.map(({ to, label, external }) =>
+          external ? (
+            <a key={to} href={to} target="_blank" rel="noopener noreferrer" className="nav-link" onClick={() => setOpen(false)}>
+              {label}
+            </a>
+          ) : (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) => isActive ? 'mob-active' : ''}
+            >
+              {label}
+            </NavLink>
+          )
+        )}
         {user ? (
           <>
             <Link to="/active-campaigns" className="mob-book" onClick={() => setOpen(false)}
