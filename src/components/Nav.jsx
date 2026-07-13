@@ -94,7 +94,7 @@ export default function Nav() {
         <div className="nav-links">
           {LINKS.map(({ to, label, external }) =>
             external ? (
-              <a key={to} href={to} target="_blank" rel="noopener noreferrer" className="nav-link">
+              <a key={to} href={to} className="nav-link">
                 {label}
               </a>
             ) : (
@@ -128,7 +128,7 @@ export default function Nav() {
         <NavLink to="/" end onClick={() => setOpen(false)} className={({ isActive }) => isActive ? 'mob-active' : ''}>Home</NavLink>
         {LINKS.map(({ to, label, external }) =>
           external ? (
-            <a key={to} href={to} target="_blank" rel="noopener noreferrer" className="nav-link" onClick={() => setOpen(false)}>
+            <a key={to} href={to} className="nav-link" onClick={() => setOpen(false)}>
               {label}
             </a>
           ) : (
