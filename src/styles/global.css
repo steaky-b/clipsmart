@@ -27,8 +27,9 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden; /* hidden is universally supported; prevents page-width inflation on iOS */
+  overflow-x: hidden;
   width: 100%;
+  max-width: 100%; /* belt-and-suspenders: prevent any child from making html wider than viewport */
 }
 body {
   background:
@@ -41,6 +42,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   width: 100%;
+  max-width: 100%; /* hard-cap body at viewport width */
   /* Support iPhone notch / home indicator */
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
@@ -341,9 +343,12 @@ body::before {
   overflow: hidden;
   position: relative;
   -webkit-transform: translateZ(0);
-  transform: translateZ(0); /* own GPU layer so overflow:hidden clips the animated ticker on iOS */
+  transform: translateZ(0);
+  /* contain:paint is the definitive iOS WebKit fix: it tells the browser that
+     children cannot affect the size of this box, preventing the wide ticker
+     from inflating the CSS layout viewport and breaking mobile breakpoints. */
+  contain: paint;
   z-index: 1;
-  -webkit-overflow-scrolling: touch;
 }
 .ticker { display: flex; gap: 0; animation: ticker 28s linear infinite; }
 .ticker:hover { animation-play-state: paused; }
@@ -366,7 +371,7 @@ body::before {
 /* ═══════════════════════════════
    STATS ROW
 ═══════════════════════════════ */
-.stats-section { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; overflow: hidden; }
+.stats-section { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; overflow: hidden; contain: paint; }
 .stats-inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
 .stat-block { padding: 40px 36px; border-right: 1px solid var(--bd); position: relative; }
 .stat-block:last-child { border-right: none; }
@@ -500,6 +505,19 @@ body::before {
 ═══════════════════════════════ */
 @media (max-width: 1100px) {
   :root { --pad: 40px; }
+
+  /* Stats: collapse to 2×2 at the same breakpoint the nav hamburger fires.
+     Without this, an iOS-inflated CSS viewport of 900–1100px keeps 4 columns. */
+  .stats-inner { grid-template-columns: repeat(2,1fr) !important; }
+  .stat-block {
+    border-right: none !important;
+    border-bottom: 1px solid var(--bd) !important;
+    padding: 22px 20px !important;
+  }
+  .stat-block:nth-child(odd)  { border-right: 1px solid var(--bd) !important; }
+  .stat-block:nth-child(even) { border-right: none !important; }
+  .stat-block:nth-last-child(-n+2) { border-bottom: none !important; }
+  .stat-v { font-size: 36px !important; }
 }
 
 /* ═══════════════════════════════

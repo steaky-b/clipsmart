@@ -239,6 +239,7 @@
   border-bottom: 1px solid rgba(46,204,113,0.12);
   padding: 18px var(--pad);
   overflow: hidden;
+  contain: paint; /* prevent white-space:nowrap items from inflating iOS layout viewport */
 }
 .perks-inner {
   max-width: var(--max); margin: 0 auto;
@@ -450,7 +451,7 @@
   margin-bottom: 8px;
 }
 .view-all:hover { background: rgba(46,204,113,.18); }
-.cases-track-wrap { overflow: hidden; position: relative; -webkit-transform: translateZ(0); transform: translateZ(0); } /* translateZ forces own GPU compositor layer on iOS so overflow:hidden correctly clips the wide animated track */
+.cases-track-wrap { overflow: hidden; position: relative; -webkit-transform: translateZ(0); transform: translateZ(0); contain: paint; } /* contain:paint + translateZ = definitive iOS containment: children cannot inflate page width */
 .cases-track {
   display: flex; gap: 20px; padding: 0 var(--pad);
   width: max-content;
@@ -515,7 +516,7 @@
   font-size: 16px; line-height: 1.75; color: var(--t1);
   max-width: 580px; margin-top: 10px;
 }
-.creator-phones-wrap { overflow: hidden; max-width: var(--max); margin: 0 auto; -webkit-transform: translateZ(0); transform: translateZ(0); }
+.creator-phones-wrap { overflow: hidden; max-width: var(--max); margin: 0 auto; -webkit-transform: translateZ(0); transform: translateZ(0); contain: paint; }
 .creator-phones {
   display: flex; gap: 20px;
   padding: 8px var(--pad) 16px;
@@ -721,6 +722,15 @@
   .hac-grid { grid-template-columns: 1fr !important; }
   .platform-reach-inner { grid-template-columns: 1fr !important; gap: 36px; }
   .platform-reach-cards { justify-content: center; }
+
+  /* Home stats: collapse to 2×2 matching the global stats rule in global.css */
+  .home-stats .stats-inner { grid-template-columns: 1fr 1fr !important; max-width: 100% !important; }
+  .home-stats .stat-block { border-right: none !important; border-bottom: 1px solid var(--bd) !important; padding: 20px 18px !important; }
+  .home-stats .stat-block:nth-child(odd)  { border-right: 1px solid var(--bd) !important; }
+  .home-stats .stat-block:nth-child(even) { border-right: none !important; }
+  .home-stats .stat-block:nth-last-child(-n+2) { border-bottom: none !important; }
+  .home-stats .stat-v { font-size: 30px !important; }
+  .home-stats .stat-l { font-size: 12px !important; }
 }
 
 /* ─── 900px ─── */
