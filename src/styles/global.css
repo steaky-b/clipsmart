@@ -554,12 +554,6 @@ body::before {
   .footer-top { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 28px; }
   .footer { padding: 44px 20px 28px; }
 
-  /* Stats: keep 4-col on wider tablets but use minmax so cells don't inflate */
-  .stats-inner { grid-template-columns: repeat(4, minmax(0,1fr)); }
-  .stat-block { border-right: 1px solid var(--bd); border-bottom: none; padding: 24px 14px; }
-  .stat-block:nth-child(odd) { border-right: 1px solid var(--bd); }
-  .stat-block:last-child { border-right: none; }
-
   /* Page hero */
   .page-hero { padding: calc(var(--nav-h) + 36px) var(--pad) 36px; }
   .page-hero h1 { font-size: clamp(28px, 6vw, 44px); letter-spacing: -1px; }

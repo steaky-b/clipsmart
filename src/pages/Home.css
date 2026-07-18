@@ -359,12 +359,6 @@
 }
 .hac-card:hover .hac-cta { gap: 8px; }
 
-/* HAC: 2-col at tablet, handled as 1-col in the 768px block above */
-@media (max-width: 900px) {
-  .hac-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
-  .hac-section { padding: 56px 0 64px; }
-}
-
 /* ═══════════════ PLATFORM REACH ═══════════════ */
 .platform-reach-section {
   border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
@@ -606,7 +600,7 @@
   border-radius: 16px; border: 1px solid var(--bd);
   width: 100%; max-width: 100%;
 }
-.why-strip { display: flex; flex-direction: column; gap: 0; overflow: hidden; min-width: 520px; }
+.why-strip { display: flex; flex-direction: column; gap: 0; overflow: hidden; min-width: 0; }
 .why-row { display: grid; grid-template-columns: 52px minmax(0,1fr) minmax(0,1fr); border-bottom: 1px solid var(--bd); transition: background .18s; }
 .why-row:last-child { border-bottom: none; }
 .why-row:hover { background: rgba(255,255,255,.015); }
