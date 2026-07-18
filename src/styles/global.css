@@ -528,7 +528,7 @@ body::before {
 @media (max-width: 1024px) {
   :root { --pad: 24px; }
   .nav { padding: 0 20px; }
-  .nav-links, .nav-cta, .nav-signin, .nav-user-wrap { display: none !important; }
+  .nav-links, .nav-cta, .nav-signin, .nav-user-wrap, .nav-right-spacer { display: none !important; }
   .mob-menu-btn { display: flex !important; }
 }
 
@@ -537,7 +537,8 @@ body::before {
 .nav[data-mob="true"] .nav-links,
 .nav[data-mob="true"] .nav-cta,
 .nav[data-mob="true"] .nav-signin,
-.nav[data-mob="true"] .nav-user-wrap { display: none !important; }
+.nav[data-mob="true"] .nav-user-wrap,
+.nav[data-mob="true"] .nav-right-spacer { display: none !important; }
 .nav[data-mob="true"] .mob-menu-btn { display: flex !important; }
 
 @media (max-width: 900px) {
