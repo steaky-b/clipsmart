@@ -345,10 +345,9 @@ body::before {
   position: relative;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  /* contain:paint is the definitive iOS WebKit fix: it tells the browser that
-     children cannot affect the size of this box, preventing the wide ticker
-     from inflating the CSS layout viewport and breaking mobile breakpoints. */
-  contain: paint;
+  /* contain:layout prevents the wide ticker from inflating the iOS layout viewport.
+     contain:paint clips visual overflow. Both are required. */
+  contain: layout paint;
   z-index: 1;
 }
 .ticker { display: flex; gap: 0; animation: ticker 28s linear infinite; }
@@ -372,7 +371,7 @@ body::before {
 /* ═══════════════════════════════
    STATS ROW
 ═══════════════════════════════ */
-.stats-section { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; overflow: hidden; contain: paint; }
+.stats-section { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); position: relative; z-index: 1; overflow: hidden; contain: layout paint; }
 .stats-inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); }
 .stat-block { padding: 40px 36px; border-right: 1px solid var(--bd); position: relative; }
 .stat-block:last-child { border-right: none; }

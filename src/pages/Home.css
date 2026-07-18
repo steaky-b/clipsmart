@@ -239,7 +239,7 @@
   border-bottom: 1px solid rgba(46,204,113,0.12);
   padding: 18px var(--pad);
   overflow: hidden;
-  contain: paint; /* prevent white-space:nowrap items from inflating iOS layout viewport */
+  contain: layout paint; /* layout containment prevents wide children from inflating the iOS layout viewport */
 }
 .perks-inner {
   max-width: var(--max); margin: 0 auto;
@@ -445,7 +445,7 @@
   margin-bottom: 8px;
 }
 .view-all:hover { background: rgba(46,204,113,.18); }
-.cases-track-wrap { overflow: hidden; position: relative; -webkit-transform: translateZ(0); transform: translateZ(0); contain: paint; } /* contain:paint + translateZ = definitive iOS containment: children cannot inflate page width */
+.cases-track-wrap { overflow: hidden; position: relative; -webkit-transform: translateZ(0); transform: translateZ(0); contain: layout paint; } /* contain:layout prevents wide track from inflating iOS viewport; contain:paint clips visual overflow */
 .cases-track {
   display: flex; gap: 20px; padding: 0 var(--pad);
   width: max-content;
@@ -510,7 +510,7 @@
   font-size: 16px; line-height: 1.75; color: var(--t1);
   max-width: 580px; margin-top: 10px;
 }
-.creator-phones-wrap { overflow: hidden; max-width: var(--max); margin: 0 auto; -webkit-transform: translateZ(0); transform: translateZ(0); contain: paint; }
+.creator-phones-wrap { overflow: hidden; max-width: var(--max); margin: 0 auto; -webkit-transform: translateZ(0); transform: translateZ(0); contain: layout paint; }
 .creator-phones {
   display: flex; gap: 20px;
   padding: 8px var(--pad) 16px;
