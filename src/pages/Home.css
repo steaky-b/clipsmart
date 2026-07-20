@@ -445,8 +445,9 @@
   margin-bottom: 8px;
 }
 .view-all:hover { background: rgba(46,204,113,.18); }
-.cases-track-wrap { overflow: hidden; position: relative; -webkit-transform: translateZ(0); transform: translateZ(0); contain: layout paint; } /* contain:layout prevents wide track from inflating iOS viewport; contain:paint clips visual overflow */
+.cases-track-wrap { overflow: hidden; position: relative; height: 380px; -webkit-transform: translateZ(0); transform: translateZ(0); contain: layout paint; }
 .cases-track {
+  position: absolute; top: 0; left: 0;
   display: flex; gap: 20px; padding: 0 var(--pad);
   width: max-content;
   animation: scroll-cases 40s linear infinite;
@@ -501,6 +502,7 @@
   border-top: 1px solid var(--bd);
   border-bottom: 1px solid var(--bd);
   overflow: hidden;
+  contain: layout paint;
 }
 .creator-header {
   max-width: var(--max); margin: 0 auto;
@@ -796,6 +798,9 @@
   .perks-strip { padding: 14px var(--pad) !important; }
   .perks-inner { gap: 8px 20px !important; justify-content: flex-start !important; }
   .perk-item { font-size: 12px !important; }
+
+  /* ── Cases carousel: hidden on mobile (animation not useful on small screens) ── */
+  .cases-section { display: none !important; }
 
   /* ── Active campaigns grid: 1-col ── */
   .hac-section { padding: 48px 0 56px !important; }
