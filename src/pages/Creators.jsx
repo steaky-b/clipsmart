@@ -2,34 +2,90 @@ import { useState } from 'react'
 import './Creators.css'
 
 const STATS = [
-  { v: '80K+', l: 'Active creators', s: 'Across all platforms' },
-  { v: '100%', l: 'Manual review', s: 'Every submission checked' },
-  { v: '$0.09', l: 'Lowest CPM achieved', s: 'ProdByCPKShawn campaign' },
-  { v: '16hrs', l: 'Avg. time to first clip', s: 'From campaign brief' },
+  {
+    v: '80K+',
+    l: 'Active Creators',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="22" height="22">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" strokeLinecap="round" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    v: '2.3B+',
+    l: 'Total Views Generated',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="22" height="22">
+        <polygon points="5 3 19 12 5 21 5 3" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    v: '93%',
+    l: 'Average Approval Rate',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="22" height="22">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    v: '4.8 / 5',
+    l: 'Creator Rating',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+      </svg>
+    ),
+  },
 ]
 
-const REGIONS = [
-  { name: 'North America', count: '~45,000', pct: 56 },
-  { name: 'Europe', count: '~18,500', pct: 23 },
-  { name: 'UK & Ireland', count: '~9,200', pct: 12 },
-  { name: 'Rest of World', count: '~7,300', pct: 9 },
+const PLATFORMS = [
+  { name: 'TikTok Clips', pct: 52, gradient: 'linear-gradient(90deg, #25F4EE, #FE2C55)' },
+  { name: 'Instagram Reels', pct: 38, gradient: 'linear-gradient(90deg, #833AB4, #FD1D1D, #F77737)' },
+  { name: 'YouTube Shorts', pct: 10, gradient: 'linear-gradient(90deg, #FF0000, #CC0000)' },
 ]
 
-const NICHES = [
-  { icon: '🛍', name: 'E-Commerce & Products', count: '~18,000 creators', pct: 95, examples: 'Product reviews, unboxings, Amazon finds, hauls, gift guides' },
-  { icon: '🎵', name: 'Music & Entertainment', count: '~14,000 creators', pct: 80, examples: 'Songs, producers, artists, playlists, music reactions' },
-  { icon: '💪', name: 'Health, Fitness & Wellness', count: '~12,000 creators', pct: 72, examples: 'Supplements, training gear, nutrition, mental health, biohacking' },
-  { icon: '🏆', name: 'Sports & Events', count: '~10,000 creators', pct: 60, examples: 'PPV, sports highlights, event previews, athlete content' },
-  { icon: '🎙', name: 'Podcasts & Media', count: '~8,000 creators', pct: 50, examples: 'Clip repurposing, podcast reactions, highlight reels' },
-  { icon: '✈', name: 'Travel & Lifestyle', count: '~6,000 creators', pct: 38, examples: 'Destinations, lifestyle products, travel gear, day-in-the-life' },
+const LOVES = [
+  {
+    title: 'PayPal Payouts',
+    desc: 'Get paid directly to PayPal once your clips are approved. Fast, transparent, no waiting.',
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="#003087">
+        <path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 0 0-.794.68l-.04.22-.63 3.993-.028.15a.805.805 0 0 1-.794.68H7.72a.483.483 0 0 1-.477-.558L9.4 8.9a.804.804 0 0 1 .793-.68h3.204c2.6 0 4.63.54 5.78 2.258h.89zm-2.98-5.9C15.8 1.2 13.7.8 10.9.8H5.2a.8.8 0 0 0-.79.68L2.04 15.9a.48.48 0 0 0 .477.56h3.48l.88-5.55.027-.15a.805.805 0 0 1 .794-.68h1.66c3.78 0 6.73-1.53 7.6-5.96.03-.16.06-.31.08-.46.37-2.36-.07-3.97-1.96-5.14z"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Performance-Based Earnings',
+    desc: 'You earn based on real views — the better your content performs, the more you make.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="22" height="22">
+        <rect x="3" y="12" width="4" height="8" rx="1" />
+        <rect x="10" y="8" width="4" height="12" rx="1" />
+        <rect x="17" y="4" width="4" height="16" rx="1" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Clear Campaign Guidelines',
+    desc: 'Every brief is clear and specific so you know exactly what to create before you start.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="22" height="22">
+        <path d="M9 11l3 3L22 4" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" strokeLinecap="round" />
+      </svg>
+    ),
+  },
 ]
 
-const APPROVED = [
-  'Minimum 500 followers on target platform',
-  'Clear niche alignment with campaign brief',
-  'No previous brand safety violations',
-  'Original content — no reposts or duets of competitors',
-  'Audience quality verified — real engagement, not bot-inflated',
+const STEPS = [
+  { n: '01', t: 'Browse open campaigns', b: 'Find briefs that match your niche and audience on the ClipSmart dashboard.' },
+  { n: '02', t: 'Create & submit your clip', b: 'Follow the brief, post on your account, and submit the link for review.' },
+  { n: '03', t: 'Get approved', b: 'Our team reviews every submission for quality and brand fit before it counts.' },
+  { n: '04', t: 'Get paid via PayPal', b: 'Earn per verified view. Withdraw to PayPal once your balance hits the threshold.' },
 ]
 
 const FAQ_CREATORS = [
@@ -39,28 +95,16 @@ const FAQ_CREATORS = [
   },
   {
     q: 'With 80,000+ creators, how do you make sure the right ones post for my brand?',
-    a: 'When your campaign brief goes live, only creators whose niche, platform, and audience demographics match your target are eligible to apply. Every submission is then manually reviewed before going live — we check content quality, brand alignment, and engagement authenticity. You\'re never at the mercy of an algorithm.',
+    a: 'When your campaign brief goes live, only creators whose niche, platform, and audience demographics match your target are eligible to apply. Every submission is then manually reviewed before going live — we check content quality, brand alignment, and engagement authenticity.',
   },
   {
     q: 'How quickly will content start going live after I launch a campaign?',
-    a: 'Typically within 16 hours of your campaign brief going live, you\'ll have your first clip posted and tracked. Most campaigns have multiple clips live within the first 24–48 hours. The network is active — creators are checking for new briefs daily.',
+    a: 'Typically within 16 hours of your campaign brief going live, you\'ll have your first clip posted and tracked. Most campaigns have multiple clips live within the first 24–48 hours.',
   },
   {
     q: 'What platforms do the creators post on?',
-    a: 'The majority of our network posts across TikTok, Instagram Reels, and YouTube Shorts. When setting up your campaign you can specify which platforms to focus on, or run across all three simultaneously to maximise reach. Most brands see the strongest CPM on TikTok, but cross-platform campaigns compound results significantly.',
+    a: 'The majority of our network posts across TikTok, Instagram Reels, and YouTube Shorts. When setting up your campaign you can specify which platforms to focus on, or run across all three simultaneously.',
   },
-  {
-    q: 'Can I see which creators would post for my brand before committing?',
-    a: 'Yes — during your onboarding call we can show you a sample of creators in your niche before you commit a penny. We want you to be confident in the fit before the campaign launches. If the creators don\'t match your expectations, we\'ll find more that do.',
-  },
-]
-
-const REJECTED = [
-  'Generic, low-effort content ("this product is amazing!")',
-  'Misleading or exaggerated claims',
-  'Wrong audience demographics for the campaign',
-  'Content that includes competitor brand mentions',
-  'Content that looks like an ad — "Sponsored" energy kills performance',
 ]
 
 export default function Creators() {
@@ -68,145 +112,104 @@ export default function Creators() {
 
   return (
     <>
-      {/* HERO */}
-      <div className="creators-hero">
-        <div className="section" style={{ paddingTop: 'calc(var(--nav-h) + 80px)', paddingBottom: '60px' }}>
-          <div className="cn-inner">
-            <div className="cn-hero-left fade-up">
-              <div className="section-eyebrow">Creator Network</div>
-              <h1>80,000+ creators.<br /><em>All verified.<br />All performance-paid.</em></h1>
-              <p>Every creator in our network is approved before they post for your brand. They earn when content performs — which means they're motivated to make it good.</p>
-              <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ marginTop: '28px', width: 'fit-content' }}>
-                Start a campaign →
-              </a>
+      {/* HERO — centered */}
+      <div className="cr-hero">
+        <div className="cr-hero-inner fade-up">
+          <div className="cr-badge">
+            <span className="cr-badge-dot" />
+            Creator network built for performance
+          </div>
+          <h1>Join <em>80,000+</em> creators</h1>
+          <p>
+            Post authentic short-form content for real brands. Get paid for views —
+            not flat fees. Clear briefs, fast reviews, PayPal payouts.
+          </p>
+        </div>
+      </div>
+
+      {/* STAT CARDS */}
+      <div className="cr-stats-wrap">
+        <div className="cr-stats stagger">
+          {STATS.map(({ v, l, icon }) => (
+            <div key={l} className="cr-stat-card">
+              <div className="cr-stat-icon">{icon}</div>
+              <div className="cr-stat-v">{v}</div>
+              <div className="cr-stat-l">{l}</div>
             </div>
-            <div className="cn-hero-right fade-up">
-              <div className="count-display">
-                <div className="count-val">80,000+</div>
-                <div className="count-lbl">Active creators in network</div>
-                <div className="live-dot"><div className="live-dot-inner" />Growing weekly</div>
-              </div>
-              <div className="region-grid">
-                {REGIONS.map(({ name, count, pct }) => (
-                  <div key={name} className="region-card">
-                    <div className="rc-region">{name}</div>
-                    <div className="rc-count">{count}</div>
-                    <div className="rc-pct">{pct}% of network</div>
-                    <div className="rc-bar"><div className="rc-fill" style={{ width: pct + '%' }} /></div>
+          ))}
+        </div>
+      </div>
+
+      {/* TWO-COL: create + love */}
+      <div className="cr-split-wrap">
+        <div className="cr-split">
+          <div className="cr-panel fade-up">
+            <h2>What our creators create</h2>
+            <p className="cr-panel-sub">Platform split across the network — real distribution, not projections.</p>
+            <div className="cr-platform-bars">
+              {PLATFORMS.map(({ name, pct, gradient }) => (
+                <div key={name} className="cr-pbar-row">
+                  <div className="cr-pbar-label">{name}</div>
+                  <div className="cr-pbar-track">
+                    <div className="cr-pbar-fill" style={{ width: pct + '%', background: gradient }} />
                   </div>
-                ))}
-              </div>
+                  <div className="cr-pbar-pct">{pct}%</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="cr-panel fade-up">
+            <h2>What creators love</h2>
+            <p className="cr-panel-sub">Built for creators who want to earn from content that actually performs.</p>
+            <div className="cr-loves">
+              {LOVES.map(({ title, desc, icon }) => (
+                <div key={title} className="cr-love-item">
+                  <div className="cr-love-icon">{icon}</div>
+                  <div>
+                    <div className="cr-love-t">{title}</div>
+                    <div className="cr-love-b">{desc}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* STAT STRIP */}
-      <div className="creators-stat-strip">
-        <div className="creators-stat-inner stagger">
-          {STATS.map(({ v, l, s }) => (
-            <div key={l} className="cstat">
-              <div className="cstat-v">{v}</div>
-              <div className="cstat-l">{l}</div>
-              <div className="cstat-s">{s}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* NICHES */}
-      <div className="section">
-        <div className="section-eyebrow fade-up">Niche Coverage</div>
-        <h2 className="section-h2 fade-up">We have creators in <em>your space.</em></h2>
-        <p className="section-lead fade-up">Our network spans dozens of content niches. If your brand targets an audience, we have creators already posting for it.</p>
-        <div className="niches-grid">
-          {NICHES.map(({ icon, name, count, pct, examples }) => (
-            <div key={name} className="niche-card fade-up">
-              <div className="niche-icon">{icon}</div>
-              <div className="niche-name">{name}</div>
-              <div className="niche-count">{count}</div>
-              <div className="niche-bar-wrap"><div className="niche-bar" style={{ width: pct + '%' }} /></div>
-              <div className="niche-examples">{examples}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* APPROVED / REJECTED */}
-      <div className="section" style={{ paddingTop: 0 }}>
-        <div className="section-eyebrow fade-up">Quality Control</div>
-        <h2 className="section-h2 fade-up">Every clip is checked <em>before you pay.</em></h2>
-        <div className="approval-grid">
-          <div className="approval-col good fade-up">
-            <div className="approval-head">✓ What gets approved</div>
-            {APPROVED.map(a => (
-              <div key={a} className="approval-item">
-                <div className="approval-dot good-dot" />
-                {a}
+      {/* HOW IT WORKS */}
+      <div className="cr-how">
+        <div className="cr-how-inner">
+          <div className="section-eyebrow fade-up" style={{ justifyContent: 'center' }}>How It Works</div>
+          <h2 className="section-h2 fade-up" style={{ textAlign: 'center' }}>
+            From campaign to <em>PayPal payout.</em>
+          </h2>
+          <p className="section-lead fade-up" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+            Four steps. No flat fees. You earn when your content gets real views.
+          </p>
+          <div className="cr-steps">
+            {STEPS.map(({ n, t, b }) => (
+              <div key={n} className="cr-step-card fade-up">
+                <div className="cr-step-n">{n}</div>
+                <div className="cr-step-t">{t}</div>
+                <div className="cr-step-b">{b}</div>
               </div>
             ))}
           </div>
-          <div className="approval-col bad fade-up">
-            <div className="approval-head">✕ What gets rejected</div>
-            {REJECTED.map(r => (
-              <div key={r} className="approval-item">
-                <div className="approval-dot bad-dot" />
-                {r}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* SOCIAL MEDIA GROWTH */}
-      <div className="section" style={{ paddingTop: 0 }}>
-        <div className="section-eyebrow fade-up">Grow Your Profile</div>
-        <h2 className="section-h2 fade-up">Creators grow <em>as your brand grows.</em></h2>
-        <p className="section-lead fade-up">When you run a ClipSmart campaign, your brand gets tagged, featured, and linked across hundreds of creator profiles — sending their audiences directly to your channels.</p>
-        <div className="social-grid">
-          {[
-            { icon: '📈', title: 'Organic follower growth', desc: 'Each creator post drives discovery back to your brand profile. Real followers from real audiences — no paid boosting.' },
-            { icon: '🔗', title: 'Cross-platform amplification', desc: 'Creators post across TikTok, Instagram, and YouTube simultaneously, multiplying your brand touchpoints.' },
-            { icon: '💬', title: 'Authentic brand mentions', desc: 'Hundreds of organic mentions build brand familiarity faster than any ad campaign can — without the "Sponsored" tag.' },
-            { icon: '📊', title: 'Compounding reach', desc: 'Viral clips don\'t disappear. They continue driving views, follows, and traffic long after your campaign ends.' },
-          ].map(({ icon, title, desc }) => (
-            <div key={title} className="social-card fade-up">
-              <div className="social-card-icon">{icon}</div>
-              <h3 className="social-card-t">{title}</h3>
-              <p className="social-card-b">{desc}</p>
-            </div>
-          ))}
         </div>
       </div>
 
       {/* FAQ */}
-      <div className="section creators-faq-section" style={{ paddingTop: 0 }}>
+      <div className="section creators-faq-section">
         <div className="creators-faq-layout">
-          {/* Left — sticky header */}
           <div className="creators-faq-left">
             <div className="section-eyebrow fade-up">FAQ</div>
             <h2 className="creators-faq-heading fade-up">Everything brands ask <em>before they start.</em></h2>
-            <p className="creators-faq-sub fade-up">We've answered the most common questions about how our creator network works, how campaigns are managed, and what to expect.</p>
-            <div className="creators-faq-stats fade-up">
-              <div className="cfs-item">
-                <div className="cfs-val">80K+</div>
-                <div className="cfs-lbl">Active creators</div>
-              </div>
-              <div className="cfs-item">
-                <div className="cfs-val">16hrs</div>
-                <div className="cfs-lbl">Avg. time to first clip</div>
-              </div>
-              <div className="cfs-item">
-                <div className="cfs-val">100%</div>
-                <div className="cfs-lbl">Manual content review</div>
-              </div>
-            </div>
+            <p className="creators-faq-sub fade-up">Common questions about how our creator network works and what to expect.</p>
             <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary creators-faq-cta fade-up">
               Book a free call →
             </a>
           </div>
-
-          {/* Right — accordion */}
           <div className="creators-faq-list">
             {FAQ_CREATORS.map(({ q, a }, i) => (
               <div key={i} className={`creators-faq-item${openFaq === i ? ' open' : ''}`}>

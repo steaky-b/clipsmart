@@ -2,30 +2,87 @@ import { useState } from 'react'
 import './WorkWithUs.css'
 
 const STEPS = [
-  { n: '01', t: 'Fill in the form', b: 'Tell us about your brand and goals. Takes 3 minutes.' },
-  { n: '02', t: 'We reach out within 24 hours', b: 'We\'ll review your submission and come back with initial thoughts and a time to speak.' },
-  { n: '03', t: '30-minute call — no prep needed', b: 'We ask about your brand, your goals, and your current marketing. Just show up.' },
-  { n: '04', t: 'Campaign live in 48 hours', b: 'Once you\'re in, we brief the creator network and your campaign goes live within 48 hours.' },
+  {
+    n: '01',
+    t: 'Tell us about your brand',
+    b: 'Share your goals, audience, and budget. Takes about 3 minutes.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="24" height="24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" strokeLinecap="round" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    ),
+  },
+  {
+    n: '02',
+    t: 'We brief the creator network',
+    b: 'Your campaign goes out to matching creators across TikTok, Instagram, and YouTube.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="24" height="24">
+        <path d="M3 11l19-9-9 19-2-8-8-2z" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    n: '03',
+    t: 'Creators post & we review',
+    b: 'Every clip is manually approved before it counts toward your campaign.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="24" height="24">
+        <polygon points="5 3 19 12 5 21 5 3" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    n: '04',
+    t: 'You pay for verified views',
+    b: 'Track every clip in real time. You only pay when content hits your view threshold.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="24" height="24">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+]
+
+const PILLS = [
+  { label: 'No monthly contracts', icon: '✓' },
+  { label: 'Verified creators only', icon: '✓' },
+  { label: 'Performance based pricing', icon: '📊' },
 ]
 
 function encode(data) {
   return Object.keys(data)
-    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
     .join('&')
 }
 
 export default function WorkWithUs() {
-  const [form, setForm] = useState({ fname: '', lname: '', email: '', brand: '', campType: '', budget: '', details: '' })
+  const [form, setForm] = useState({
+    campaignName: '',
+    platform: 'TikTok',
+    budget: '2500',
+    cpm: '1.00',
+    details: '',
+    email: '',
+    brand: '',
+  })
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [sending, setSending] = useState(false)
 
-  const update = (k, v) => setForm(f => ({ ...f, [k]: v }))
+  const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
+
+  const estimatedViews = (() => {
+    const b = Number(form.budget) || 0
+    const c = Number(form.cpm) || 1
+    return Math.round((b / c) * 1000)
+  })()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.fname || !form.email || !form.brand) {
-      setError('Please fill in your name, email, and brand name.')
+    if (!form.campaignName || !form.details) {
+      setError('Please fill in campaign name and tell us about your brand.')
       return
     }
     setError('')
@@ -34,13 +91,19 @@ export default function WorkWithUs() {
       const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'work-with-us', ...form }),
+        body: encode({
+          'form-name': 'work-with-us',
+          fname: form.campaignName,
+          lname: '',
+          email: form.email || 'via-campaign-request',
+          brand: form.brand || form.campaignName,
+          campType: form.platform,
+          budget: form.budget,
+          details: `CPM: $${form.cpm}\nPlatform: ${form.platform}\n\n${form.details}`,
+        }),
       })
-      if (res.ok) {
-        setSubmitted(true)
-      } else {
-        setError('Something went wrong. Please try again or book a call directly.')
-      }
+      if (res.ok) setSubmitted(true)
+      else setError('Something went wrong. Please try again or book a call directly.')
     } catch {
       setError('Something went wrong. Please try again or book a call directly.')
     } finally {
@@ -50,120 +113,137 @@ export default function WorkWithUs() {
 
   return (
     <>
-      {/* HERO */}
-      <div className="page-hero">
-        <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Work With Us</div>
-        <h1>Let's build your<br /><em>campaign.</em></h1>
-        <p>Fill in the form below. We'll reach out within 24 hours to book a 30-minute call — no prep needed, no commitment required.</p>
-        <div className="wwu-hero-guarantee">
-          <span>✓</span> Full refund if we don't hit your guaranteed views
-        </div>
-      </div>
-
-      {/* MAIN CONTENT */}
-      <div className="wwu-section">
-        <div className="wwu-inner">
-          {/* Left col */}
-          <div className="wwu-left">
-            <div className="section-eyebrow fade-up">What To Expect</div>
-            <h2 className="wwu-h fade-up">Simple, transparent<br /><em>process.</em></h2>
-            <div className="wwu-steps">
-              {STEPS.map(({ n, t, b }) => (
-                <div key={n} className="expect-item fade-up">
-                  <div className="expect-n">{n}</div>
-                  <div>
-                    <div className="expect-t">{t}</div>
-                    <div className="expect-b">{b}</div>
-                  </div>
-                </div>
-              ))}
+      {/* HERO — two column */}
+      <div className="wwu-hero">
+        <div className="wwu-hero-inner">
+          <div className="wwu-hero-copy fade-up">
+            <div className="wwu-eyebrow">
+              <span className="wwu-eyebrow-line" />
+              For Brands
             </div>
-            <div className="wwu-stats stagger">
-              {[['1M+','Views per $1,000'],['from $0.09','Effective CPM achieved'],['16hrs','First clip live']].map(([v,l]) => (
-                <div key={l} className="ms">
-                  <div className="ms-v">{v}</div>
-                  <div className="ms-l">{l}</div>
+            <h1>Launch a creator campaign in under <em>48 hours.</em></h1>
+            <p>
+              Get hundreds of creators posting about your brand across TikTok, Instagram and YouTube.
+              Only pay for verified performance.
+            </p>
+            <div className="wwu-pills">
+              {PILLS.map(({ label, icon }) => (
+                <div key={label} className="wwu-pill">
+                  <span className="wwu-pill-icon">{icon}</span>
+                  {label}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Form */}
-          <div className="wwu-form-wrap fade-up">
-            <div className="booking-card">
-              <div className="booking-head">
-                <h2>Get in Touch</h2>
-                <p>We'll respond within 24 hours to book your call.</p>
-              </div>
-
-              {submitted ? (
-                <div className="form-success">
-                  <div className="form-success-icon">✓</div>
-                  <h3>Message received!</h3>
-                  <p>We'll be in touch within 24 hours to book your call.</p>
-                </div>
-              ) : (
-                <form
-                  name="work-with-us"
-                  method="POST"
-                  data-netlify="true"
-                  onSubmit={handleSubmit}
-                  className="booking-form"
-                >
-                  <input type="hidden" name="form-name" value="work-with-us" />
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>First name</label>
-                      <input type="text" placeholder="John" value={form.fname} onChange={e => update('fname', e.target.value)} />
-                    </div>
-                    <div className="form-group">
-                      <label>Last name</label>
-                      <input type="text" placeholder="Smith" value={form.lname} onChange={e => update('lname', e.target.value)} />
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" placeholder="you@brand.com" value={form.email} onChange={e => update('email', e.target.value)} />
-                  </div>
-                  <div className="form-group">
-                    <label>Brand / Company name</label>
-                    <input type="text" placeholder="Your brand name" value={form.brand} onChange={e => update('brand', e.target.value)} />
-                  </div>
-                  <div className="form-group">
-                    <label>Campaign type</label>
-                    <select value={form.campType} onChange={e => update('campType', e.target.value)}>
-                      <option value="" disabled>Select campaign type</option>
-                      <option value="ecomm">E-Commerce / Product</option>
-                      <option value="music">Music / Artist</option>
-                      <option value="health">Health & Wellness</option>
-                      <option value="podcast">Podcast / Media</option>
-                      <option value="sports">Sports / PPV / Events</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>Budget range</label>
-                    <select value={form.budget} onChange={e => update('budget', e.target.value)}>
-                      <option value="" disabled>Select a range</option>
-                      <option value="1k">$1,000</option>
-                      <option value="2.5k">$2,500</option>
-                      <option value="5k">$5,000</option>
-                      <option value="5k+">$5,000+</option>
-                      <option value="unsure">Not sure yet</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>Tell us about your brand</label>
-                    <textarea placeholder="What do you sell? Who's your audience? What have you tried before?" rows={4} value={form.details} onChange={e => update('details', e.target.value)} />
-                  </div>
-                  {error && <div className="form-error">{error}</div>}
-                  <button type="submit" className="btn-primary form-submit" disabled={sending}>
-                    {sending ? 'Sending…' : 'Send message →'}
-                  </button>
-                  <p className="form-note">Or <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer">book a call directly →</a></p>
-                </form>
-              )}
+          <div className="wwu-form-card fade-up">
+            <div className="wwu-form-head">
+              <h2>Campaign Request</h2>
+              <svg className="wwu-form-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="20" height="20">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
+
+            {submitted ? (
+              <div className="form-success">
+                <div className="form-success-icon">✓</div>
+                <h3>Request received!</h3>
+                <p>We'll be in touch within 24 hours to confirm your campaign.</p>
+              </div>
+            ) : (
+              <form
+                name="work-with-us"
+                method="POST"
+                data-netlify="true"
+                onSubmit={handleSubmit}
+                className="wwu-form"
+              >
+                <input type="hidden" name="form-name" value="work-with-us" />
+
+                <div className="wwu-fg">
+                  <label>Campaign Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Summer Product Launch"
+                    value={form.campaignName}
+                    onChange={(e) => update('campaignName', e.target.value)}
+                  />
+                </div>
+
+                <div className="wwu-fg">
+                  <label>Platform</label>
+                  <select value={form.platform} onChange={(e) => update('platform', e.target.value)}>
+                    <option>TikTok</option>
+                    <option>Instagram</option>
+                    <option>YouTube</option>
+                    <option>All platforms</option>
+                  </select>
+                </div>
+
+                <div className="wwu-fg-row">
+                  <div className="wwu-fg">
+                    <label>Budget</label>
+                    <select value={form.budget} onChange={(e) => update('budget', e.target.value)}>
+                      <option value="1000">$1,000</option>
+                      <option value="2500">$2,500</option>
+                      <option value="5000">$5,000</option>
+                      <option value="10000">$10,000+</option>
+                    </select>
+                  </div>
+                  <div className="wwu-fg">
+                    <label>CPM</label>
+                    <select value={form.cpm} onChange={(e) => update('cpm', e.target.value)}>
+                      <option value="0.75">$0.75</option>
+                      <option value="1.00">$1.00</option>
+                      <option value="1.50">$1.50</option>
+                      <option value="2.00">$2.00</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="wwu-fg">
+                  <label>Tell us about your brand</label>
+                  <textarea
+                    placeholder="What do you sell? Who's your audience?"
+                    rows={3}
+                    value={form.details}
+                    onChange={(e) => update('details', e.target.value)}
+                  />
+                </div>
+
+                <div className="wwu-estimate">
+                  <div className="wwu-estimate-label">Estimated Views</div>
+                  <div className="wwu-estimate-val">{estimatedViews.toLocaleString()}</div>
+                </div>
+
+                {error && <div className="form-error">{error}</div>}
+
+                <button type="submit" className="btn-primary wwu-submit" disabled={sending}>
+                  {sending ? 'Sending…' : 'Launch Campaign →'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* HOW IT WORKS — dark section */}
+      <div className="wwu-how">
+        <div className="wwu-how-inner">
+          <div className="wwu-how-eyebrow fade-up">
+            <span className="wwu-eyebrow-line" />
+            How It Works
+          </div>
+          <h2 className="wwu-how-h fade-up">A simple process. <em>Real results.</em></h2>
+          <div className="wwu-how-grid">
+            {STEPS.map(({ n, t, b, icon }) => (
+              <div key={n} className="wwu-how-card fade-up">
+                <div className="wwu-how-n">{n}</div>
+                <div className="wwu-how-icon">{icon}</div>
+                <div className="wwu-how-t">{t}</div>
+                <div className="wwu-how-b">{b}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
