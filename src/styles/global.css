@@ -78,7 +78,7 @@ body::before {
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--pad);
-  background: #050505;
+  background: #0d0e0f;
   backdrop-filter: none;
   border-bottom: 1px solid rgba(255,255,255,0.07);
 }
@@ -233,7 +233,7 @@ body::before {
   position: fixed;
   top: var(--nav-h);
   left: 0; right: 0;
-  background: #050505;
+  background: #0d0e0f;
   border-bottom: 1px solid rgba(255,255,255,0.07);
   z-index: 490;
   padding: 10px 14px 18px;
@@ -704,14 +704,17 @@ body::before {
 /* ── Nav ── */
 /* Light mode — keep header dark so white text always reads */
 [data-theme="light"] .nav {
-  background: #050505;
+  background: #232b25;
   border-bottom-color: rgba(255,255,255,0.09);
 }
 [data-theme="light"] .nav-logo-img { border-color: rgba(255,255,255,0.18); }
 [data-theme="light"] .mob-drawer {
-  background: #050505;
+  background: #232b25;
   border-bottom-color: rgba(255,255,255,0.09);
 }
+
+/* Footer brand name — black on light backgrounds (nav-logo hardcodes white) */
+[data-theme="light"] .footer-brand .nav-logo { color: #111111; }
 
 /* ── Buttons — text colour must flip to white on darker green ── */
 [data-theme="light"] .nav-cta               { color: #ffffff; }
