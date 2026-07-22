@@ -47,11 +47,20 @@
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
 .roi-field-value {
-  display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0;
+  background: var(--s2);
+  border: 1px solid var(--bd2);
+  border-radius: 12px;
+  padding: 10px 16px;
+  transition: border-color .18s;
+}
+.roi-field-value:focus-within {
+  border-color: var(--g);
 }
 .roi-currency {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 36px; font-weight: 800; color: var(--white);
+  flex-shrink: 0;
 }
 .roi-field-value input {
   width: 100%; max-width: 200px;
