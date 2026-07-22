@@ -148,12 +148,17 @@ function PlatformIcons({ platformSplit, size = 13 }) {
   return (
     <div className="db-platform-icons">
       {platforms.map(([name]) => {
-        const ic = { key: name, size }
-        if (name === 'TikTok')    return <IcTikTok    {...ic} />
-        if (name === 'Instagram') return <IcInstagram {...ic} />
-        if (name === 'YouTube')   return <IcYouTube   {...ic} />
-        if (name === 'X')         return <IcXSocial   {...ic} />
-        return null
+        let Icon = null
+        if (name === 'TikTok')    Icon = IcTikTok
+        else if (name === 'Instagram') Icon = IcInstagram
+        else if (name === 'YouTube')   Icon = IcYouTube
+        else if (name === 'X')         Icon = IcXSocial
+        if (!Icon) return null
+        return (
+          <span key={name} className="db-platform-icon-wrap" title={name}>
+            <Icon size={size} />
+          </span>
+        )
       })}
     </div>
   )
@@ -505,9 +510,71 @@ const HOW_STEPS = [
 const CAT_LABELS = ['all', 'music', 'health', 'podcast', 'ugc', 'clipping', 'gaming']
 const CAT_DISPLAY = { all: 'All', music: 'Music', health: 'Health', podcast: 'Podcast', ugc: 'UGC', clipping: 'Clipping', gaming: 'Gaming', crypto: 'Crypto' }
 
+const UGC_CATS = new Set(['ugc', 'health'])
+function campaignRowType(c) {
+  return UGC_CATS.has(c.cat) ? 'ugc' : 'clipping'
+}
+
+function CampaignRowCard({ campaign: c, onApply }) {
+  const cs = CAT_COLORS[c.cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
+  const bgStyle = c.img
+    ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.75) 100%), url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+    : { background: c.gradient || `linear-gradient(160deg, ${cs.color}55 0%, #0a0a0b 70%)` }
+
+  return (
+    <button type="button" className="db-row-card" style={bgStyle} onClick={() => onApply(c)}>
+      <div className="db-row-card-name">{c.name}</div>
+      <div className="db-row-card-platforms">
+        <PlatformIcons platformSplit={c.platformSplit} size={11} />
+      </div>
+      <div className="db-row-card-badges">
+        <span className="db-row-badge">{formatMoney(c.budgetTotal)}</span>
+        <span className="db-row-badge">${c.clientRpm.toFixed(2)}</span>
+      </div>
+    </button>
+  )
+}
+
+function CampaignRow({ title, items, onApply, viewAllHref }) {
+  const ref = useRef(null)
+  function scroll(dir) {
+    if (!ref.current) return
+    ref.current.scrollBy({ left: dir * 280, behavior: 'smooth' })
+  }
+  if (!items.length) return null
+  return (
+    <section className="db-camp-row">
+      <div className="db-camp-row-head">
+        <div className="db-camp-row-title-wrap">
+          <h2 className="db-camp-row-title">{title}</h2>
+          <button type="button" className="db-camp-view-all" onClick={() => ref.current?.scrollTo({ left: 0, behavior: 'smooth' })}>
+            View all <span>›</span>
+          </button>
+        </div>
+        <div className="db-camp-row-arrows">
+          <button type="button" className="db-camp-arrow" onClick={() => scroll(-1)} aria-label="Scroll left">
+            <IcArrowLeft size={14} />
+          </button>
+          <button type="button" className="db-camp-arrow" onClick={() => scroll(1)} aria-label="Scroll right">
+            <IcArrowRight size={14} />
+          </button>
+        </div>
+      </div>
+      <div className="db-camp-row-track" ref={ref}>
+        {items.map(({ campaign }) => (
+          <CampaignRowCard key={campaign.slug} campaign={campaign} onApply={onApply} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function CampaignsView({ onApply }) {
-  // Live campaigns: try Supabase first, fall back to bundled data
   const [liveCampaigns, setLiveCampaigns] = useState(ALL_CAMPAIGNS)
+  const [snapshots, setSnapshots] = useState(() =>
+    ALL_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
+  )
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     if (!isSupabaseReady) return
@@ -518,42 +585,16 @@ function CampaignsView({ onApply }) {
       .then(({ data }) => {
         if (data && data.length > 0) {
           const normalized = data.map(normalizeCampaign)
-          // Merge: Supabase rows override same-slug local entries; extras appended
           const slugSet = new Set(normalized.map((c) => c.slug))
-          const merged  = [...normalized, ...ALL_CAMPAIGNS.filter((c) => !slugSet.has(c.slug))]
+          const merged = [...normalized, ...ALL_CAMPAIGNS.filter((c) => !slugSet.has(c.slug))]
           setLiveCampaigns(merged)
         }
       })
   }, [])
 
-  const [snapshots, setSnapshots] = useState(() =>
-    liveCampaigns.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
-  )
-  const [viewAll, setViewAll]   = useState(false)
-  const [isMob, setIsMob]       = useState(() => getVW() <= DB_MOBILE_BP)
-  const carouselRef             = useRef(null)
-
-  // Re-seed snapshots when liveCampaigns change (Supabase load)
   useEffect(() => {
     setSnapshots(liveCampaigns.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) })))
   }, [liveCampaigns])
-
-  useEffect(() => {
-    const upd = () => setIsMob(getVW() <= DB_MOBILE_BP)
-    window.addEventListener('resize', upd)
-    return () => window.removeEventListener('resize', upd)
-  }, [])
-
-  function scrollCarousel(dir) {
-    if (!carouselRef.current) return
-    carouselRef.current.scrollBy({ left: dir * carouselRef.current.offsetWidth * 0.85, behavior: 'smooth' })
-  }
-  const [search,       setSearch]       = useState('')
-  const [platform,     setPlatform]     = useState('all')
-  const [sort,         setSort]         = useState('cpm')
-  const [catFilter,    setCatFilter]    = useState('all')
-  const [showSortMenu, setShowSortMenu] = useState(false)
-  const [showCatMenu,  setShowCatMenu]  = useState(false)
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -562,20 +603,17 @@ function CampaignsView({ onApply }) {
     return () => clearInterval(id)
   }, [liveCampaigns])
 
-  let filtered = snapshots.filter(({ campaign: c }) => {
+  const filtered = snapshots.filter(({ campaign: c }) => {
     const q = search.trim().toLowerCase()
-    if (q && !c.name.toLowerCase().includes(q) && !c.catLabel.toLowerCase().includes(q)) return false
-    if (platform !== 'all' && !(c.platformSplit || {})[platform]) return false
-    if (catFilter !== 'all' && c.cat !== catFilter) return false
-    return true
+    if (!q) return true
+    return c.name.toLowerCase().includes(q) || c.catLabel.toLowerCase().includes(q)
   })
-  if (sort === 'cpm')    filtered = [...filtered].sort((a, b) => b.campaign.clientRpm - a.campaign.clientRpm)
-  if (sort === 'views')  filtered = [...filtered].sort((a, b) => b.snap.views - a.snap.views)
-  if (sort === 'budget') filtered = [...filtered].sort((a, b) => b.campaign.budgetTotal - a.campaign.budgetTotal)
+
+  const clipping = filtered.filter(({ campaign: c }) => campaignRowType(c) === 'clipping')
+  const ugc = filtered.filter(({ campaign: c }) => campaignRowType(c) === 'ugc')
 
   return (
     <div className="db-view db-explore">
-      {/* ── TITLE ROW ── */}
       <div className="db-explore-title-row">
         <div className="db-explore-title-left">
           <h1 className="db-explore-h">Active Campaigns</h1>
@@ -584,152 +622,76 @@ function CampaignsView({ onApply }) {
             {liveCampaigns.length} Campaigns
           </div>
         </div>
-        {isMob && (
-          <button className="db-view-all-btn" onClick={() => setViewAll(!viewAll)}>
-            {viewAll ? '← Carousel' : 'View All →'}
-          </button>
-        )}
       </div>
 
-      {/* ── CONTROLS ROW (search + dropdowns) ── */}
-      <div className="db-controls-bar">
-        <label className="db-search-wrap">
-          <IcSearch size={14} />
-          <input
-            className="db-search"
-            placeholder="Search for a campaign..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </label>
-        {/* Campaign type dropdown */}
-        <div className="db-ctrl-dd" style={{ position: 'relative' }}>
-          <button className="db-ctrl-btn" onClick={() => { setShowCatMenu(!showCatMenu); setShowSortMenu(false) }}>
-            <IcFilter size={13} />
-            <span className="db-ctrl-text">Type: </span><strong>{CAT_DISPLAY[catFilter]}</strong>
-            <IcChevron size={12} />
-          </button>
-          {showCatMenu && (
-            <div className="db-sort-menu">
-              {CAT_LABELS.map((id) => (
-                <button key={id} className={'db-sort-item' + (catFilter === id ? ' active' : '')}
-                  onClick={() => { setCatFilter(id); setShowCatMenu(false) }}>{CAT_DISPLAY[id]}</button>
-              ))}
-            </div>
-          )}
-        </div>
-        {/* Sort dropdown */}
-        <div className="db-ctrl-dd" style={{ position: 'relative' }}>
-          <button className="db-ctrl-btn" onClick={() => { setShowSortMenu(!showSortMenu); setShowCatMenu(false) }}>
-            <IcSortAz size={13} />
-            <span className="db-ctrl-text">Sort: </span><strong className="db-ctrl-sort-val">{SORT_OPTIONS.find((o) => o.id === sort)?.label}</strong>
-            <IcChevron size={12} />
-          </button>
-          {showSortMenu && (
-            <div className="db-sort-menu">
-              {SORT_OPTIONS.map((o) => (
-                <button key={o.id} className={'db-sort-item' + (sort === o.id ? ' active' : '')}
-                  onClick={() => { setSort(o.id); setShowSortMenu(false) }}>{o.label}</button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      <label className="db-search-wrap db-search-wrap--solo">
+        <IcSearch size={14} />
+        <input
+          className="db-search"
+          placeholder="Search for a campaign..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </label>
 
-      {/* ── PLATFORM TABS ── */}
-      <div className="db-platform-tabs">
-        {PLATFORM_TABS.map(({ id, label, Icon }) => (
-          <button key={id} className={'db-platform-tab' + (platform === id ? ' active' : '')} onClick={() => setPlatform(id)}>
-            {Icon ? <><Icon size={14} /><span className="db-ptab-txt">{id}</span></> : label}
-          </button>
-        ))}
-      </div>
-
-      {/* ── SHOWING COUNT ── */}
-      <p className="db-showing-count">Showing {filtered.length} of {liveCampaigns.length} campaigns</p>
-
-      {/* ── CAROUSEL ARROWS (mobile only, non-viewAll) ── */}
-      {isMob && !viewAll && filtered.length > 0 && (
-        <div className="db-carousel-arrows">
-          <button className="db-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Previous">
-            <IcArrowLeft size={15} />
-          </button>
-          <button className="db-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Next">
-            <IcArrowRight size={15} />
-          </button>
-        </div>
-      )}
-
-      {/* ── CAMPAIGN GRID / CAROUSEL ── */}
       {filtered.length === 0 ? (
-        <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns match</h3><p>Try adjusting your search or filters.</p></div>
+        <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns match</h3><p>Try a different search.</p></div>
       ) : (
-        <div className={`db-compact-grid${isMob && !viewAll ? ' db-compact-carousel' : ''}`} ref={carouselRef}>
-          {filtered.map(({ campaign: c, snap }) => {
-            const activePct = Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
-            const cs = CAT_COLORS[c.cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
-            const cardGrad = `linear-gradient(135deg, ${cs.color}1a 0%, var(--s1) 55%)`
-            return (
-              <div key={c.slug} className="db-compact-card" style={{ background: cardGrad }}>
-                {/* Top row: category badge + platform icons */}
-                <div className="db-ccard-top">
-                  <CatBadge cat={c.cat} label={c.catLabel.toUpperCase()} />
-                  <PlatformIcons platformSplit={c.platformSplit} size={12} />
-                </div>
-
-                {/* Campaign logo + name */}
-                <div className="db-ccard-ident">
-                  <div className="db-ccard-icon" style={c.img
-                    ? { padding: 0, overflow: 'hidden', border: `1px solid ${cs.border}` }
-                    : { background: cs.bg, border: `1px solid ${cs.border}` }
-                  }>
-                    {c.img ? (
-                      <img src={c.img} alt={c.name} className="db-ccard-icon-img" />
-                    ) : (
-                      <span className="db-ccard-icon-letter" style={{ color: cs.color }}>
-                        {c.name[0]}
-                      </span>
-                    )}
-                  </div>
-                  <div className="db-ccard-name-wrap">
-                    <div className="db-compact-name">{c.name}</div>
-                    <div className="db-ccard-cat-lbl" style={{ color: cs.color }}>{c.catLabel.toUpperCase()}</div>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <p className="db-ccard-desc">{c.subtitle}</p>
-
-                {/* Progress */}
-                <div className="db-ccard-progress-lbl">
-                  <span>Progress</span>
-                  <span style={{ color: cs.color, fontWeight: 700 }}>{activePct}%</span>
-                </div>
-                <div className="db-progress">
-                  <div className="db-progress-bar" style={{ width: `${activePct}%`, background: cs.color }} />
-                </div>
-
-                {/* Stats row */}
-                <div className="db-ccard-stats">
-                  <div className="db-ccard-stat">
-                    <div className="db-ccard-stat-v">{formatMoney(c.budgetTotal)}</div>
-                    <div className="db-ccard-stat-l">Total Budget</div>
-                  </div>
-                  <div className="db-ccard-stat">
-                    <div className="db-ccard-stat-v">${c.clientRpm.toFixed(2)}</div>
-                    <div className="db-ccard-stat-l">Per 1k Views</div>
-                  </div>
-                </div>
-
-                <button className="db-apply-btn" onClick={() => onApply(c)}>
-                  Apply to campaign →
-                </button>
-              </div>
-            )
-          })}
-        </div>
+        <>
+          <CampaignRow title="Clipping Campaigns" items={clipping} onApply={onApply} />
+          <CampaignRow title="UGC Campaigns" items={ugc} onApply={onApply} />
+        </>
       )}
+    </div>
+  )
+}
 
+function UsernameSetup({ onDone }) {
+  const { updateUsername } = useAuth()
+  const [username, setUsername] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    try {
+      await updateUsername(username)
+      onDone?.()
+    } catch (err) {
+      setError(err.message || 'Could not save username. Try another one.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="db-username-overlay">
+      <form className="db-username-card" onSubmit={handleSubmit}>
+        <h2 className="db-username-h">Choose a username</h2>
+        <p className="db-username-p">This is how brands and other creators will see you on ClipSmart.</p>
+        <label className="db-username-field">
+          <span>Username</span>
+          <div className="db-username-input-wrap">
+            <span className="db-username-at">@</span>
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value.replace(/\s/g, '').toLowerCase().replace(/^@/, ''))}
+              placeholder="yourhandle"
+              autoFocus
+              required
+              minLength={3}
+              maxLength={24}
+              autoComplete="username"
+            />
+          </div>
+        </label>
+        {error && <p className="db-username-err">{error}</p>}
+        <button type="submit" className="btn-primary db-username-btn" disabled={loading || username.length < 3}>
+          {loading ? 'Saving…' : 'Continue →'}
+        </button>
+      </form>
     </div>
   )
 }
@@ -1242,8 +1204,15 @@ export default function Dashboard() {
   const [showSubmitModal, setShowSubmitModal] = useState(false)
   const [drawerOpen,      setDrawerOpen]      = useState(false)
   const [isMobile,        setIsMobile]        = useState(() => getVW() <= DB_MOBILE_BP)
-  const { user, profile, signOut } = useAuth()
+  const { user, profile, loading: authLoading, signOut } = useAuth()
   const navigate = useNavigate()
+  // No creator/brand picker — just collect a username once after login
+  const needsUsername = !!(
+    user &&
+    !authLoading &&
+    profile?.role !== 'client' &&
+    !profile?.username
+  )
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [])
 
@@ -1470,6 +1439,8 @@ export default function Dashboard() {
           onSuccess={() => { setShowSubmitModal(false); showToast("Clip submitted! We'll review it within 24 hours.") }}
         />
       )}
+
+      {needsUsername && <UsernameSetup />}
     </div>
   )
 }

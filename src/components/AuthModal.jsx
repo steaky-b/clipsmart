@@ -17,7 +17,6 @@ export default function AuthModal({ onClose, onSuccess, intent, initialTab }) {
   const [tab, setTab] = useState(initialTab || 'signup')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
@@ -37,7 +36,7 @@ export default function AuthModal({ onClose, onSuccess, intent, initialTab }) {
     setLoading(true)
     try {
       if (tab === 'signup') {
-        const result = await signUp({ email, password, username })
+        const result = await signUp({ email, password })
         // Supabase returns a session immediately only if email confirm is off.
         // If session is null the user needs to confirm their email first.
         if (!result?.session) {
@@ -115,20 +114,6 @@ export default function AuthModal({ onClose, onSuccess, intent, initialTab }) {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          {tab === 'signup' && (
-            <div className="auth-field">
-              <label>Username</label>
-              <input
-                type="text"
-                placeholder="@yourhandle"
-                value={username}
-                onChange={e => setUsername(e.target.value.replace(/\s/g, '').toLowerCase())}
-                required
-                autoComplete="username"
-              />
-            </div>
-          )}
-
           <div className="auth-field">
             <label>Email</label>
             <input

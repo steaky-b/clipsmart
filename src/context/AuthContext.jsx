@@ -34,23 +34,14 @@ export function AuthProvider({ children }) {
     setLoading(false)
   }
 
-  async function signUp({ email, password, username }) {
+  async function signUp({ email, password }) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { username } }, // passed to the handle_new_user trigger
     })
     if (error) throw error
-
-    // The database trigger (handle_new_user) auto-creates the profile row.
-    // We upsert here only to set the username if the trigger beat us to it,
-    // or to set it for the first time. No display_name column needed.
-    if (data.user) {
-      await supabase.from('profiles').upsert(
-        { id: data.user.id, username },
-        { onConflict: 'id', ignoreDuplicates: false }
-      )
-    }
+    // Profile row is created by the handle_new_user trigger (username left null).
+    // User sets username after first login via updateUsername().
     return data
   }
 
@@ -71,12 +62,26 @@ export function AuthProvider({ children }) {
     return data
   }
 
+  async function updateUsername(username) {
+    if (!user) throw new Error('Not signed in')
+    const clean = String(username || '').replace(/\s/g, '').toLowerCase().replace(/^@/, '')
+    if (!clean || clean.length < 3) throw new Error('Username must be at least 3 characters')
+    const { data, error } = await supabase
+      .from('profiles')
+      .upsert({ id: user.id, username: clean }, { onConflict: 'id' })
+      .select()
+      .single()
+    if (error) throw error
+    setProfile(data)
+    return data
+  }
+
   async function signOut() {
     await supabase.auth.signOut()
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signInWithGoogle, updateUsername, signOut }}>
       {children}
     </AuthContext.Provider>
   )
