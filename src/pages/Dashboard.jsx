@@ -515,43 +515,27 @@ function campaignRowType(c) {
   return UGC_CATS.has(c.cat) ? 'ugc' : 'clipping'
 }
 
-function CampaignRowCard({ campaign: c, snap, onApply }) {
+function CampaignRowCard({ campaign: c, onApply }) {
   const cs = CAT_COLORS[c.cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
   const bgStyle = c.img
-    ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.12) 38%, rgba(0,0,0,.82) 100%), url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+    ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.75) 100%), url(${c.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }
     : { background: c.gradient || `linear-gradient(160deg, ${cs.color}55 0%, #0a0a0b 70%)` }
-  const pct = snap
-    ? Math.min(100, Math.round((snap.budgetSpent / c.budgetTotal) * 100))
-    : 0
 
   return (
     <button type="button" className="db-row-card" style={bgStyle} onClick={() => onApply(c)}>
-      <div className="db-row-card-top">
-        <div className="db-row-card-name">{c.name}</div>
-      </div>
+      <div className="db-row-card-name">{c.name}</div>
       <div className="db-row-card-platforms">
         <PlatformIcons platformSplit={c.platformSplit} size={11} />
       </div>
-      <div className="db-row-card-bottom">
-        <div className="db-row-card-progress">
-          <div className="db-row-card-progress-lbl">
-            <span>Progress</span>
-            <span>{pct}%</span>
-          </div>
-          <div className="db-row-card-progress-track">
-            <div className="db-row-card-progress-fill" style={{ width: `${pct}%`, background: cs.color }} />
-          </div>
-        </div>
-        <div className="db-row-card-badges">
-          <span className="db-row-badge">{formatMoney(c.budgetTotal)}</span>
-          <span className="db-row-badge">${c.clientRpm.toFixed(2)} RPM</span>
-        </div>
+      <div className="db-row-card-badges">
+        <span className="db-row-badge">{formatMoney(c.budgetTotal)}</span>
+        <span className="db-row-badge">${c.clientRpm.toFixed(2)}</span>
       </div>
     </button>
   )
 }
 
-function CampaignRow({ title, items, onApply, onViewAll }) {
+function CampaignRow({ title, items, onApply, viewAllHref }) {
   const ref = useRef(null)
   function scroll(dir) {
     if (!ref.current) return
@@ -563,7 +547,7 @@ function CampaignRow({ title, items, onApply, onViewAll }) {
       <div className="db-camp-row-head">
         <div className="db-camp-row-title-wrap">
           <h2 className="db-camp-row-title">{title}</h2>
-          <button type="button" className="db-camp-view-all" onClick={onViewAll}>
+          <button type="button" className="db-camp-view-all" onClick={() => ref.current?.scrollTo({ left: 0, behavior: 'smooth' })}>
             View all <span>›</span>
           </button>
         </div>
@@ -577,40 +561,11 @@ function CampaignRow({ title, items, onApply, onViewAll }) {
         </div>
       </div>
       <div className="db-camp-row-track" ref={ref}>
-        {items.map(({ campaign, snap }) => (
-          <CampaignRowCard key={campaign.slug} campaign={campaign} snap={snap} onApply={onApply} />
+        {items.map(({ campaign }) => (
+          <CampaignRowCard key={campaign.slug} campaign={campaign} onApply={onApply} />
         ))}
       </div>
     </section>
-  )
-}
-
-function CampaignsViewAll({ type, items, onApply, onBack }) {
-  const title = type === 'ugc' ? 'UGC Campaigns' : 'Clipping Campaigns'
-  return (
-    <div className="db-view db-explore">
-      <div className="db-explore-title-row">
-        <div className="db-explore-title-left">
-          <button type="button" className="db-viewall-back" onClick={onBack}>
-            <IcArrowLeft size={15} /> Back
-          </button>
-          <h1 className="db-explore-h">{title}</h1>
-          <div className="db-explore-live-pill">
-            <span className="db-live-dot-sm" />
-            {items.length} Campaign{items.length === 1 ? '' : 's'}
-          </div>
-        </div>
-      </div>
-      {items.length === 0 ? (
-        <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns yet</h3><p>Check back soon for new {type === 'ugc' ? 'UGC' : 'clipping'} campaigns.</p></div>
-      ) : (
-        <div className="db-viewall-grid">
-          {items.map(({ campaign, snap }) => (
-            <CampaignRowCard key={campaign.slug} campaign={campaign} snap={snap} onApply={onApply} />
-          ))}
-        </div>
-      )}
-    </div>
   )
 }
 
@@ -620,7 +575,6 @@ function CampaignsView({ onApply }) {
     ALL_CAMPAIGNS.map((c) => ({ campaign: c, snap: computeSnapshot(c, Date.now()) }))
   )
   const [search, setSearch] = useState('')
-  const [viewAllType, setViewAllType] = useState(null) // null | 'clipping' | 'ugc'
 
   useEffect(() => {
     if (!isSupabaseReady) return
@@ -658,18 +612,6 @@ function CampaignsView({ onApply }) {
   const clipping = filtered.filter(({ campaign: c }) => campaignRowType(c) === 'clipping')
   const ugc = filtered.filter(({ campaign: c }) => campaignRowType(c) === 'ugc')
 
-  if (viewAllType) {
-    const items = viewAllType === 'ugc' ? ugc : clipping
-    return (
-      <CampaignsViewAll
-        type={viewAllType}
-        items={items}
-        onApply={onApply}
-        onBack={() => setViewAllType(null)}
-      />
-    )
-  }
-
   return (
     <div className="db-view db-explore">
       <div className="db-explore-title-row">
@@ -696,8 +638,8 @@ function CampaignsView({ onApply }) {
         <div className="db-empty"><div className="db-empty-icon">🔍</div><h3>No campaigns match</h3><p>Try a different search.</p></div>
       ) : (
         <>
-          <CampaignRow title="Clipping Campaigns" items={clipping} onApply={onApply} onViewAll={() => setViewAllType('clipping')} />
-          <CampaignRow title="UGC Campaigns" items={ugc} onApply={onApply} onViewAll={() => setViewAllType('ugc')} />
+          <CampaignRow title="Clipping Campaigns" items={clipping} onApply={onApply} />
+          <CampaignRow title="UGC Campaigns" items={ugc} onApply={onApply} />
         </>
       )}
     </div>
