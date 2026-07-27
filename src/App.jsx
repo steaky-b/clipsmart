@@ -8,7 +8,6 @@ import SocialMediaManagement from './pages/SocialMediaManagement'
 import UGC from './pages/UGC'
 import Clipping from './pages/Clipping'
 import ROICalculator from './pages/ROICalculator'
-import Creators from './pages/Creators'
 import CaseStudies from './pages/CaseStudies'
 import Dashboard from './pages/Dashboard'
 import ActiveCampaignDetail from './pages/ActiveCampaignDetail'
@@ -35,7 +34,6 @@ export default function App() {
             <Route path="how-it-works/ugc" element={<UGC />} />
             <Route path="how-it-works/clipping" element={<Clipping />} />
             <Route path="calculator" element={<ROICalculator />} />
-            <Route path="creators" element={<Creators />} />
             <Route path="case-studies" element={<CaseStudies />} />
             <Route path="work-with-us" element={<WorkWithUs />} />
             <Route path="privacy" element={<PrivacyPolicy />} />

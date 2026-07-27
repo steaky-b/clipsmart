@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext'
 const LINKS = [
   { to: '/how-it-works', label: 'How It Works' },
   { to: '/calculator', label: 'ROI Calculator' },
-  { to: '/creators', label: 'Creators' },
   { to: 'https://clipsmartapp.lovable.app/active-campaigns', label: 'Active Campaigns', external: true },
   { to: '/case-studies', label: 'Past Campaigns' },
   { to: '/work-with-us', label: 'Work With Us' },
