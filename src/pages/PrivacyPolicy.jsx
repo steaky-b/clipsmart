@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
 
           <div className="legal-block">
             <h2>2. What Data We Collect</h2>
-            <p>We collect information you provide directly through our contact form ("Work With Us"):</p>
+            <p>We collect information you provide directly through our contact form ("Contact Us"):</p>
             <ul>
               <li>First and last name</li>
               <li>Email address</li>

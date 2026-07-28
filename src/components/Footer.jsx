@@ -54,7 +54,7 @@ export default function Footer() {
               <Link to="/active-campaigns">Active Campaigns</Link>
               <a href="/dashboard/">Client Dashboard</a>
               <Link to="/case-studies">Past Campaigns</Link>
-              <Link to="/work-with-us">Work With Us</Link>
+              <Link to="/work-with-us">Contact Us</Link>
             </nav>
           </div>
 

@@ -7,7 +7,7 @@ const LINKS = [
   { to: '/calculator', label: 'ROI Calculator' },
   { to: 'https://clipsmartapp.lovable.app/active-campaigns', label: 'Active Campaigns', external: true },
   { to: '/case-studies', label: 'Past Campaigns' },
-  { to: '/work-with-us', label: 'Work With Us' },
+  { to: '/work-with-us', label: 'Contact Us' },
 ]
 
 const MOBILE_BREAKPOINT = 1024

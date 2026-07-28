@@ -130,15 +130,18 @@ export default function WorkWithUs() {
           <div className="wwu-hero-copy fade-up">
             <div className="wwu-eyebrow">
               <span className="wwu-eyebrow-line" />
-              For Brands
+              Get in touch with
             </div>
-            <h1>Launch a creator campaign in under <em>48 hours.</em></h1>
-            <p>
-              Get hundreds of creators posting about your brand across TikTok, Instagram and YouTube.
-              Only pay for verified performance.
-            </p>
+            <h1>Contact <em>us</em></h1>
 
             <div className="wwu-contact">
+              <div className="wwu-contact-eyebrow">
+                <span className="wwu-eyebrow-line" />
+                Get in Touch
+              </div>
+              <p className="wwu-contact-intro">
+                We’re here to help with any questions, opportunities, or support you need. Reach out using the details below or send us a message.
+              </p>
               <div className="wwu-contact-list">
                 {CONTACTS.map(({ email, desc, icon }) => (
                   <a key={email} href={`mailto:${email}`} className="wwu-contact-item">
