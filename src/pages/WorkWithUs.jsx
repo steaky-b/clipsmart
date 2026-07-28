@@ -132,7 +132,7 @@ export default function WorkWithUs() {
               <span className="wwu-eyebrow-line" />
               Get in Touch
             </div>
-            <h1>Contact <em>us</em></h1>
+            <h1>Launch a campaign in less than <em>48 hours.</em></h1>
 
             <div className="wwu-contact">
               <p className="wwu-contact-intro">
