@@ -139,13 +139,6 @@ export default function WorkWithUs() {
             </p>
 
             <div className="wwu-contact">
-              <div className="wwu-contact-eyebrow">
-                <span className="wwu-eyebrow-line" />
-                Get in Touch
-              </div>
-              <p className="wwu-contact-intro">
-                We’re here to help with any questions, opportunities, or support you need. Reach out using the details below or send us a message.
-              </p>
               <div className="wwu-contact-list">
                 {CONTACTS.map(({ email, desc, icon }) => (
                   <a key={email} href={`mailto:${email}`} className="wwu-contact-item">
@@ -276,21 +269,6 @@ export default function WorkWithUs() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="cta-section">
-        <div className="cta-box fade-up">
-          <div>
-            <h2 className="cta-h">Prefer to talk first?<br /><em>Book a call.</em></h2>
-            <p className="cta-p">30 minutes, no prep needed, no commitment. We'll map out exactly what your budget gets.</p>
-          </div>
-          <div className="cta-actions">
-            <a href="https://calendly.com/esaanwar/partner-with-clipsmart" target="_blank" rel="noopener noreferrer" className="btn-primary">
-              Book a free call →
-            </a>
-            <span className="cta-note">Full refund if we don't hit your guaranteed views</span>
-          </div>
-        </div>
-      </div>
     </>
   )
 }
