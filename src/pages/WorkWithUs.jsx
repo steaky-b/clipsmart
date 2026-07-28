@@ -45,10 +45,28 @@ const STEPS = [
   },
 ]
 
-const PILLS = [
-  { label: 'No monthly contracts', icon: '✓' },
-  { label: 'Verified creators only', icon: '✓' },
-  { label: 'Performance based pricing', icon: '📊' },
+const CONTACTS = [
+  {
+    email: 'contact@clipsmart.co.uk',
+    desc: 'General enquiries, business enquiries, partnerships, sales enquiries, media, and anything that isn’t support-related.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="22" height="22">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="M22 7l-10 7L2 7" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    email: 'support@clipsmart.co.uk',
+    desc: 'Help with campaigns, creator accounts, payments, technical issues, and any existing customer or creator support.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="22" height="22">
+        <path d="M4 14v-2a8 8 0 0 1 16 0v2" strokeLinecap="round" />
+        <path d="M4 14v2a2 2 0 0 0 2 2h1v-6H6a2 2 0 0 0-2 2zM20 14v2a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 2z" strokeLinejoin="round" />
+        <path d="M15 19a3 3 0 0 1-6 0" strokeLinecap="round" />
+      </svg>
+    ),
+  },
 ]
 
 function encode(data) {
@@ -59,13 +77,12 @@ function encode(data) {
 
 export default function WorkWithUs() {
   const [form, setForm] = useState({
-    campaignName: '',
+    fullName: '',
+    brandName: '',
     platform: 'TikTok',
     budget: '2500',
-    cpm: '1.00',
-    details: '',
-    email: '',
-    brand: '',
+    primaryGoal: '',
+    message: '',
   })
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -73,16 +90,10 @@ export default function WorkWithUs() {
 
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
-  const estimatedViews = (() => {
-    const b = Number(form.budget) || 0
-    const c = Number(form.cpm) || 1
-    return Math.round((b / c) * 1000)
-  })()
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.campaignName || !form.details) {
-      setError('Please fill in campaign name and tell us about your brand.')
+    if (!form.fullName || !form.brandName || !form.primaryGoal || !form.message) {
+      setError('Please fill in all required fields.')
       return
     }
     setError('')
@@ -93,13 +104,13 @@ export default function WorkWithUs() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: encode({
           'form-name': 'work-with-us',
-          fname: form.campaignName,
+          fname: form.fullName,
           lname: '',
-          email: form.email || 'via-campaign-request',
-          brand: form.brand || form.campaignName,
+          email: 'via-campaign-request',
+          brand: form.brandName,
           campType: form.platform,
           budget: form.budget,
-          details: `CPM: $${form.cpm}\nPlatform: ${form.platform}\n\n${form.details}`,
+          details: `Primary goal: ${form.primaryGoal}\nPlatform: ${form.platform}\n\n${form.message}`,
         }),
       })
       if (res.ok) setSubmitted(true)
@@ -126,13 +137,26 @@ export default function WorkWithUs() {
               Get hundreds of creators posting about your brand across TikTok, Instagram and YouTube.
               Only pay for verified performance.
             </p>
-            <div className="wwu-pills">
-              {PILLS.map(({ label, icon }) => (
-                <div key={label} className="wwu-pill">
-                  <span className="wwu-pill-icon">{icon}</span>
-                  {label}
-                </div>
-              ))}
+
+            <div className="wwu-contact">
+              <div className="wwu-contact-eyebrow">
+                <span className="wwu-eyebrow-line" />
+                Get in Touch
+              </div>
+              <p className="wwu-contact-intro">
+                We’re here to help with any questions, opportunities, or support you need. Reach out using the details below or send us a message.
+              </p>
+              <div className="wwu-contact-list">
+                {CONTACTS.map(({ email, desc, icon }) => (
+                  <a key={email} href={`mailto:${email}`} className="wwu-contact-item">
+                    <div className="wwu-contact-icon">{icon}</div>
+                    <div className="wwu-contact-text">
+                      <div className="wwu-contact-email">{email}</div>
+                      <div className="wwu-contact-desc">{desc}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -161,12 +185,22 @@ export default function WorkWithUs() {
                 <input type="hidden" name="form-name" value="work-with-us" />
 
                 <div className="wwu-fg">
-                  <label>Campaign Name</label>
+                  <label>Full Name</label>
                   <input
                     type="text"
-                    placeholder="e.g. Summer Product Launch"
-                    value={form.campaignName}
-                    onChange={(e) => update('campaignName', e.target.value)}
+                    placeholder="e.g. Jane Smith"
+                    value={form.fullName}
+                    onChange={(e) => update('fullName', e.target.value)}
+                  />
+                </div>
+
+                <div className="wwu-fg">
+                  <label>Brand Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Acme Co."
+                    value={form.brandName}
+                    onChange={(e) => update('brandName', e.target.value)}
                   />
                 </div>
 
@@ -180,40 +214,34 @@ export default function WorkWithUs() {
                   </select>
                 </div>
 
-                <div className="wwu-fg-row">
-                  <div className="wwu-fg">
-                    <label>Budget</label>
-                    <select value={form.budget} onChange={(e) => update('budget', e.target.value)}>
-                      <option value="1000">$1,000</option>
-                      <option value="2500">$2,500</option>
-                      <option value="5000">$5,000</option>
-                      <option value="10000">$10,000+</option>
-                    </select>
-                  </div>
-                  <div className="wwu-fg">
-                    <label>CPM</label>
-                    <select value={form.cpm} onChange={(e) => update('cpm', e.target.value)}>
-                      <option value="0.75">$0.75</option>
-                      <option value="1.00">$1.00</option>
-                      <option value="1.50">$1.50</option>
-                      <option value="2.00">$2.00</option>
-                    </select>
-                  </div>
+                <div className="wwu-fg">
+                  <label>Monthly Budget</label>
+                  <select value={form.budget} onChange={(e) => update('budget', e.target.value)}>
+                    <option value="1000">$1,000</option>
+                    <option value="2500">$2,500</option>
+                    <option value="5000">$5,000</option>
+                    <option value="10000">$10,000+</option>
+                  </select>
                 </div>
 
                 <div className="wwu-fg">
-                  <label>Tell us about your brand</label>
-                  <textarea
-                    placeholder="What do you sell? Who's your audience?"
-                    rows={3}
-                    value={form.details}
-                    onChange={(e) => update('details', e.target.value)}
+                  <label>Primary Goal</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Awareness, sales, app installs…"
+                    value={form.primaryGoal}
+                    onChange={(e) => update('primaryGoal', e.target.value)}
                   />
                 </div>
 
-                <div className="wwu-estimate">
-                  <div className="wwu-estimate-label">Estimated Views</div>
-                  <div className="wwu-estimate-val">{estimatedViews.toLocaleString()}</div>
+                <div className="wwu-fg">
+                  <label>Message</label>
+                  <textarea
+                    placeholder="Tell us anything else we should know…"
+                    rows={3}
+                    value={form.message}
+                    onChange={(e) => update('message', e.target.value)}
+                  />
                 </div>
 
                 {error && <div className="form-error">{error}</div>}
