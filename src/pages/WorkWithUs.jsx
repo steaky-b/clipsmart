@@ -130,15 +130,11 @@ export default function WorkWithUs() {
           <div className="wwu-hero-copy fade-up">
             <div className="wwu-eyebrow">
               <span className="wwu-eyebrow-line" />
-              Get in touch with
+              Get in Touch
             </div>
             <h1>Contact <em>us</em></h1>
 
             <div className="wwu-contact">
-              <div className="wwu-contact-eyebrow">
-                <span className="wwu-eyebrow-line" />
-                Get in Touch
-              </div>
               <p className="wwu-contact-intro">
                 We’re here to help with any questions, opportunities, or support you need. Reach out using the details below or send us a message.
               </p>
