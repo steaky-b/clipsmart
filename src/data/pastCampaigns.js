@@ -38,7 +38,7 @@ export const PAST_CAMPAIGNS = [
   {
     id: 'oscen', cat: 'music', catLabel: 'Music', name: 'Oscen', subtitle: '"Worship"',
     results: [{ v: '1.2M', l: 'Total views' }, { v: '252', l: 'Creator posts' }],
-    img: '/cs-oscen.jpg',
+    img: '/cs-oscen.png',
     gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)',
   },
   {
