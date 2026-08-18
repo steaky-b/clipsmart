@@ -130,6 +130,20 @@ const CAMPAIGNS = [
     clips: ['linear-gradient(160deg,#0d4a0d,#051a05)','linear-gradient(160deg,#0a3a0a,#051505)','linear-gradient(160deg,#0d550d,#051a05)'],
     videos: ['/Cryptorians.mp4', '/Cryptorians(1).mp4', '/Cryptorians(2).mp4'],
   },
+  {
+    id: 'leveret', cat: 'fashion', catLabel: 'Fashion & Apparel', name: 'Leveret Clothing', subtitle: 'Clothing Brand',
+    direction: 'Fashion & apparel brand running a performance UGC campaign. Briefed to put the clothing in front of style-led short-form audiences — creators featuring the brand naturally inside outfit, haul, and lifestyle content.',
+    outcome: '4.2M+ impressions in 16 hours. Campaign was booked at $1 CPM; because it over-delivered on the view guarantee, the effective CPM landed at $0.76.',
+    results: [
+      { v: '4.2M+', l: 'Impressions' },
+      { v: '$0.76', l: 'Effective CPM' },
+      { v: '16 hrs', l: 'Time to result' },
+    ],
+    highlight: '4.2M+ impressions in 16 hours. Booked at $1 CPM, delivered at $0.76.',
+    gradient: 'linear-gradient(135deg,#1a0d12,#0a0508)',
+    clips: ['linear-gradient(160deg,#4a1a28,#1a080e)','linear-gradient(160deg,#3a1420,#15060a)','linear-gradient(160deg,#551e30,#1a080e)'],
+    videos: [],
+  },
 ]
 
 const CATS = [
@@ -138,13 +152,14 @@ const CATS = [
   { id: 'health', label: 'Health & Wellness' },
   { id: 'podcast', label: 'Podcast' },
   { id: 'crypto', label: 'Crypto & Finance' },
+  { id: 'fashion', label: 'Fashion & Apparel' },
 ]
 
 const OVERVIEW_STATS = [
   { v: '2.3B+', l: 'Combined views generated', s: 'Across all campaigns' },
   { v: '4,400+', l: 'Creator clips approved', s: 'Manually reviewed across all brands' },
-  { v: '9', l: 'Campaigns completed', s: 'Music · Health · Podcast · Crypto' },
-  { v: '4', l: 'Different niches', s: 'And growing every month' },
+  { v: '10', l: 'Campaigns completed', s: 'Music · Health · Podcast · Crypto · Fashion' },
+  { v: '5', l: 'Different niches', s: 'And growing every month' },
 ]
 
 export default function CaseStudies() {
@@ -197,6 +212,7 @@ export default function CaseStudies() {
                 <div className="cs-card-name">{c.name}</div>
               </div>
               <div className="cs-card-body">
+                {c.videos?.length > 0 && (
                 <div className="cs-card-clips">
                   {[0, 1, 2].map((i) => {
                     const bg = c.clips?.[i]
@@ -223,6 +239,7 @@ export default function CaseStudies() {
                     )
                   })}
                 </div>
+                )}
                 <div className="cs-card-metrics">
                   {c.results.slice(0, 2).map(({ v, l }) => (
                     <div key={l} className="cscm">

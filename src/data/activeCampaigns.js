@@ -109,6 +109,32 @@ export const ACTIVE_CAMPAIGNS = [
       { handle: '@nonna.knows', platform: 'TikTok', views: 47000, video: '/bussin-clip-3.mp4' },
     ],
   },
+  {
+    slug: 'leveret-clothing',
+    name: 'Leveret Clothing',
+    cat: 'fashion',
+    catLabel: 'Fashion & Apparel',
+    subtitle: 'Clothing Brand',
+    summary:
+      'Fashion brand running a performance UGC campaign. Booked at $1 CPM — the campaign over-delivered, hitting 4.2M+ impressions in 16 hours and bringing the effective CPM down to $0.76.',
+    gradient: 'linear-gradient(135deg,#1a0d12,#0a0508)',
+    clips: [
+      'linear-gradient(160deg,#4a1a28,#1a080e)',
+      'linear-gradient(160deg,#3a1420,#15060a)',
+      'linear-gradient(160deg,#551e30,#1a080e)',
+    ],
+    videos: [],
+    onboardedDate: '2026-08-17',
+    anchorISO: '2026-08-18T10:00:00Z',
+    budgetTotal: 3200,
+    clientRpm: 1,
+    viewsGuaranteed: 3200000,
+    baseViews: 4200000,
+    basePosts: 0,
+    baseCreators: 0,
+    platformSplit: { TikTok: 55, Instagram: 40, YouTube: 5 },
+    bestVideos: [],
+  },
 ]
 
 export function getActiveCampaign(slug) {

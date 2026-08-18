@@ -72,6 +72,7 @@ const CAT_BANNER = {
   ugc:      'linear-gradient(135deg, #041525 0%, #0a3d7c 100%)',
   clipping: 'linear-gradient(135deg, #1f0a03 0%, #5c250b 100%)',
   gaming:   'linear-gradient(135deg, #1a0330 0%, #4a0868 100%)',
+  fashion:  'linear-gradient(135deg, #1a080e 0%, #5c1a2e 100%)',
 }
 
 /* ─────────────────────────────────────────────
@@ -172,6 +173,7 @@ const CAT_COLORS = {
   clipping: { color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)'  },
   gaming:   { color: '#f472b6', bg: 'rgba(244,114,182,0.12)', border: 'rgba(244,114,182,0.3)' },
   crypto:   { color: '#22d3ee', bg: 'rgba(34,211,238,0.12)',  border: 'rgba(34,211,238,0.3)'  },
+  fashion:  { color: '#fb7185', bg: 'rgba(251,113,133,0.12)', border: 'rgba(251,113,133,0.3)' },
 }
 function CatBadge({ cat, label }) {
   const s = CAT_COLORS[cat] || { color: '#888', bg: 'rgba(136,136,136,0.12)', border: 'rgba(136,136,136,0.3)' }
@@ -507,10 +509,10 @@ const HOW_STEPS = [
   { n: '03', icon: '💰', t: 'Earn Per View',   d: 'Get paid for every 1,000 views your accepted clips generate. Fully transparent.' },
 ]
 
-const CAT_LABELS = ['all', 'music', 'health', 'podcast', 'ugc', 'clipping', 'gaming']
-const CAT_DISPLAY = { all: 'All', music: 'Music', health: 'Health', podcast: 'Podcast', ugc: 'UGC', clipping: 'Clipping', gaming: 'Gaming', crypto: 'Crypto' }
+const CAT_LABELS = ['all', 'music', 'health', 'podcast', 'ugc', 'clipping', 'gaming', 'fashion']
+const CAT_DISPLAY = { all: 'All', music: 'Music', health: 'Health', podcast: 'Podcast', ugc: 'UGC', clipping: 'Clipping', gaming: 'Gaming', crypto: 'Crypto', fashion: 'Fashion' }
 
-const UGC_CATS = new Set(['ugc', 'health'])
+const UGC_CATS = new Set(['ugc', 'health', 'fashion'])
 function campaignRowType(c) {
   return UGC_CATS.has(c.cat) ? 'ugc' : 'clipping'
 }

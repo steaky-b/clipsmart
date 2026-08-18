@@ -131,6 +131,7 @@ export default function ActiveCampaignDetail() {
       </div>
 
       {/* BEST VIDEOS */}
+      {campaign.bestVideos?.length > 0 && (
       <div className="acd-section">
         <div className="section-eyebrow">Top performers</div>
         <h2 className="section-h2">Best videos <em>so far.</em></h2>
@@ -173,6 +174,7 @@ export default function ActiveCampaignDetail() {
           })}
         </div>
       </div>
+      )}
 
       {/* PLATFORM SPLIT + ACTIVITY */}
       <div className="acd-section">
