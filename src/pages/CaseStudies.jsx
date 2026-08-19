@@ -268,7 +268,7 @@ export default function CaseStudies() {
           <div className="csf-left">
             <div className="csf-tag">Music · Featured Campaign</div>
             {featured.img
-              ? <img src={featured.img} alt={featured.name} className="csf-img" />
+              ? <img src={featured.img} alt={featured.name} className="csf-img" loading="lazy" />
               : <div className="csf-logo">NHC</div>
             }
             <div className="csf-name">{featured.name}</div>

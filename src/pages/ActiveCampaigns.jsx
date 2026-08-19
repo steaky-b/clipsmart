@@ -82,7 +82,7 @@ export default function ActiveCampaigns() {
                     <div className="ac-card-head">
                       <div className="ac-card-avatar">
                         {img
-                          ? <img src={img} alt={name} className="ac-avatar-img" />
+                          ? <img src={img} alt={name} className="ac-avatar-img" loading="lazy" />
                           : <span className="ac-avatar-letter">{name[0]}</span>
                         }
                       </div>
@@ -138,7 +138,7 @@ export default function ActiveCampaigns() {
                   <div className="ac-card-head">
                     <div className="ac-card-avatar">
                       {c.img
-                        ? <img src={c.img} alt={c.name} className="ac-avatar-img" />
+                        ? <img src={c.img} alt={c.name} className="ac-avatar-img" loading="lazy" />
                         : <span className="ac-avatar-letter">{c.name[0]}</span>
                       }
                     </div>
