@@ -318,7 +318,7 @@ export default function CaseStudies() {
             <div
               className={'cs-modal-head' + (modalData.img ? ' has-img' : '')}
               style={modalData.img
-                ? { backgroundImage: `url(${modalData.img})`, backgroundSize: 'cover', backgroundPosition: 'center top' }
+                ? { backgroundImage: `url(${modalData.img})`, backgroundSize: 'cover', backgroundPosition: 'center center' }
                 : { background: modalData.gradient }
               }
             >
