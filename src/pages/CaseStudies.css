@@ -147,7 +147,7 @@
 .cs-modal-body { padding: 28px 36px 36px; display: flex; flex-direction: column; gap: 16px; }
 .csm-section-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--g); opacity: 0.8; }
 .csm-brief { font-size: 14.5px; line-height: 1.8; color: var(--t1); margin-top: -4px; }
-.csm-results { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+.csm-results { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
 .csm-result { background: var(--s2); border: 1px solid var(--bd); border-radius: 12px; padding: 18px; text-align: center; }
 .csm-result-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 800; color: var(--g); }
 .csm-result-l { font-size: 11px; color: var(--t3); margin-top: 4px; }
