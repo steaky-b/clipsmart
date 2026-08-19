@@ -53,4 +53,15 @@ export const PAST_CAMPAIGNS = [
     img: '/cs-cryptorians.png',
     gradient: 'linear-gradient(135deg,#0a1a0a,#051005)',
   },
+  {
+    id: 'leveret', cat: 'fashion', catLabel: 'Fashion & Apparel', name: 'Leveret Clothing', subtitle: 'Children\'s Clothing Brand',
+    results: [
+      { v: '4.3M+', l: 'Total views' },
+      { v: '184', l: 'UGC posts' },
+      { v: '227K+', l: 'Engagements' },
+      { v: '$0.76', l: 'Effective CPM' },
+    ],
+    img: '/cs-leveret.png',
+    gradient: 'linear-gradient(135deg,#1a0d12,#0a0508)',
+  },
 ]

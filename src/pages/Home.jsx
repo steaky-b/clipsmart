@@ -410,7 +410,7 @@ const CASES = [
   { id: 'oscen', cat: 'Music', name: 'Oscen', views: '1.2M views', subs: '252 creator posts', img: '/cs-oscen.png', gradient: 'linear-gradient(135deg,#0a1a2a,#05090f)' },
   { id: 'brysonlee', cat: 'Health & Wellness', name: 'Bryson Lee', views: '906K views', subs: '116 creator posts', img: '/cs-brysonlee.png', gradient: 'linear-gradient(135deg,#1a1a0a,#0a0a05)' },
   { id: 'cryptorians', cat: 'Crypto & Finance', name: 'Cryptorians', views: '209K views', subs: '209 creator posts', img: '/cs-cryptorians.png', gradient: 'linear-gradient(135deg,#0a1a0a,#051005)' },
-  { id: 'leveret', cat: 'Fashion & Apparel', name: 'Leveret Clothing', views: '4.3M+ views', subs: '184 creator posts', img: '/cs-leveret.png', gradient: 'linear-gradient(135deg,#1a0d12,#0a0508)' },
+  { id: 'leveret', cat: 'Fashion & Apparel', name: 'Leveret Clothing', views: '4.3M+ views', subs: '184 UGC posts', img: '/cs-leveret.png', gradient: 'linear-gradient(135deg,#1a0d12,#0a0508)' },
 ]
 
 const HOW_STEPS = [

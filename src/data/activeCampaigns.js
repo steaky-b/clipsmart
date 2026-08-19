@@ -114,9 +114,9 @@ export const ACTIVE_CAMPAIGNS = [
     name: 'Leveret Clothing',
     cat: 'fashion',
     catLabel: 'Fashion & Apparel',
-    subtitle: 'Children\'s Clothing Brand',
+    subtitle: 'Clothing Brand',
     summary:
-      'Children\'s clothing brand. Booked at $1 CPM — over-delivered to 4.3M+ views in 16 hours, 87% US audience, 227K+ engagements, effective CPM $0.76.',
+      'Children\'s clothing brand running a performance UGC campaign. Booked at $1 CPM — the campaign over-delivered, hitting 4.3M+ views in 16 hours with 87% US audience and bringing the effective CPM down to $0.76.',
     img: '/cs-leveret.png',
     gradient: 'linear-gradient(135deg,#1a0d12,#0a0508)',
     clips: [
@@ -128,7 +128,7 @@ export const ACTIVE_CAMPAIGNS = [
     onboardedDate: '2026-08-17',
     anchorISO: '2026-08-18T10:00:00Z',
     budgetTotal: 3200,
-    clientRpm: 0.76,
+    clientRpm: 1,
     viewsGuaranteed: 3200000,
     baseViews: 4300000,
     basePosts: 184,
